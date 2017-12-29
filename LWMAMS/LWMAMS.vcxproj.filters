@@ -57,9 +57,6 @@
     <None Include="Resources\qml\main.qml">
       <Filter>Resource Files\qml</Filter>
     </None>
-    <None Include="Resources\qml\MainForm.ui.qml">
-      <Filter>Resource Files\qml</Filter>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="qml.qrc">
