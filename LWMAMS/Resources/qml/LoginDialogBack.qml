@@ -226,7 +226,7 @@ Item {
             y: 397
             width: 196
             height: 40
-            text: qsTr("申       请")
+            text_save: qsTr("申       请")
             onClicked: {
                 if(back.isRegistered){
                     back.isRegistered = false;
@@ -246,6 +246,11 @@ Item {
             y: 397
             width: 196
             height: 40
+            border.width: 0
+            radius:4
+            pressedColor: "#00BFFF"
+            enteredColor: "#4169E1"
+            exitedColor: "#1E90FF"
             text: qsTr("返       回")
             onClicked: {
                 back.exit();

@@ -51,7 +51,7 @@ Item {
             anchors.topMargin: 10
             anchors.right: parent.right
             anchors.rightMargin: 10
-            imageUrl:"../wrong_black.png"
+            imageUrl:"qrc:/Resources/wrong_black.png"
             exitColor: "#00000000"
             onClicked: {
                 front.closeButtonClicked();
@@ -65,7 +65,7 @@ Item {
             height:40
             width:332
             x:pushButton_sign.x
-            imageUrl: "../username@3x.png"
+            imageUrl: "qrc:/Resources/username@3x.png"
             placeholderText:"请输入你的账号"
             isPW: false
         }
@@ -76,7 +76,7 @@ Item {
             width: 332
             height: 40
             x:pushButton_sign.x
-            imageUrl: "../passport@3x.png"
+            imageUrl: "qrc:/Resources/passport@3x.png"
             placeholderText:"请输入你的密码"
             isPW: true
         }
@@ -88,7 +88,7 @@ Item {
             height: 40
             anchors.horizontalCenterOffset: 0
             anchors.horizontalCenter: parent.horizontalCenter
-            text: qsTr("登       陆")
+            text_save: qsTr("登       陆")
             onClicked: {
                 front.signUp();
             }

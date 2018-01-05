@@ -129,7 +129,8 @@ Window {
                 NumberAnimation{
                     target:rotation
                     properties: "angle"
-                    duration:1000
+                    duration:800
+                    //easing.type: Easing.OutBack
                 }
             }
         }

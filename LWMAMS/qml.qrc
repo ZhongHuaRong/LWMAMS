@@ -20,5 +20,26 @@
         <file>Resources/visible.png</file>
         <file>Resources/Invisible.png</file>
         <file>Resources/qml/DoubleStateButton.qml</file>
+        <file>Resources/qml/MainWindow.qml</file>
+        <file>Resources/qml/TitleRectangle.qml</file>
+        <file>Resources/direction_left.png</file>
+        <file>Resources/direction_right.png</file>
+        <file>Resources/qml/TitleButton.qml</file>
+        <file>Resources/qml/ToolButton.qml</file>
+        <file>Resources/passport@3x.png</file>
+        <file>Resources/logo.jpg</file>
+        <file>Resources/close.png</file>
+        <file>Resources/full.png</file>
+        <file>Resources/full_close.png</file>
+        <file>Resources/narrow.png</file>
+        <file>Resources/qml/ToolRectangle.qml</file>
+        <file>Resources/route.png</file>
+        <file>Resources/video.png</file>
+        <file>Resources/home.png</file>
+        <file>Resources/dataShow.png</file>
+        <file>Resources/control.png</file>
+        <file>Resources/manual.png</file>
+        <file>Resources/analysis.png</file>
+        <file>Resources/qml/ToolButtonGroup.qml</file>
     </qresource>
 </RCC>
