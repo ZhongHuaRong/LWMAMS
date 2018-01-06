@@ -55,5 +55,21 @@ Rectangle {
         anchors.leftMargin: 0
         anchors.top: title.bottom
         anchors.topMargin: 0
+        onCurrentIndexChanged:{
+            page.changePage(index);
+        }
+    }
+
+    MainPages{
+        id:page
+        anchors.top: tool.bottom
+        anchors.topMargin: 0
+        anchors.bottom: parent.bottom
+        anchors.bottomMargin: 0
+        anchors.left: parent.left
+        anchors.leftMargin: 0
+        anchors.right: parent.right
+        anchors.rightMargin: 0
+
     }
 }

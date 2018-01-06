@@ -40,6 +40,22 @@
         <file>Resources/control.png</file>
         <file>Resources/manual.png</file>
         <file>Resources/analysis.png</file>
-        <file>Resources/qml/ToolButtonGroup.qml</file>
+        <file>Resources/qml/MainPages.qml</file>
+        <file>Resources/homeBackground.jpg</file>
+        <file>Resources/qml/DataShow_ParaListView.qml</file>
+        <file>Resources/qml/DataShow_ChartView.qml</file>
+        <file>Resources/qml/PageNumberView.qml</file>
+        <file>Resources/qml/DataShowView.qml</file>
+        <file>Resources/qml/CScrollView.qml</file>
+        <file>Resources/qml/TelescopicRectangle.qml</file>
+        <file>Resources/direction_down.png</file>
+        <file>Resources/direction_up.png</file>
+        <file>Resources/thermometer.png</file>
+        <file>Resources/qml/CheckGroup.qml</file>
+        <file>Resources/qml/TextEditWithShadow.qml</file>
+        <file>Resources/qml/CComboBox.qml</file>
+        <file>CodeArea.cpp</file>
+        <file>Resources/down-top@3x.png</file>
+        <file>Resources/left@3x.png</file>
     </qresource>
 </RCC>

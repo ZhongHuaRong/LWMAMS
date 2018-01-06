@@ -8,8 +8,10 @@ message("You are running qmake on a generated .pro file. This may not work!")
 
 
 SOURCES += ./main.cpp \
-    $$PWD/CodeArea.cpp
+    $$PWD/CodeArea.cpp \
+    $$PWD/DataShowPara.cpp
 RESOURCES += qml.qrc
 
 HEADERS += \
-    $$PWD/CodeArea.h
+    $$PWD/CodeArea.h \
+    $$PWD/DataShowPara.h

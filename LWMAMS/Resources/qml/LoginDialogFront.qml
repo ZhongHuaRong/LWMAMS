@@ -59,7 +59,7 @@ Item {
             z:5
         }
 
-        CTextEdit {
+        TextEditWithShadow {
             id: textEdit_userName
             y: 104
             height:40
@@ -70,7 +70,7 @@ Item {
             isPW: false
         }
 
-        CTextEdit {
+        TextEditWithShadow {
             id: textEdit_pw
             y: 185
             width: 332

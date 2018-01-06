@@ -18,3 +18,7 @@ UI_DIR += ./GeneratedFiles
 RCC_DIR += ./GeneratedFiles
 include(LWMAMS.pri)
 win32:RC_FILE = LWMAMS.rc
+
+HEADERS +=
+
+SOURCES +=

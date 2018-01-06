@@ -15,19 +15,26 @@ Rectangle {
     property bool isPressed: false
     property bool checkable: false
     property bool checked: false
-    property bool group: false
+    property var group: 0
     property string text: "按钮"
     property url imageUrl: ""
 
-    signal clicked(var object);
+    signal clicked(var sender);
 
-    function resetWithObject(object){
+    onGroupChanged: {
+        rect.group.addedChild(rect);
+    }
+
+    function reset(){
         if(!rect.checkable)
-            return;
-        if(object===rect)
             return;
         rect.state="exited";
         rect.checked=false;
+    }
+
+    function setChecked(){
+        rect.state="checked";
+        rect.checked=true;
     }
 
     states :

@@ -126,7 +126,7 @@ Item {
             z:5
         }
 
-        CTextEdit {
+        TextEditWithShadow {
             id: textEdit_accountNumber
             x: 27
             y: 78
@@ -139,7 +139,7 @@ Item {
             onEditingFinished: back.checkAccountNumber(textEdit_accountNumber.getText());
         }
 
-        CTextEdit {
+        TextEditWithShadow {
             id: textEdit_userName
             x: 371
             y: 78
@@ -157,7 +157,7 @@ Item {
             }
         }
 
-        CTextEdit {
+        TextEditWithShadow {
             id: textEdit_pw
             x: 27
             y: 149
@@ -176,7 +176,7 @@ Item {
             }
         }
 
-        CTextEdit {
+        TextEditWithShadow {
             id: textEdit_againPw
             x: 371
             y: 149
@@ -195,7 +195,7 @@ Item {
             }
         }
 
-        CTextEdit {
+        TextEditWithShadow {
             id: textEdit_appID
             x: 27
             y: 220
@@ -207,7 +207,7 @@ Item {
             onEditingFinished: back.checkAppId(textEdit_appID.getText());
         }
 
-        CTextEdit {
+        TextEditWithShadow {
             id: textEdit_Code
             x: 27
             y: 302
