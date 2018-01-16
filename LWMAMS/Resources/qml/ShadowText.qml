@@ -27,7 +27,7 @@ Rectangle {
             horizontalAlignment: shadowText.horizontalAlignment
             font.pixelSize: shadowText.pixelSize
             color: shadowText.textColor
-            font.family: "黑体"
+            font.family: "微软雅黑"
             font.italic: shadowText.italic
             font.bold:shadowText.bold
             anchors.fill:parent

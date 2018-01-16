@@ -1,5 +1,6 @@
 import QtQuick 2.0
 import QtQuick.Controls 2.2
+import an.qt.DataShowPara 1.0
 
 Item {
     id:page
@@ -36,13 +37,16 @@ Item {
         }
     }
 
+    DataShowPara{
+        id:para
+    }
+
     StackView{
         id: stack
         anchors.fill: parent
 
-        Component {
+        Component{
             id: view
-
             Image{
                 source:"qrc:/Resources/homeBackground.jpg"
 
@@ -58,72 +62,41 @@ Item {
                     color: "#445266"
                 }
             }
+
         }
+
 
         DataShowView{
             id:page_one
+            para:para
         }
 
-        Component{
+        RouteView{
             id:page_two
-            ShadowText{
-                text:"大型水域";
-                x:100
-                y:200
-                width:1000
-                verticalAlignment: Text.AlignVCenter
-                horizontalAlignment: Text.AlignHCenter
-                pixelSize: 80
-            }
+            para:para
+
         }
-        Component{
+
+        ManualView{
             id:page_three
-            ShadowText{
-                text:"大型水域";
-                x:100
-                y:200
-                width:1000
-                verticalAlignment: Text.AlignVCenter
-                horizontalAlignment: Text.AlignHCenter
-                pixelSize: 80
-            }
+
         }
-        Component{
+
+        ControlView{
             id:page_four
-            ShadowText{
-                text:"大型水域";
-                x:100
-                y:200
-                width:1000
-                verticalAlignment: Text.AlignVCenter
-                horizontalAlignment: Text.AlignHCenter
-                pixelSize: 80
-            }
+            para:para
         }
-        Component{
+
+        VideoView{
             id:page_five
-            ShadowText{
-                text:"大型水域";
-                x:100
-                y:200
-                width:1000
-                verticalAlignment: Text.AlignVCenter
-                horizontalAlignment: Text.AlignHCenter
-                pixelSize: 80
-            }
+
         }
-        Component{
+
+        AnalysisView{
             id:page_six
-            ShadowText{
-                text:"大型水域";
-                x:100
-                y:200
-                width:1000
-                verticalAlignment: Text.AlignVCenter
-                horizontalAlignment: Text.AlignHCenter
-                pixelSize: 80
-            }
+            para:para
         }
+
         Component{
             id:page_seven
             ShadowText{

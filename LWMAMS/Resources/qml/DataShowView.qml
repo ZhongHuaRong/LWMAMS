@@ -5,8 +5,11 @@ import an.qt.DataShowPara 1.0
 Item {
     id: item1
 
-    DataShowPara{
-        id:para
+    property var para: 0
+
+    onParaChanged: {
+        if(para)
+          dataShow_ParaListView.setPara(para);
     }
 
     DataShow_ParaListView {
@@ -18,8 +21,5 @@ Item {
         anchors.left: parent.left
         anchors.leftMargin: 0
         width:400
-        onDataTypeChanged: {
-            para.setDataType(index)
-        }
     }
 }

@@ -7,24 +7,39 @@ CScrollView{
     width:390
     height:600
 
-    signal dataTypeChanged(int index)
-    signal chartTypeChanged(int index)
+    property var para: 0
+
+    function setPara(para){
+        view.para = para;
+        tempMinTextEdit.setText(para.getTempMinValue());
+        tempMaxTextEdit.setText(para.getTempMaxValue());
+        phMinTextEdit.setText(para.getPHMinValue());
+        phMaxTextEdit.setText(para.getPHMaxValue());
+        turbidityMinTextEdit.setText(para.getTurMinValue());
+        turbidityMaxTextEdit.setText(para.getTurMaxValue());
+    }
+
+    function setPageMaxNum(index){
+        pageMaxNum.text =index;
+    }
 
     CheckGroup{
         id:dataTypeGroup
         onCurrentChanged:{
+            if(!para)
+                return;
             switch(current){
             case temperatureButton:
-                view.dataTypeChanged(DataShowPara.Temperature);
+                para.setDataType(DataShowPara.Temperature)
                 break;
             case phButton:
-                view.dataTypeChanged(DataShowPara.PH);
+                para.setDataType(DataShowPara.PH)
                 break;
             case turbidityButton:
-                view.dataTypeChanged(DataShowPara.Turbidity);
+                para.setDataType(DataShowPara.Turbidity)
                 break;
             case allDataButton:
-                view.dataTypeChanged(DataShowPara.AllData);
+                para.setDataType(DataShowPara.AllData)
                 break;
             }
         }
@@ -33,18 +48,20 @@ CScrollView{
     CheckGroup{
         id:chartTypeGroup
         onCurrentChanged:{
+            if(!para)
+                return;
             switch(current){
             case tableButton:
-                view.chartTypeChanged(DataShowPara.Table);
+                para.setChartType(DataShowPara.Temperature);
                 break;
             case lineSeriesButton:
-                view.chartTypeChanged(DataShowPara.LineSeriesChart);
+                para.setChartType(DataShowPara.LineSeriesChart);
                 break;
             case barButton:
-                view.chartTypeChanged(DataShowPara.BarChart);
+                para.setChartType(DataShowPara.BarChart);
                 break;
             case pieButton:
-                view.chartTypeChanged(DataShowPara.PieChart);
+                para.setChartType(DataShowPara.PieChart);
                 break;
             }
         }
@@ -221,6 +238,10 @@ CScrollView{
                         width:120
                         placeholderText:"低于此值将报警"
                         border.color: "#445266"
+                        onEditingFinished: {
+                            if(view.para)
+                                para.setTempMinValue(tempMinTextEdit.getText());
+                        }
                     }
 
                     Text{
@@ -238,6 +259,10 @@ CScrollView{
                         width:120
                         placeholderText:"高于此值将报警"
                         border.color: "#445266"
+                        onEditingFinished: {
+                            if(view.para)
+                                para.setTempMaxValue(tempMaxTextEdit.getText());
+                        }
                     }
                 }
 
@@ -266,6 +291,10 @@ CScrollView{
                         width:120
                         placeholderText:"低于此值将报警"
                         border.color: "#445266"
+                        onEditingFinished: {
+                            if(view.para)
+                                para.setPHMinValue(phMinTextEdit.getText());
+                        }
                     }
 
                     Text{
@@ -283,6 +312,10 @@ CScrollView{
                         width:120
                         placeholderText:"高于此值将报警"
                         border.color: "#445266"
+                        onEditingFinished: {
+                            if(view.para)
+                                para.setPHMaxValue(phMaxTextEdit.getText());
+                        }
                     }
                 }
 
@@ -311,6 +344,10 @@ CScrollView{
                         width:120
                         placeholderText:"低于此值将报警"
                         border.color: "#445266"
+                        onEditingFinished: {
+                            if(view.para)
+                                para.getTurMinValue(turbidityMinTextEdit.getText());
+                        }
                     }
 
                     Text{
@@ -328,6 +365,10 @@ CScrollView{
                         width:120
                         placeholderText:"高于此值将报警"
                         border.color: "#445266"
+                        onEditingFinished: {
+                            if(view.para)
+                                para.getTurMaxValue(turbidityMaxTextEdit.getText());
+                        }
                     }
                 }
             }
@@ -377,6 +418,10 @@ CScrollView{
                                       text: "浑浊度"
                             }
                         }
+                        onCurrentIndexChanged: {
+                            if(view.para)
+                                para.setEDataFilter_DataType(dataTypeComboBox.currentIndex+1);
+                        }
                     }
 
                     CComboBox{
@@ -394,6 +439,10 @@ CScrollView{
                                       text: "小于"
                             }
                         }
+                        onCurrentIndexChanged: {
+                            if(view.para)
+                                para.getEDatafilterCompare(compareComboBox.currentIndex+1);
+                        }
                     }
 
                     CTextEdit{
@@ -402,6 +451,10 @@ CScrollView{
                         width:80
                         placeholderText:"数值"
                         border.color: "#445266"
+                        onEditingFinished: {
+                            if(view.para)
+                                para.setSCompareValue(compareComboBox.getText());
+                        }
                     }
                 }
 
@@ -437,7 +490,7 @@ CScrollView{
             }
         }
 
-        TelescopicRectangle{
+        PageFilter{
             id:pageFilter
             anchors.top: dataFilter.bottom
             anchors.topMargin: 0
@@ -445,139 +498,8 @@ CScrollView{
             anchors.leftMargin: 0
             anchors.right: parent.right
             anchors.rightMargin: 0
-            height:270
-            headerText: "页面筛选"
-
-            Column{
-                anchors.top: parent.top
-                anchors.topMargin: dataType.headerHeidht
-                anchors.left: parent.left
-                anchors.leftMargin: 0
-                anchors.right: parent.right
-                anchors.rightMargin: 0
-                spacing:15
-                padding:10
-
-                Text{
-                    id: pageText
-                    text: "当前页码:"
-                    font.pixelSize: 16
-                    color: "#445266"
-                    font.family: "微软雅黑"
-                }
-
-                Row{
-                    spacing: 10
-                    Text{
-                        id: onePageCount
-                        text: "每页的数据行数:"
-                        font.pixelSize: 16
-                        color: "#445266"
-                        font.family: "微软雅黑"
-                    }
-
-                    CTextEdit{
-                        id:onePageCountTextEdit
-                        height:onePageCount.height
-                        width:80
-                        placeholderText:"行数"
-                        border.color: "#445266"
-                    }
-
-                    PushButton {
-                        id: onePageCountButton
-                        text:"设置"
-                        pixelSize: 16
-                        height:gotoPage.height
-                    }
-                }
-
-                Text{
-                    text: "固定跳转页数"
-                    font.pixelSize: 16
-                    color: "#445266"
-                    font.family: "微软雅黑"
-                }
-
-                Row{
-                    spacing: 8
-                    PushButton {
-                        id: firstPageButton
-                        text:"第一页"
-                        pixelSize: 12
-                        width:55
-                        height:35
-                    }
-                    PushButton {
-                        id: previousTwoButton
-                        text:"上两页"
-                        pixelSize: 12
-                        width:55
-                        height:35
-                    }
-                    PushButton {
-                        id: previousOneButton
-                        text:"上一页"
-                        pixelSize: 12
-                        width:55
-                        height:35
-                    }
-                    PushButton {
-                        id: nextOneButton
-                        text:"下一页"
-                        pixelSize: 12
-                        width:55
-                        height:35
-                    }
-                    PushButton {
-                        id: nextTwoButton
-                        text:"下两页"
-                        pixelSize: 12
-                        width:55
-                        height:35
-                    }
-                    PushButton {
-                        id: lastPageButton
-                        text:"最后页"
-                        pixelSize: 12
-                        width:55
-                        height:35
-                    }
-                }
-
-                Text{
-                    text: "随机跳转页数"
-                    font.pixelSize: 16
-                    color: "#445266"
-                    font.family: "微软雅黑"
-                }
-
-                Row{
-                    spacing: 10
-                    Text{
-                        id: gotoPage
-                        text: "跳转页码:"
-                        font.pixelSize: 16
-                        color: "#445266"
-                        font.family: "微软雅黑"
-                    }
-
-                    CTextEdit{
-                        id:gotoPageTextEdit
-                        height:onePageCount.height
-                        width:80
-                        placeholderText:"页数"
-                        border.color: "#445266"
-                    }
-
-                    PushButton {
-                        id: gotoPageButton
-                        text:"跳转"
-                        pixelSize: 16
-                        height:gotoPage.height
-                    }
-                }
-            }
+            height:300
+            para:view.para
         }
     }
 }

@@ -54,8 +54,15 @@
         <file>Resources/qml/CheckGroup.qml</file>
         <file>Resources/qml/TextEditWithShadow.qml</file>
         <file>Resources/qml/CComboBox.qml</file>
-        <file>CodeArea.cpp</file>
         <file>Resources/down-top@3x.png</file>
         <file>Resources/left@3x.png</file>
+        <file>Resources/qml/RouteView.qml</file>
+        <file>Resources/qml/PageFilter.qml</file>
+        <file>Resources/qml/ControlView.qml</file>
+        <file>Resources/qml/AnalysisView.qml</file>
+        <file>Resources/qml/ManualView.qml</file>
+        <file>Resources/qml/VideoView.qml</file>
+        <file>Resources/qml/ManualTreeView.qml</file>
+        <file>Resources/qml/ManualTextView.qml</file>
     </qresource>
 </RCC>

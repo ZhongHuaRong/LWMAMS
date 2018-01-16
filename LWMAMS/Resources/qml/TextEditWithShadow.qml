@@ -76,7 +76,7 @@ Rectangle {
             anchors.right: parent.right
             anchors.rightMargin: 50
             font.pixelSize: 14
-            font.family: "黑体"
+            font.family: "微软雅黑"
             maximumLength: rectangle.textMaxNum
             selectByMouse:true
             focus: true
@@ -90,7 +90,7 @@ Rectangle {
                 anchors.fill:parent
                 font.pixelSize: 14
                 verticalAlignment:TextInput.AlignVCenter
-                font.family: "黑体"
+                font.family: "微软雅黑"
                 visible: textInput.text.length?false:true
                 enabled: false
             }
