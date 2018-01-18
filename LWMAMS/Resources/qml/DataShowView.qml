@@ -22,4 +22,16 @@ Item {
         anchors.leftMargin: 0
         width:400
     }
+
+    DataShow_ChartView{
+        id:chartView
+        anchors.top: parent.top
+        anchors.topMargin: 0
+        anchors.bottom: parent.bottom
+        anchors.bottomMargin: 0
+        anchors.left: dataShow_ParaListView.right
+        anchors.leftMargin: 5
+        anchors.right: parent.right
+        anchors.rightMargin: 40
+    }
 }

@@ -37,23 +37,28 @@ signals:
     void startLoad(QString name);
     void loadTextOnThread(int startRow,int endRow);
 
-    void loadTextOnQML(const QStringList & text);
+    void loadTextOnQML(const QStringList & text,bool isFirst);
     void loadAll(const QString & list);
     void loadFirstTitle();
     void loadSecondTitle();
 public slots:
-    void getLine(const QStringList &text);
+    void getLine(const QStringList &text,bool isFirst);
     void getAll(const QString &text);
 
     void firstTitle(const QList<QList<QVariant>> &data);
     void secondTitle(const QList<QList<QList<QVariant>>> &data);
     void itemDoubleClicked(int row,int parentRow);
+    void changedOnepage(bool isNext);
+    void changedAll(bool isLast);
+private:
+    void gotoPage(int row,int parentRow);
 private:
     FileOperatorThread *m_pThread;
     QString m_sFileName;
     QList<QList<QVariant>> m_lFTitle;
     QList<QList<QList<QVariant>>> m_lSTitle;
-
+    int currentRow;
+    int currentParent;
 };
 
 #endif // MANUAL_H

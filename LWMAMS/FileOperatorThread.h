@@ -18,7 +18,7 @@ public:
     QString num2ChineseChar(int num);
     QMutex * getMutex();
 signals:
-    void returnLine(const QStringList & text);
+    void returnLine(const QStringList & text,bool isFirst);
     void returnAll(const QString &);
 
     void returnFirstTitle(const QList<QList<QVariant>> &data);
@@ -31,6 +31,7 @@ private:
     void findFirstTitle();
     void findSecondTitle(int parentNum);
     void startFindTitle();
+    void loadPartText(int startRow,int endRow,bool isFirst);
 private:
     QThread *thread;
     QStringList m_sList;

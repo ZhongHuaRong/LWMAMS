@@ -17,6 +17,9 @@ Rectangle {
 
         treeView.itemDoubleClicked.connect(manual.itemDoubleClicked)
 
+        pageFilter.changedOnePage.connect(manual.changedOnepage);
+        pageFilter.changedAllPage.connect(manual.changedAll);
+
         deleteAllTitle();
         manual.startFindDirectory("养鱼手册.txt");
     }
@@ -43,12 +46,14 @@ Rectangle {
             firstTitleObject.pop();
     }
 
-    function addText(list){
+    function addText(list,isFirst){
         manual.startLoadText();
 
-        textView.clear();
+        if(isFirst)
+            textView.clear();
         for(var a=0;a<list.length;a++){
             textView.append(list[a]);
+            //textView.textCursorReset();
         }
 
         manual.endLoadText();

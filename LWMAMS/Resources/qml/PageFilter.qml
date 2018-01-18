@@ -8,12 +8,15 @@ TelescopicRectangle{
     property var para: 0
     property var isTextPage: false
 
+    signal changedOnePage(bool isNext);
+    signal changedAllPage(bool isLast);
+
     function setPageRowCount(text){
         onePageCountTextEdit.setText(text);
     }
 
     onParaChanged: {
-        if(!para)
+        if(!para||isTextPage)
             return;
         pageNumText.text = para.getNPageNum() +1;
         pageMaxNum.text = para.getNPageMaxNum() +1;
@@ -125,6 +128,8 @@ TelescopicRectangle{
                 onClicked:{
                     if(pageFilter.para)
                         pageFilter.para.setNPageNum(0);
+                    if(pageFilter.isTextPage)
+                        pageFilter.changedAllPage(false);
                 }
             }
             PushButton {
@@ -148,6 +153,8 @@ TelescopicRectangle{
                 onClicked:{
                     if(pageFilter.para)
                         pageFilter.para.setNPageNum(pageFilter.para.getNPageNum()-1);
+                    if(pageFilter.isTextPage)
+                        pageFilter.changedOnePage(false);
                 }
             }
             PushButton {
@@ -159,23 +166,26 @@ TelescopicRectangle{
                 onClicked:{
                     if(pageFilter.para)
                         pageFilter.para.setNPageNum(pageFilter.para.getNPageNum()+1);
+                    if(pageFilter.isTextPage)
+                        pageFilter.changedOnePage(true);
                 }
             }
             PushButton {
                 id: nextTwoButton
                 visible: pageFilter.isTextPage?false:true
-                text:"下两页"
+                text:pageFilter.isTextPage?"结尾":"下两页"
                 pixelSize: 12
                 width:55
                 height:35
                 onClicked:{
                     if(pageFilter.para)
                         pageFilter.para.setNPageNum(pageFilter.para.getNPageNum()+2);
+                    if(pageFilter.isTextPage)
+                        pageFilter.changedPage(true);
                 }
             }
             PushButton {
                 id: lastPageButton
-                visible: pageFilter.isTextPage?false:true
                 text:"最后页"
                 pixelSize: 12
                 width:55
@@ -183,6 +193,8 @@ TelescopicRectangle{
                 onClicked:{
                     if(pageFilter.para)
                         pageFilter.para.setNPageNum(pageFilter.para.getNPageMaxNum());
+                    if(pageFilter.isTextPage)
+                        pageFilter.changedAllPage(true);
                 }
             }
         }

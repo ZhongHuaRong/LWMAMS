@@ -5,8 +5,12 @@ Rectangle {
     id:textView
     color:"#ffffff"
 
+    property int currentPosition: 0
+
     function append(text){
+        currentPosition =textEdit.flickableItem.contentY;
         textEdit.append(text);
+        textEdit.flickableItem.contentY =currentPosition;
     }
 
     function appendAll(list){
@@ -20,13 +24,17 @@ Rectangle {
         textEdit.remove(0,textEdit.length)
     }
 
+    function textCursorReset(){
+        textEdit.flickableItem.contentY = 0;
+    }
+
     TextArea{
         id:textEdit
         anchors.fill:parent
         readOnly:true
-        textFormat: TextEdit.RichText
-        font.family: "Helvetica"
-        font.pointSize: 20
+        //textFormat: TextEdit.RichText
+        font.family: "微软雅黑"
+        font.pointSize: 16
         textColor: "#445266"
         highlightOnFocus: true
         wrapMode: TextEdit.Wrap
