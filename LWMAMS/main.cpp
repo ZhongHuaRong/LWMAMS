@@ -6,6 +6,7 @@
 #include "Manual.h"
 #include "TreeModel.h"
 #include "TreeItem.h"
+#include "ClientManagement.h"
 
 int main(int argc, char *argv[])
 {
@@ -23,6 +24,7 @@ int main(int argc, char *argv[])
     qmlRegisterType<Manual>("an.qt.Manual", 1, 0, "Manual");
     qmlRegisterType<TreeModel>("an.qt.TreeModel", 1, 0, "TreeModel");
     qmlRegisterType<TreeItem>("an.qt.TreeItem", 1, 0, "TreeItem");
+    qmlRegisterType<ClientManagement>("an.qt.ClientManagement", 1, 0, "ClientManagement");
 
     QQmlApplicationEngine engine;
     engine.load(QUrl(QStringLiteral("../LWMAMS/Resources/qml/main.qml")));

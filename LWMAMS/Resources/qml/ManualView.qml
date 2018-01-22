@@ -18,7 +18,7 @@ Rectangle {
         treeView.itemDoubleClicked.connect(manual.itemDoubleClicked)
 
         pageFilter.changedOnePage.connect(manual.changedOnepage);
-        pageFilter.changedAllPage.connect(manual.changedAll);
+        pageFilter.changedAllPage.connect(manual.changedToLastPage);
 
         deleteAllTitle();
         manual.startFindDirectory("养鱼手册.txt");

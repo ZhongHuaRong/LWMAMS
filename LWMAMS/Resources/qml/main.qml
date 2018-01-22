@@ -1,6 +1,7 @@
 import QtQuick 2.8
 import QtQuick.Window 2.2
 import QtGraphicalEffects 1.0
+import an.qt.ClientManagement 1.0
 
 Window {
     id: window
@@ -29,8 +30,13 @@ Window {
 
     Component.onCompleted: {
         //程序启动时运行
-        loginDialog=Qt.createComponent("LoginDialog.qml").createObject(window);
+        loginDialog=Qt.createComponent("LoginDialog.qml").createObject(window,{"client":client});
+        client.signupResult.connect(loginDialog.signupResult);
         loginDialog.closing.connect(window.loginDialogClose);
+    }
+
+    ClientManagement{
+        id:client
     }
 
     Rectangle {

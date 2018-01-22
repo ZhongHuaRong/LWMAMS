@@ -21,32 +21,60 @@ CodeArea::~CodeArea()
     }
 }
 
-/* 更换验证码图片 */
+/**
+   * @函数意义:更换验证码图片
+   * @作者:ZM
+   * @date 2018-1
+   */
 void CodeArea::replaceCodePic()
 {
     updateLoginCode();
     updateCodePic();
 }
 
-/* 设置验证码位数 */
+/**
+   * @函数意义:设置验证码位数
+   * @作者:ZM
+   * @param [in]nCodeCount
+   *        验证码位数
+   * @date 2018-1
+   */
 void CodeArea::setCodeCount(int nCodeCount)
 {
     m_nCodeCount = nCodeCount;
 }
 
-/* 设置噪点数量 */
+/**
+   * @函数意义:设置噪点数量
+   * @作者:ZM
+   * @param [in]nNoisyPointCount
+   *        噪点数量
+   * @date 2018-1
+   */
 void CodeArea::setNoisyPointCount(int nNoisyPointCount)
 {
     m_nNoisyPointCount = nNoisyPointCount;
 }
 
-/* 设置线数量 */
+/**
+   * @函数意义:设置线数量
+   * @作者:ZM
+   * @param [in]nLineCount
+   *            线的数量
+   * @date 2018-1
+   */
 void CodeArea::setLineCount(int nLineCount)
 {
     this->m_nLineCount=nLineCount;
 }
 
-/* 检验验证码 */
+/**
+   * @函数意义:检验验证码
+   * @作者:ZM
+   * @param [in]sCode
+   *            用于验证的字符串，由用户输入
+   * @date 2018-1
+   */
 bool CodeArea::checkCode(QString sCode)
 {
     updateCode();
@@ -54,6 +82,13 @@ bool CodeArea::checkCode(QString sCode)
     return sCode.compare(m_sCode,Qt::CaseInsensitive);
 }
 
+/**
+   * @函数意义:绘制事件，继承父类，由qml调用绘制
+   * @作者:ZM
+   * @param [in]painter
+   *            画笔
+   * @date 2018-1
+   */
 void CodeArea::paint(QPainter *painter)
 {
     /*抗锯齿*/
@@ -83,7 +118,11 @@ void CodeArea::paint(QPainter *painter)
     drawLine(painter);
 }
 
-/*初始化操作*/
+/**
+   * @函数意义:初始化操作
+   * @作者:ZM
+   * @date 2018-1
+   */
 void CodeArea::initialization()
 {
     /* 初始化验证码范围 */
@@ -107,7 +146,11 @@ void CodeArea::initialization()
 
 }
 
-/* 更新验证码 */
+/**
+   * @函数意义:更新验证码
+   * @作者:ZM
+   * @date 2018-1
+   */
 void CodeArea::updateLoginCode()
 {
     m_slLoginCode.clear();
@@ -115,7 +158,11 @@ void CodeArea::updateLoginCode()
         m_slLoginCode << m_slCodeRange[qrand() % m_slCodeRange.size()];
 }
 
-/* 更新验证码图片 */
+/**
+   * @函数意义:更新验证码图片
+   * @作者:ZM
+   * @date 2018-1
+   */
 void CodeArea::updateCodePic()
 {
     m_lCodePic.clear();
@@ -137,7 +184,11 @@ void CodeArea::updateCodePic()
     setCodePic(m_lCodePic);
 }
 
-/* 更新用于与用户输入的验证码做比较的码 */
+/**
+   * @函数意义:更新用于与用户输入的验证码做比较的码(原来用来生成图片是使用list结构，所以需要更新成string)
+   * @作者:ZM
+   * @date 2018-1
+   */
 void CodeArea::updateCode()
 {
     m_sCode.clear();
@@ -147,7 +198,15 @@ void CodeArea::updateCode()
     }
 }
 
-/* 绘制边缘虚线框 */
+/**
+   * @函数意义:绘制边缘虚线框
+   * @作者:ZM
+   * @param [in] painter
+   *            画笔
+   * @param [in] drawBackgroundFlag
+   *            为真时填充背景。否则透明
+   * @date 2018-1
+   */
 void CodeArea::drawOutline(QPainter * painter, bool drawBackgroundFlag)
 {
     painter->setPen(Qt::darkGreen);
@@ -156,13 +215,28 @@ void CodeArea::drawOutline(QPainter * painter, bool drawBackgroundFlag)
     painter->drawRect(0, 0, this->width(), this->height());
 }
 
-/* 绘制验证码 */
+/**
+   * @函数意义:绘制验证码
+   * @作者:ZM
+   * @param [in] painter
+   *            画笔
+   * @param [in] nCodeIndex
+   *            表示第几位验证码
+   * @return
+   * @date 2018-1
+   */
 void CodeArea::drawCode( QPainter *  painter, int nCodeIndex)
 {
     painter->fillPath(*m_lCodePic[nCodeIndex], QBrush(m_lCodeColor[qrand() % m_lCodeColor.size()]));
 }
 
-/* 绘制噪点 */
+/**
+   * @函数意义:绘制噪点
+   * @作者:ZM
+   * @param [in]painter
+   *            画笔
+   * @date 2018-1
+   */
 void CodeArea::drawNoisyPoint( QPainter *  painter)
 {
     painter->setPen(Qt::red);
@@ -173,7 +247,13 @@ void CodeArea::drawNoisyPoint( QPainter *  painter)
         painter->drawPoint(QPointF(qrand() % (int)this->width(), qrand() %(int)this->height()));
 }
 
-/* 绘制线条 */
+/**
+  * @函数意义:绘制线条
+  * @作者:ZM
+  * @param [in]painter
+  *            画笔
+  * @date 2018-1
+  */
 void CodeArea::drawLine( QPainter *  painter)
 {
     painter->setPen(Qt::black);
@@ -194,7 +274,13 @@ void CodeArea::drawLine( QPainter *  painter)
     }
 }
 
-/* 角度转换，缩放大小 */
+/**
+  * @函数意义:角度转换，缩放大小
+  * @作者:ZM
+  * @param [in]painter
+  *            画笔
+  * @date 2018-1
+  */
 void CodeArea::drawConversion( QPainter *  painter)
 {
     //扭正角度
@@ -212,7 +298,13 @@ void CodeArea::drawConversion( QPainter *  painter)
         (qrand() % m_nConverseScale + (100 - m_nConverseScale)) / 100.0);
 }
 
-/* 设置验证码图片 */
+/**
+  * @函数意义:设置验证码图片
+  * @作者:ZM
+  * @param [in]lCodePic
+  *           验证码图片
+  * @date 2018-1
+  */
 void CodeArea::setCodePic(const QList<QPainterPath *> &lCodePic)
 {
     this->m_lCodePic = lCodePic;

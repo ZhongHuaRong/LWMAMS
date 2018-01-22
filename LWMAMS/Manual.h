@@ -42,14 +42,14 @@ signals:
     void loadFirstTitle();
     void loadSecondTitle();
 public slots:
-    void getLine(const QStringList &text,bool isFirst);
-    void getAll(const QString &text);
-
-    void firstTitle(const QList<QList<QVariant>> &data);
-    void secondTitle(const QList<QList<QList<QVariant>>> &data);
     void itemDoubleClicked(int row,int parentRow);
     void changedOnepage(bool isNext);
-    void changedAll(bool isLast);
+    void changedToLastPage(bool isLast);
+protected slots:
+    void getLine(const QStringList &text,bool isFirst);
+    void getAll(const QString &text);
+    void firstTitle(const QList<QList<QVariant>> &data);
+    void secondTitle(const QList<QList<QList<QVariant>>> &data);
 private:
     void gotoPage(int row,int parentRow);
 private:

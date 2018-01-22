@@ -9,7 +9,11 @@ Item {
     signal closeButtonClicked();
     signal registered();
     signal findPW();
-    signal signUp();
+    signal signUp(string name,string pw);
+
+    function resetButton(){
+        pushButton_sign.resetButton();
+    }
 
     Rectangle{
         id:testRec
@@ -90,7 +94,8 @@ Item {
             anchors.horizontalCenter: parent.horizontalCenter
             text_save: qsTr("登       陆")
             onClicked: {
-                front.signUp();
+                front.signUp(textEdit_userName.getText(),
+                             textEdit_pw.getText());
             }
         }
 

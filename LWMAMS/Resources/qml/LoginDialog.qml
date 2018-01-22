@@ -1,6 +1,7 @@
 import QtQuick 2.8
 import QtQuick.Controls 2.2
 import QtQuick.Window 2.2
+import an.qt.ClientManagement 1.0
 
 Window {
     id: dialog
@@ -14,6 +15,7 @@ Window {
     property int returnValue: 0
     property int previousX: 0
     property int previousY: 0
+    property var client: 0
 
     function getValue(){
         return dialog.returnValue;
@@ -21,6 +23,18 @@ Window {
 
     function registered(){
         //
+    }
+
+    function signupResult(result,error){
+        if(result){
+            dialog.returnValue =1;
+            dialog.close();
+        }
+        else{
+            console.debug("error:",error)
+            //到时候加上msgbox
+            front.resetButton();
+        }
     }
 
     Rectangle {
@@ -66,8 +80,7 @@ Window {
                     flipable.flipped=!flipable.flipped;
                 }
                 onSignUp: {
-                    dialog.returnValue =1;
-                    dialog.close();
+                    client.signup(name,pw);
                 }
             }
 
