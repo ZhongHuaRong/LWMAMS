@@ -15,7 +15,8 @@ SOURCES += ./main.cpp \
     $$PWD/TreeItem.cpp \
     $$PWD/TreeModel.cpp \
     $$PWD/TcpClient.cpp \
-    $$PWD/ClientManagement.cpp
+    $$PWD/ClientManagement.cpp \
+    $$PWD/MsgBox.cpp
 RESOURCES += qml.qrc
 
 HEADERS += \
@@ -26,4 +27,5 @@ HEADERS += \
     $$PWD/TreeItem.h \
     $$PWD/TreeModel.h \
     $$PWD/TcpClient.h \
-    $$PWD/ClientManagement.h
+    $$PWD/ClientManagement.h \
+    $$PWD/MsgBox.h

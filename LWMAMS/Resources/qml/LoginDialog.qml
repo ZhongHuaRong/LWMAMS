@@ -2,6 +2,7 @@ import QtQuick 2.8
 import QtQuick.Controls 2.2
 import QtQuick.Window 2.2
 import an.qt.ClientManagement 1.0
+import an.qt.TcpClient 1.0
 
 Window {
     id: dialog
@@ -12,29 +13,54 @@ Window {
     modality : Qt.ApplicationModal
     color: "#00000000"
 
-    property int returnValue: 0
     property int previousX: 0
     property int previousY: 0
     property var client: 0
+    //返回值位0：直接退出 1：登陆退出 2:自动登录退出
+    property int returnValue: 0
 
     function getValue(){
         return dialog.returnValue;
     }
 
-    function registered(){
-        //
+    function onLoginMessage(ct,result,message){
+        switch(ct){
+        case TcpClient.CT_SIGNUP:
+        case TcpClient.CT_SIGNUPAUTO:
+        {
+            if(result){
+                dialog.returnValue = 1;
+                dialog.close();
+            }
+            else{
+                msgBox.showWarning("登陆",message);
+                //到时候加上msgbox
+                front.resetButton();
+            }
+            break;
+        }
+
+        case TcpClient.CT_PARACHECKACCOUNTNUMBER:
+        {
+            back.setAccountNumber(result?1:-1);
+            break;
+        }
+        case TcpClient.CT_REGISTERED:
+        {
+            if(result){
+                client.signup(back.getAccountNumber(),back.getTextEdit_pw(),true);
+            }
+            else{
+                msgBox.showWarning("registered",message);
+                back.registerError();
+            }
+            break;
+        }
+        }
     }
 
-    function signupResult(result,error){
-        if(result){
-            dialog.returnValue =1;
-            dialog.close();
-        }
-        else{
-            console.debug("error:",error)
-            //到时候加上msgbox
-            front.resetButton();
-        }
+    MsgBoxManagement{
+        id:msgBox
     }
 
     Rectangle {
@@ -90,12 +116,16 @@ Window {
                 onCloseButtonClicked: dialog.close();
                 onExit:flipable.flipped=!flipable.flipped;
                 onRegistered: {
-                    //
+                    client.registered(back.getAccountNumber(),
+                                      back.getTextEdit_pw(),
+                                      back.getTextEdit_userName());
                 }
 
                 onCheckAccountNumber:{
-                    //
-                    back.setAccountNumber(1);
+                    if(accountNumber.length==0)
+                        back.setAccountNumber(-1);
+                    else
+                        client.checkAccountNumber(accountNumber)
                 }
 
                 onCheckAppId: {
@@ -107,11 +137,11 @@ Window {
                     //以下代码其实是在tcp类回调函数里的，先写在这里
                     if(!back.isRegistered)
                         return;
-                    back.setAccountNumber(1);
-                    back.setAppID(1);
+                    //back.setAccountNumber(1);
+                    //back.setAppID(1);
                     if(back.canRegistered()){
                         //
-                        flipable.flipped=!flipable.flipped;
+                        back.registered();
                     }
                     else{
                         back.registerError();

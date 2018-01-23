@@ -29,6 +29,11 @@ TcpClient::~TcpClient()
     delete m_pThread;
 }
 
+/**
+  * @函数意义:接受服务器的信息，初步处理后传给父类解析命令
+  * @作者:ZM
+  * @date 2018-1
+  */
 void TcpClient::receiverMessage()
 {
     QByteArray ba;
@@ -47,16 +52,31 @@ void TcpClient::receiverMessage()
     emit result(ct,strList);
 }
 
+/**
+  * @函数意义:链接到服务器
+  * @作者:ZM
+  * @date 2018-1
+  */
 void TcpClient::connectionServer()
 {
     m_pSocket->connectToHost(SERVERIP,SERVERPOST);
 }
 
+/**
+  * @函数意义:
+  * @作者:ZM
+  * @date 2018-1
+  */
 void TcpClient::connectSuccess()
 {
     qDebug()<<"连接成功";
 }
 
+/**
+  * @函数意义:连接错误后需要处理的信息
+  * @作者:ZM
+  * @date 2018-1
+  */
 void TcpClient::connectError(QAbstractSocket::SocketError error)
 {
     qDebug()<<error;
@@ -69,6 +89,16 @@ void TcpClient::connectError(QAbstractSocket::SocketError error)
     }
 }
 
+/**
+  * @函数意义:发送命令
+  * @作者:ZM
+  * @param [in] ct
+  *             命令类型
+  * @param [in] arg
+  *             命令的参数列表
+  * @return
+  * @date 2018-1
+  */
 void TcpClient::sendMessage(TcpClient::CommandType ct, const QStringList& arg)
 {
      char cmd = static_cast<char>(ct);

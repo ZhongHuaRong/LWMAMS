@@ -14,17 +14,20 @@ PushButton{
     property bool isRunning: false
     property string text_save: ""
 
+    signal run();
     function resetButton(){
         rect.isRunning =false;
+        rect.text = rect.text_save;
     }
 
     onClicked:{
+        rect.isRunning = !rect.isRunning;
         if(rect.isRunning){
             rect.text = rect.text_save +"...";
         }
         else{
             rect.text = rect.text_save;
         }
-        rect.isRunning = !rect.isRunning;
+        emit:rect.run()
     }
 }

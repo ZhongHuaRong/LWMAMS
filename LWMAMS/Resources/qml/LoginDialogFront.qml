@@ -93,7 +93,7 @@ Item {
             anchors.horizontalCenterOffset: 0
             anchors.horizontalCenter: parent.horizontalCenter
             text_save: qsTr("登       陆")
-            onClicked: {
+            onRun: {
                 front.signUp(textEdit_userName.getText(),
                              textEdit_pw.getText());
             }

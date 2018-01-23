@@ -172,7 +172,7 @@ Item {
                 if(textEdit_pw.getText().length==0)
                     0
                 else
-                    textEdit_pw.getText().length>0?1:-1;
+                    textEdit_pw.getText().length>5?1:-1;
             }
         }
 
@@ -188,7 +188,7 @@ Item {
             visible: back.type
             textMaxNum:16
             imageType:{
-                 if(textEdit_againPw.getText().length>6)
+                 if(textEdit_againPw.getText().length>5)
                      textEdit_againPw.getText()===textEdit_pw.getText()?1:-1;
                  else
                      textEdit_againPw.getText().length==0?0:-1;
@@ -227,7 +227,7 @@ Item {
             width: 196
             height: 40
             text_save: qsTr("申       请")
-            onClicked: {
+            onRun: {
                 if(back.isRegistered){
                     back.isRegistered = false;
                 }

@@ -4,6 +4,7 @@
 #include <QObject>
 #include <QTcpSocket>
 #include <QThread>
+#include "DataShowPara.h"
 
 /**
  * @brief The TcpClient class
@@ -18,8 +19,17 @@ class TcpClient : public QObject
 public:
     enum CommandType{
         CT_SIGNUP = 0x10,
-        CT_USERSLOGINELSEWHERE
+        CT_SIGNUPAUTO,
+        CT_USERSLOGINELSEWHERE,
+        CT_PARACHECKACCOUNTNUMBER,
+        CT_PARACHECKAPPID,
+        CT_REGISTERED,
+        CT_DATASHOW,
+        CT_ROUTE,
+        CT_CONTROL,
+        CT_ANALYSIS
     };
+    Q_ENUM(CommandType)
 
 public:
     explicit TcpClient(QObject *parent = nullptr);

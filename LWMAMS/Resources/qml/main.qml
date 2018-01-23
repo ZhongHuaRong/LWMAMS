@@ -18,12 +18,13 @@ Window {
     property int previousY: 0
     property var loginDialog: 0
 
-    function loginDialogClose(){
+    function loginDialogClose(autoFlag){
         var value = window.loginDialog.getValue();
         if(!value){
             Qt.quit();
         }
         else {
+            var n=loginDialog.returnValue;
             window.loginDialog.destroy();
         }
     }
@@ -31,12 +32,16 @@ Window {
     Component.onCompleted: {
         //程序启动时运行
         loginDialog=Qt.createComponent("LoginDialog.qml").createObject(window,{"client":client});
-        client.signupResult.connect(loginDialog.signupResult);
+        client.loginMessage.connect(loginDialog.onLoginMessage);
         loginDialog.closing.connect(window.loginDialogClose);
     }
 
     ClientManagement{
         id:client
+    }
+
+    MsgBoxManagement{
+        id:msgBox
     }
 
     Rectangle {

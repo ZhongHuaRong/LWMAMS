@@ -7,6 +7,8 @@
 #include "TreeModel.h"
 #include "TreeItem.h"
 #include "ClientManagement.h"
+#include "TcpClient.h"
+#include "MsgBox.h"
 
 int main(int argc, char *argv[])
 {
@@ -25,6 +27,8 @@ int main(int argc, char *argv[])
     qmlRegisterType<TreeModel>("an.qt.TreeModel", 1, 0, "TreeModel");
     qmlRegisterType<TreeItem>("an.qt.TreeItem", 1, 0, "TreeItem");
     qmlRegisterType<ClientManagement>("an.qt.ClientManagement", 1, 0, "ClientManagement");
+    qmlRegisterType<TcpClient>("an.qt.TcpClient", 1, 0, "TcpClient");
+    qmlRegisterType<MsgBox>("an.qt.MsgBox", 1, 0, "MsgBox");
 
     QQmlApplicationEngine engine;
     engine.load(QUrl(QStringLiteral("../LWMAMS/Resources/qml/main.qml")));

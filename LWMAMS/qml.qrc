@@ -64,5 +64,7 @@
         <file>Resources/qml/VideoView.qml</file>
         <file>Resources/qml/ManualTreeView.qml</file>
         <file>Resources/qml/ManualTextView.qml</file>
+        <file>Resources/qml/MsgBox.qml</file>
+        <file>Resources/qml/MsgBoxManagement.qml</file>
     </qresource>
 </RCC>
