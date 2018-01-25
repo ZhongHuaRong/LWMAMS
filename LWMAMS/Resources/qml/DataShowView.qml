@@ -12,6 +12,11 @@ Item {
           dataShow_ParaListView.setPara(para);
     }
 
+    function setPageActivation(flag){
+        if(para)
+            para.setBActivation(flag)
+    }
+
     DataShow_ParaListView {
         id: dataShow_ParaListView
         anchors.top: parent.top

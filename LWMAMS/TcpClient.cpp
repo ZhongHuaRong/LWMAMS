@@ -42,7 +42,12 @@ void TcpClient::receiverMessage()
     m_pSocket->read(ba.data(),ba.size());
     qDebug()<<"receiver:"<<ba;
 
-    QList<QByteArray> list = ba.split('#').at(0).split('$');
+    QList<QByteArray> list = ba.split('#');
+    if(list.length()==0)
+        return;
+    list = list.at(0).split('$');
+    if(list.length()==0||list.at(0).length()==0)
+        return;
     CommandType ct = static_cast<CommandType>(list.at(0).at(0));
     QStringList strList;
     for(int a=1;a<list.length()-1;a++)
@@ -96,7 +101,6 @@ void TcpClient::connectError(QAbstractSocket::SocketError error)
   *             命令类型
   * @param [in] arg
   *             命令的参数列表
-  * @return
   * @date 2018-1
   */
 void TcpClient::sendMessage(TcpClient::CommandType ct, const QStringList& arg)
@@ -116,4 +120,39 @@ void TcpClient::sendMessage(TcpClient::CommandType ct, const QStringList& arg)
          m_pSocket->write(ba);
 
      qDebug()<<ba;
+}
+
+/**
+  * @函数意义:发送命令
+  * @作者:ZM
+  * @param [in] ct
+  *             命令类型
+  * @param [in] arg
+  *             命令的参数列表
+  * @param [in] data
+  *             数据
+  * @date 2018-1
+  */
+void TcpClient::sendMessage(TcpClient::CommandType ct,const QStringList& arg,const QVariantList &data)
+{
+    char cmd = static_cast<char>(ct);
+    QByteArray ba;
+    ba.append(cmd);
+    ba.append('$');
+
+    foreach(QString a,arg)
+    {
+        ba.append(a);
+        ba.append('$');
+    }
+    foreach(QVariant var,data)
+    {
+        ba.append(var.toByteArray());
+        ba.append('$');
+    }
+    ba.append('#');
+    if(m_pSocket!=nullptr)
+        m_pSocket->write(ba);
+
+    qDebug()<<ba;
 }

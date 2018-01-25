@@ -42,7 +42,8 @@ public slots:
     void connectionServer();
     void connectSuccess();
     void connectError(QAbstractSocket::SocketError);
-    void sendMessage(CommandType ct,const QStringList& arg);
+    void sendMessage(TcpClient::CommandType ct,const QStringList& arg);
+    void sendMessage(TcpClient::CommandType ct,const QStringList& arg,const QVariantList &data);
 private:
     QTcpSocket *m_pSocket;
     QThread *m_pThread;

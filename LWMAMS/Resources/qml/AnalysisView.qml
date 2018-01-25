@@ -1,4 +1,5 @@
 import QtQuick 2.0
+import an.qt.DataShowPara 1.0
 
 Item {
     id:analysisView
@@ -6,8 +7,16 @@ Item {
     property var para: 0
 
     onParaChanged: {
-        if(para)
-          pageFilter.para=para;
+        if(para){
+            pageFilter.para=para;
+            analysisView.para.setEPageType(DataShowPara.Control)
+            analysisView.para.setNPageNum(0);
+            analysisView.para.setBAutoUpdate(true);
+        }
+    }
+
+    function setPageActivation(flag){
+        para.setBActivation(flag)
     }
 
     Rectangle{

@@ -3,7 +3,7 @@ import QtQuick 2.7
 TelescopicRectangle{
     id:pageFilter
     headerText: "页面筛选"
-    height:300
+    height:400
 
     property var para: 0
     property var isTextPage: false
@@ -27,6 +27,10 @@ TelescopicRectangle{
 
     function setPageNum(index){
         pageNumText.text=index+1;
+    }
+
+    function closeAutoUpdate(){
+        updateButton.reset()
     }
 
     Column{
@@ -233,10 +237,40 @@ TelescopicRectangle{
                 height:gotoPage.height
                 onClicked:{
                     if(pageFilter.para)
-                        pageFilter.para.setNPageNum(gotoPageTextEdit.getText()-1);
+                        if(gotoPageTextEdit.getText().length!==0)
+                            pageFilter.para.setNPageNum(gotoPageTextEdit.getText()-1);
                 }
             }
         }
+
+        Row{
+            spacing: 10
+            visible: pageFilter.isTextPage?false:true
+            PushButton{
+                id:updateButton
+                width: 120
+                text:"动态更新"
+                pixelSize: 16
+                checkable: true
+                checked: true
+                state:"checked"
+                onCheckedChanged: {
+                    if(pageFilter.para)
+                        pageFilter.para.setBAutoUpdate(updateButton.checked)
+                }
+            }
+
+            Text{
+                height: updateButton.height
+                width:240
+                text: "此功能激活时将自动更新图像,查找时默认关闭"
+                font.pixelSize: 14
+                color: "#445266"
+                font.family: "微软雅黑"
+                wrapMode:Text.Wrap
+            }
+        }
+
     }
 }
 

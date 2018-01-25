@@ -11,6 +11,9 @@ CScrollView{
 
     function setPara(para){
         view.para = para;
+        view.para.setEPageType(DataShowPara.DataShow)
+        view.para.setNPageNum(0);
+        view.para.setBAutoUpdate(true);
         tempMinTextEdit.setText(para.getTempMinValue());
         tempMaxTextEdit.setText(para.getTempMaxValue());
         phMinTextEdit.setText(para.getPHMinValue());
@@ -382,7 +385,7 @@ CScrollView{
             anchors.leftMargin: 0
             anchors.right: parent.right
             anchors.rightMargin: 0
-            height:210
+            height:150
             headerText: "数据筛选"
 
             Column{
@@ -441,7 +444,7 @@ CScrollView{
                         }
                         onCurrentIndexChanged: {
                             if(view.para)
-                                para.getEDatafilterCompare(compareComboBox.currentIndex+1);
+                                para.setEDatafilterCompare(compareComboBox.currentIndex+1);
                         }
                     }
 
@@ -451,10 +454,6 @@ CScrollView{
                         width:80
                         placeholderText:"数值"
                         border.color: "#445266"
-                        onEditingFinished: {
-                            if(view.para)
-                                para.setSCompareValue(compareComboBox.getText());
-                        }
                     }
                 }
 
@@ -463,31 +462,20 @@ CScrollView{
                     width: dataTypeComboBox.width
                     text:"查找"
                     pixelSize: 16
-                }
-
-                Row{
-                    spacing: 10
-                    PushButton{
-                        id:updateButton
-                        width: dataTypeComboBox.width
-                        text:"动态更新"
-                        pixelSize: 16
-                        checkable: true
-                        checked: true
-                        state:"checked"
-                    }
-
-                    Text{
-                        height: updateButton.height
-                        width:240
-                        text: "此功能激活时将自动更新图像,否则图像不更新(查找时最好将该功能关闭)"
-                        font.pixelSize: 14
-                        color: "#445266"
-                        font.family: "微软雅黑"
-                        wrapMode:Text.Wrap
+                    onClicked: {
+                        if(view.para)
+                        {
+                            if(compareValueTextEdit.getText().length===0)
+                                return;
+                            if(view.para)
+                                para.setSCompareValue(compareValueTextEdit.getText());
+                            para.checkButtonClick();
+                            pageFilter.closeAutoUpdate();
+                        }
                     }
                 }
-            }
+
+           }
         }
 
         PageFilter{
@@ -498,7 +486,6 @@ CScrollView{
             anchors.leftMargin: 0
             anchors.right: parent.right
             anchors.rightMargin: 0
-            height:300
             para:view.para
         }
     }

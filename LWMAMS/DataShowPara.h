@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include <QVariant>
+#include <QTimer>
 
 class DataShowPara : public QObject
 {
@@ -25,10 +26,17 @@ public:
         Equal,
         LessThan
     };
+    enum PAGETYPE{
+        DataShow =1,
+        Route,
+        Control,
+        Analysis
+    };
 
     Q_ENUM(DATATYPE)
     Q_ENUM(CHARTTYPE)
     Q_ENUM(DATACOMPARE)
+    Q_ENUM(PAGETYPE)
 public:
     explicit DataShowPara(QObject *parent = nullptr);
     ~DataShowPara();
@@ -74,7 +82,16 @@ public:
     int getNMaxCount() const;
     void setNMaxCount(int nMaxCount);
 
-    Q_INVOKABLE static DataShowPara* getDataShowPara();
+    Q_INVOKABLE void checkButtonClick();
+
+    Q_INVOKABLE bool getBAutoUpdate() const;
+    Q_INVOKABLE void setBAutoUpdate(bool bAutoUpdate);
+
+    Q_INVOKABLE PAGETYPE getEPageType() const;
+    Q_INVOKABLE void setEPageType(const PAGETYPE &ePageType);
+
+    Q_INVOKABLE bool getBActivation() const;
+    Q_INVOKABLE void setBActivation(bool bActivation);
 
 Q_SIGNALS:
     Q_INVOKABLE void pageNumChanged(int pageNum);
@@ -82,10 +99,14 @@ Q_SIGNALS:
 private:
     void initAllPara();
 
+    void sendPara(bool isCheck = false);
+
 signals:
+    void paraData(int pageNum,int pageRow,bool isCheck,
+                  DATATYPE dataType,DATACOMPARE compare,QString value);
 
 public slots:
-
+    void timerTimeOut();
 private:
     DATATYPE m_eDataType;
     CHARTTYPE m_eChartType;
@@ -100,12 +121,18 @@ private:
     DATACOMPARE m_eDatafilterCompare;
     QString m_sCompareValue;
 
+    PAGETYPE m_ePageType;
+
+    bool m_bAutoUpdate;
+    //页面没有激活则不处理所有事件
+    bool m_bActivation;
+
     int m_nPageNum;
     int m_nPageMaxNum;
     int m_npageRowCount;
     int m_nMaxCount;
 
-    static DataShowPara * m_pPara;
+    QTimer m_qTimer;
 };
 
 #endif // DATASHOWPARA_H

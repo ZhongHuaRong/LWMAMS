@@ -67,6 +67,33 @@
     <ClCompile Include="FileOperatorThread.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="ClientManagement.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TcpClient.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MsgBox.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_MsgBox.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_MsgBox.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_TcpClient.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_TcpClient.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_ClientManagement.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_ClientManagement.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
     <ClCompile Include="GeneratedFiles\Debug\moc_TreeModel.cpp">
       <Filter>Generated Files\Debug</Filter>
     </ClCompile>
@@ -132,6 +159,15 @@
       <Filter>Header Files</Filter>
     </CustomBuild>
     <CustomBuild Include="TreeModel.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="ClientManagement.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="TcpClient.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="MsgBox.h">
       <Filter>Header Files</Filter>
     </CustomBuild>
   </ItemGroup>

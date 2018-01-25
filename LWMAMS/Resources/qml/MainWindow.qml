@@ -5,6 +5,7 @@ Rectangle {
     width: 1280
     height: 720
     color:"#123456"
+    property var client: 0
 
     signal narrow();
     signal fullScreen(bool flag);
@@ -70,6 +71,6 @@ Rectangle {
         anchors.leftMargin: 0
         anchors.right: parent.right
         anchors.rightMargin: 0
-
+        client:mainWindow.client
     }
 }

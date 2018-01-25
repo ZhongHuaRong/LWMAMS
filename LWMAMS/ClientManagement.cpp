@@ -4,7 +4,10 @@ ClientManagement::ClientManagement(QObject *parent) : QObject(parent)
 {
     //qRegisterMetaType<TcpClient::CommandType>("TcpClient::CommandType");
     connect(this,&ClientManagement::startConnectionServer,&client,&TcpClient::connectionServer);
-    connect(this,&ClientManagement::sendCmd,&client,&TcpClient::sendMessage);
+    connect(this,SIGNAL(sendCmd(TcpClient::CommandType,QStringList)),
+            &client,SLOT(sendMessage(TcpClient::CommandType,QStringList)));
+    connect(this,SIGNAL(sendCmd(TcpClient::CommandType,QStringList,QVariantList)),
+            &client,SLOT(sendMessage(TcpClient::CommandType,QStringList,QVariantList)));
     connect(&client,&TcpClient::result,this,&ClientManagement::resultAnalysis);
     emit startConnectionServer();
 }
@@ -60,8 +63,10 @@ void ClientManagement::registered(QString account, QString pw, QString userName)
 }
 
 /**
-  * @函数意义:通过服务器查找数据
+  * @函数意义:通过服务器查找相应类型的数据
   * @作者:ZM
+  * @param [in] ct
+  *             发送的命令
   * @param [in] pageNum
   *             页数
   * @param [in] pageRow
@@ -76,12 +81,26 @@ void ClientManagement::registered(QString account, QString pw, QString userName)
   *             用于比较的数值
   * @date 2018-1
   */
-void ClientManagement::dataShowData(int pageNum, int pageRow, bool isCheck,
+void ClientManagement::getServerData(TcpClient::CommandType ct,
+                                    int pageNum, int pageRow, bool isCheck,
                                     DataShowPara::DATATYPE compareType,
                                     DataShowPara::DATACOMPARE compare,
-                                    float checkData)
+                                    QString checkData)
 {
-
+    QStringList list;
+    list<<QString::number(pageNum)<<QString::number(pageRow);
+    if(ct == TcpClient::CT_DATASHOW)
+    {
+        list<<QString(isCheck?"1":"0");
+        if(isCheck)
+        {
+            QVariantList data;
+            data<<compareType<<compare<<checkData;
+            emit sendCmd(ct,list,data);
+            return;
+        }
+    }
+    emit sendCmd(ct,list);
 }
 
 /**
@@ -98,7 +117,9 @@ void ClientManagement::resultAnalysis(TcpClient::CommandType ct, const QStringLi
     qDebug()<<ct;
     qDebug()<<arg;
 
-    bool result = arg.at(0).at(0).toLatin1()=='1'?true:false;
+    bool result=false;
+    if(arg.length()!=0&&arg.at(0).length()!=0)
+      result= arg.at(0).at(0).toLatin1()=='1'?true:false;
 
     switch(ct)
     {

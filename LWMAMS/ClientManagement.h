@@ -13,17 +13,19 @@ public:
     Q_INVOKABLE void signup(QString name,QString pw,bool autoS=false);
     Q_INVOKABLE void checkAccountNumber(QString accountNumber);
     Q_INVOKABLE void registered(QString account,QString pw,QString userName);
-    Q_INVOKABLE void dataShowData(int pageNum,
+    Q_INVOKABLE void getServerData(TcpClient::CommandType ct,
+                                  int pageNum,
                                   int pageRow,
                                   bool isCheck,
                                   DataShowPara::DATATYPE compareType,
                                   DataShowPara::DATACOMPARE compare,
-                                  float checkData
+                                  QString checkData
                                   );
 
 signals:
     void startConnectionServer();
     void sendCmd(TcpClient::CommandType, const QStringList &arg);
+    void sendCmd(TcpClient::CommandType, const QStringList &arg,const QVariantList &data);
     //void signupResult(bool result,QString error);
     void loginMessage(TcpClient::CommandType ct,bool result,const QString &message);
 public slots:

@@ -54,6 +54,7 @@ Window {
         MainWindow{
             id:mainWindow
             anchors.fill:parent
+            client:client
             onNarrow: window.showMinimized();
             onFullScreen:{
                 window.isFull=flag

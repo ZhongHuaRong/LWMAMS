@@ -2,23 +2,14 @@
 #include <QSettings>
 #include <QDebug>
 
-DataShowPara * DataShowPara::m_pPara = nullptr;
-
 DataShowPara::DataShowPara(QObject *parent) :
     QObject(parent)
 {
-    //qml无法使用getDataShowPara函数,
-    if(DataShowPara::m_pPara==nullptr)
-    {
-        DataShowPara::m_pPara = this;
-        initAllPara();
-    }
-    else
-    {
-        DataShowPara::m_pPara->deleteLater();
-        DataShowPara::m_pPara = this;
-        initAllPara();
-    }
+    initAllPara();
+    connect(&m_qTimer,&QTimer::timeout,this,&DataShowPara::timerTimeOut);
+    qRegisterMetaType<DataShowPara::DATATYPE>("DATATYPE");
+    qRegisterMetaType<DataShowPara::DATACOMPARE>("DATACOMPARE");
+    qRegisterMetaType<DataShowPara::PAGETYPE>("PAGETYPE");
 }
 
 DataShowPara::~DataShowPara()
@@ -140,10 +131,26 @@ int DataShowPara::getNPageNum() const
     return m_nPageNum;
 }
 
+/**
+  * @函数意义:换页，需要发送数据请求
+  * @作者:ZM
+  * @date 2018-1
+  */
 void DataShowPara::setNPageNum(int nPageNum)
 {
-    m_nPageNum = nPageNum;
+    if(m_nPageMaxNum>1)
+    {
+        if(nPageNum<0)
+            m_nPageNum = m_nPageMaxNum-1;
+        else if(nPageNum>m_nPageMaxNum)
+            m_nPageNum = m_nPageMaxNum;
+        else
+            m_nPageNum = nPageNum;
+    }
+    else
+        m_nPageNum = 0;
     emit pageNumChanged(m_nPageNum);
+    sendPara();
 }
 
 int DataShowPara::getNPageMaxNum() const
@@ -156,9 +163,15 @@ int DataShowPara::getNpageRowCount() const
     return m_npageRowCount;
 }
 
+/**
+  * @函数意义:更换行数，需要发送数据请求
+  * @作者:ZM
+  * @date 2018-1
+  */
 void DataShowPara::setNpageRowCount(int npageRowCount)
 {
     m_npageRowCount = npageRowCount;
+    sendPara();
 }
 
 int DataShowPara::getNMaxCount() const
@@ -172,14 +185,14 @@ void DataShowPara::setNMaxCount(int nMaxCount)
     m_nPageMaxNum = m_nMaxCount/m_npageRowCount -1;
 }
 
-DataShowPara* DataShowPara::getDataShowPara()
+/**
+  * @函数意义:查找按钮点击，将发送查找信号
+  * @作者:ZM
+  * @date 2018-1
+  */
+void DataShowPara::checkButtonClick()
 {
-    if(m_pPara==nullptr)
-    {
-        m_pPara = new DataShowPara();
-        m_pPara->initAllPara();
-    }
-    return m_pPara;
+    sendPara(true);
 }
 
 void DataShowPara::initAllPara()
@@ -222,5 +235,58 @@ void DataShowPara::initAllPara()
     {
         m_npageRowCount =10;
     }
+    m_bAutoUpdate = true;
+    m_bActivation = false;
+}
+
+void DataShowPara::sendPara(bool isCheck)
+{
+    if(!m_bActivation)
+        return;
+    emit paraData(m_nPageNum,
+                  m_npageRowCount,
+                  isCheck,
+                  m_eDatafilterDatatype,
+                  m_eDatafilterCompare,
+                  m_sCompareValue);
+}
+
+void DataShowPara::timerTimeOut()
+{
+    sendPara();
+}
+
+bool DataShowPara::getBActivation() const
+{
+    return m_bActivation;
+}
+
+void DataShowPara::setBActivation(bool bActivation)
+{
+    m_bActivation = bActivation;
+}
+
+DataShowPara::PAGETYPE DataShowPara::getEPageType() const
+{
+    return m_ePageType;
+}
+
+void DataShowPara::setEPageType(const PAGETYPE &ePageType)
+{
+    m_ePageType = ePageType;
+}
+
+bool DataShowPara::getBAutoUpdate() const
+{
+    return m_bAutoUpdate;
+}
+
+void DataShowPara::setBAutoUpdate(bool bAutoUpdate)
+{
+    m_bAutoUpdate = bAutoUpdate;
+    if(m_bAutoUpdate)
+        m_qTimer.start(2000);
+    else
+        m_qTimer.stop();
 }
 
