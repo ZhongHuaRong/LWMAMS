@@ -117,10 +117,8 @@ void ClientManagement::resultAnalysis(TcpClient::CommandType ct, const QStringLi
     qDebug()<<ct;
     qDebug()<<arg;
 
-    bool result=false;
-    if(arg.length()!=0&&arg.at(0).length()!=0)
-      result= arg.at(0).at(0).toLatin1()=='1'?true:false;
-
+    if(arg.length()==0)
+        return;
     switch(ct)
     {
     case TcpClient::CT_SIGNUP:
@@ -128,6 +126,9 @@ void ClientManagement::resultAnalysis(TcpClient::CommandType ct, const QStringLi
     case TcpClient::CT_PARACHECKACCOUNTNUMBER:
     case TcpClient::CT_REGISTERED:
     {
+        bool result=false;
+        if(arg.at(0).length()!=0)
+          result= arg.at(0).at(0).toLatin1()=='1'?true:false;
         if(result)
             emit loginMessage(ct,result,QString());
         else
@@ -137,6 +138,34 @@ void ClientManagement::resultAnalysis(TcpClient::CommandType ct, const QStringLi
             else
                 emit loginMessage(ct,result,arg.at(1));
         }
+        break;
+    }
+    case TcpClient::CT_DATASHOW:
+    case TcpClient::CT_ROUTE:
+    case TcpClient::CT_CONTROL:
+    case TcpClient::CT_ANALYSIS:
+    {
+        QList<QStringList> list;
+        QStringList strList;
+        QString str;
+
+        if(arg.at(0).toInt()==0)
+        {
+            QList<QStringList> a;
+            emit chartData(ct,a,0);
+            return;
+        }
+
+        QList<QString>::const_iterator it;
+        it = arg.begin();
+        for(it++;it!=arg.end();it++)
+        {
+            str = static_cast<QString>(*it);
+            strList = str.split('^');
+            strList.removeLast();
+            list.append(strList);
+        }
+        emit chartData(ct,list,arg.at(0).toInt());
         break;
     }
     }

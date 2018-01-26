@@ -14,6 +14,7 @@ CScrollView{
         view.para.setEPageType(DataShowPara.DataShow)
         view.para.setNPageNum(0);
         view.para.setBAutoUpdate(true);
+
         tempMinTextEdit.setText(para.getTempMinValue());
         tempMaxTextEdit.setText(para.getTempMaxValue());
         phMinTextEdit.setText(para.getPHMinValue());

@@ -61,6 +61,21 @@ Item {
         currentPage = index;
     }
 
+    function analyzeDataType(ct,list,maxCount){
+        switch(ct){
+        case TcpClient.CT_DATASHOW:
+            break;
+        case TcpClient.CT_ROUTE:
+            page_two.setData(list)
+            paraRoute.setNMaxCount(maxCount)
+            break;
+        case TcpClient.CT_CONTROL:
+            break;
+        case TcpClient.CT_ANALYSIS:
+            break;
+        }
+    }
+
     DataShowPara{
         id:paraDataShow
         onParaData:{

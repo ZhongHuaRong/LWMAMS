@@ -23,10 +23,15 @@ TelescopicRectangle{
         onePageCountTextEdit.setText(para.getNpageRowCount());
 
         para.pageNumChanged.connect(pageFilter.setPageNum);
+        para.pageMaxNumChanged.connect(pageFilter.setMaxPage);
     }
 
     function setPageNum(index){
         pageNumText.text=index+1;
+    }
+
+    function setMaxPage(max){
+        pageMaxNum.text = max+1;
     }
 
     function closeAutoUpdate(){
@@ -99,10 +104,6 @@ TelescopicRectangle{
                 width:80
                 placeholderText:"行数"
                 border.color: "#445266"
-                onEditingFinished: {
-                    if(pageFilter.para)
-                        para.setNpageRowCount(onePageCountTextEdit.getText())
-                }
             }
 
             PushButton {
@@ -110,6 +111,10 @@ TelescopicRectangle{
                 text:"设置"
                 pixelSize: 16
                 height:gotoPage.height
+                onClicked: {
+                    if(pageFilter.para)
+                        para.setNpageRowCount(onePageCountTextEdit.getText())
+                }
             }
         }
 

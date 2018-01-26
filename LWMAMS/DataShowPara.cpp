@@ -5,7 +5,6 @@
 DataShowPara::DataShowPara(QObject *parent) :
     QObject(parent)
 {
-    initAllPara();
     connect(&m_qTimer,&QTimer::timeout,this,&DataShowPara::timerTimeOut);
     qRegisterMetaType<DataShowPara::DATATYPE>("DATATYPE");
     qRegisterMetaType<DataShowPara::DATACOMPARE>("DATACOMPARE");
@@ -14,16 +13,21 @@ DataShowPara::DataShowPara(QObject *parent) :
 
 DataShowPara::~DataShowPara()
 {
-    QSettings settings;
-    settings.beginGroup("DataShowPara");
-    settings.setValue("TempMinValue",m_sTempMinValueText);
-    settings.setValue("TempMaxValue",m_sTempMaxValueText);
-    settings.setValue("PHMinValue",m_sPHMinValueText);
-    settings.setValue("PHMaxValue",m_sPHMaxValueText);
-    settings.setValue("TurMinValue",m_sTurMinValueText);
-    settings.setValue("TurMaxValue",m_sTurMaxValueText);
-    settings.setValue("PageRowCount",m_npageRowCount);
-    settings.endGroup();
+    switch(m_ePageType)
+    {
+    case DataShow:
+        saveDataShowPara();
+        break;
+    case Route:
+        saveRoutePara();
+        break;
+    case Control:
+        saveControlPara();
+        break;
+    case Analysis:
+        saveAnalysisPara();
+        break;
+    }
 }
 
 void DataShowPara::setDataType(DATATYPE type)
@@ -39,6 +43,10 @@ void DataShowPara::setChartType(CHARTTYPE type)
 void DataShowPara::setTempMinValue(const QVariant& var)
 {
     m_sTempMinValueText = var.toString();
+    QSettings settings;
+    settings.beginGroup("DataShowPara");
+    settings.setValue("TempMinValue",m_sTempMinValueText);
+    settings.endGroup();
 }
 
 QVariant DataShowPara::getTempMinValue() const
@@ -49,6 +57,10 @@ QVariant DataShowPara::getTempMinValue() const
 void DataShowPara::setTempMaxValue(const QVariant& var)
 {
     m_sTempMaxValueText = var.toString();
+    QSettings settings;
+    settings.beginGroup("DataShowPara");
+    settings.setValue("TempMaxValue",m_sTempMaxValueText);
+    settings.endGroup();
 }
 
 QVariant DataShowPara::getTempMaxValue() const
@@ -59,6 +71,10 @@ QVariant DataShowPara::getTempMaxValue() const
 void DataShowPara::setPHMinValue(const QVariant& var)
 {
     m_sPHMinValueText = var.toString();
+    QSettings settings;
+    settings.beginGroup("DataShowPara");
+    settings.setValue("PHMinValue",m_sPHMinValueText);
+    settings.endGroup();
 }
 
 QVariant DataShowPara::getPHMinValue() const
@@ -69,6 +85,10 @@ QVariant DataShowPara::getPHMinValue() const
 void DataShowPara::setPHMaxValue(const QVariant& var)
 {
     m_sPHMaxValueText = var.toString();
+    QSettings settings;
+    settings.beginGroup("DataShowPara");
+    settings.setValue("PHMaxValue",m_sPHMaxValueText);
+    settings.endGroup();
 }
 
 QVariant DataShowPara::getPHMaxValue() const
@@ -79,6 +99,10 @@ QVariant DataShowPara::getPHMaxValue() const
 void DataShowPara::setTurMinValue(const QVariant& var)
 {
     m_sTurMinValueText= var.toString();
+    QSettings settings;
+    settings.beginGroup("DataShowPara");
+    settings.setValue("TurMinValue",m_sTurMinValueText);
+    settings.endGroup();
 }
 
 QVariant DataShowPara::getTurMinValue() const
@@ -89,6 +113,10 @@ QVariant DataShowPara::getTurMinValue() const
 void DataShowPara::setTurMaxValue(const QVariant& var)
 {
     m_sTurMaxValueText= var.toString();
+    QSettings settings;
+    settings.beginGroup("DataShowPara");
+    settings.setValue("TurMaxValue",m_sTurMaxValueText);
+    settings.endGroup();
 }
 
 QVariant DataShowPara::getTurMaxValue() const
@@ -183,6 +211,9 @@ void DataShowPara::setNMaxCount(int nMaxCount)
 {
     m_nMaxCount = nMaxCount;
     m_nPageMaxNum = m_nMaxCount/m_npageRowCount -1;
+    if(m_nPageNum>m_nPageMaxNum)
+        setNPageNum(m_nPageMaxNum);
+    emit pageMaxNumChanged(m_nPageMaxNum);
 }
 
 /**
@@ -195,8 +226,14 @@ void DataShowPara::checkButtonClick()
     sendPara(true);
 }
 
-void DataShowPara::initAllPara()
+/**
+  * @函数意义:初始化数据显示页面所需的参数
+  * @作者:ZM
+  * @date 2018-1
+  */
+void DataShowPara::initDataShowPara()
 {
+    initPagePara();
     QSettings settings;
     settings.beginGroup("DataShowPara");
 
@@ -206,8 +243,6 @@ void DataShowPara::initAllPara()
     m_sPHMaxValueText = settings.value("PHMaxValue").toString();
     m_sTurMinValueText = settings.value("TurMinValue").toString();
     m_sTurMaxValueText = settings.value("TurMaxValue").toString();
-
-    m_npageRowCount = settings.value("PageRowCount").toInt();
     settings.endGroup();
 
     m_eDataType = DataShowPara::AllData;
@@ -228,6 +263,66 @@ void DataShowPara::initAllPara()
     m_eDatafilterDatatype = DataShowPara::AllData;
     m_eDatafilterCompare = DataShowPara::MoreThan;
     m_sCompareValue = QString::number(0);
+}
+
+/**
+  * @函数意义:初始化路线投料页面所需的参数
+  * @作者:ZM
+  * @date 2018-1
+  */
+void DataShowPara::initRoutePara()
+{
+    initPagePara();
+    QSettings settings;
+    settings.beginGroup("DataShowPara");
+    m_sLatitudeMax = settings.value("LatitudeMax").toString();
+    m_sLatitudeMin = settings.value("LatitudeMin").toString();
+    m_sLongitudeMax = settings.value("LongitudeMax").toString();
+    m_sLongitudeMin = settings.value("LongitudeMin").toString();
+    settings.endGroup();
+
+    if(m_sLatitudeMax.isEmpty())
+        m_sLatitudeMax = "113.48754";
+    if(m_sLatitudeMin.isEmpty())
+        m_sLatitudeMin = "113.48732";
+    if(m_sLongitudeMax.isEmpty())
+        m_sLongitudeMax = "23.45291";
+    if(m_sLongitudeMin.isEmpty())
+        m_sLongitudeMin = "23.45268";
+
+}
+
+/**
+  * @函数意义:初始化控制页面所需的参数
+  * @作者:ZM
+  * @date 2018-1
+  */
+void DataShowPara::initControlPara()
+{
+    initPagePara();
+}
+
+/**
+  * @函数意义:初始化异常页面所需的参数
+  * @作者:ZM
+  * @date 2018-1
+  */
+void DataShowPara::initAnalysisPara()
+{
+    initPagePara();
+}
+
+/**
+  * @函数意义:初始化页面参数
+  * @作者:ZM
+  * @date 2018-1
+  */
+void DataShowPara::initPagePara()
+{
+    QSettings settings;
+    settings.beginGroup("DataShowPara");
+    m_npageRowCount = settings.value("PageRowCount").toInt();
+    settings.endGroup();
 
     m_nPageNum = -1;
     m_nPageMaxNum = 0;
@@ -237,6 +332,76 @@ void DataShowPara::initAllPara()
     }
     m_bAutoUpdate = true;
     m_bActivation = false;
+}
+
+/**
+  * @函数意义:保存DataShow页面的参数
+  * @作者:ZM
+  * @date 2018-1
+  */
+void DataShowPara::saveDataShowPara()
+{
+    QSettings settings;
+    settings.beginGroup("DataShowPara");
+    settings.setValue("TempMinValue",m_sTempMinValueText);
+    settings.setValue("TempMaxValue",m_sTempMaxValueText);
+    settings.setValue("PHMinValue",m_sPHMinValueText);
+    settings.setValue("PHMaxValue",m_sPHMaxValueText);
+    settings.setValue("TurMinValue",m_sTurMinValueText);
+    settings.setValue("TurMaxValue",m_sTurMaxValueText);
+    settings.endGroup();
+    savePagePara();
+
+}
+
+/**
+  * @函数意义:保存Route页面的参数
+  * @作者:ZM
+  * @date 2018-1
+  */
+void DataShowPara::saveRoutePara()
+{
+    QSettings settings;
+    settings.beginGroup("DataShowPara");
+    settings.setValue("LatitudeMin",m_sLatitudeMin);
+    settings.setValue("LatitudeMax",m_sLatitudeMax);
+    settings.setValue("LongitudeMin",m_sLongitudeMin);
+    settings.setValue("LongitudeMax",m_sLongitudeMax);
+    settings.endGroup();
+    savePagePara();
+}
+
+/**
+  * @函数意义:保存控制页面所需的参数
+  * @作者:ZM
+  * @date 2018-1
+  */
+void DataShowPara::saveControlPara()
+{
+    savePagePara();
+}
+
+/**
+  * @函数意义:保存异常页面所需的参数
+  * @作者:ZM
+  * @date 2018-1
+  */
+void DataShowPara::saveAnalysisPara()
+{
+    savePagePara();
+}
+
+/**
+  * @函数意义:保存页面参数
+  * @作者:ZM
+  * @date 2018-1
+  */
+void DataShowPara::savePagePara()
+{
+    QSettings settings;
+    settings.beginGroup("DataShowPara");
+    settings.setValue("PageRowCount",m_npageRowCount);
+    settings.endGroup();
 }
 
 void DataShowPara::sendPara(bool isCheck)
@@ -256,6 +421,46 @@ void DataShowPara::timerTimeOut()
     sendPara();
 }
 
+QString DataShowPara::getSLongitudeMax() const
+{
+    return m_sLongitudeMax;
+}
+
+void DataShowPara::setSLongitudeMax(const QString &sLongitudeMax)
+{
+    m_sLongitudeMax = sLongitudeMax;
+}
+
+QString DataShowPara::getSLongitudeMin() const
+{
+    return m_sLongitudeMin;
+}
+
+void DataShowPara::setSLongitudeMin(const QString &sLongitudeMin)
+{
+    m_sLongitudeMin = sLongitudeMin;
+}
+
+QString DataShowPara::getSLatitudeMax() const
+{
+    return m_sLatitudeMax;
+}
+
+void DataShowPara::setSLatitudeMax(const QString &sLatitudeMax)
+{
+    m_sLatitudeMax = sLatitudeMax;
+}
+
+QString DataShowPara::getSLatitudeMin() const
+{
+    return m_sLatitudeMin;
+}
+
+void DataShowPara::setSLatitudeMin(const QString &sLatitudeMin)
+{
+    m_sLatitudeMin = sLatitudeMin;
+}
+
 bool DataShowPara::getBActivation() const
 {
     return m_bActivation;
@@ -271,9 +476,29 @@ DataShowPara::PAGETYPE DataShowPara::getEPageType() const
     return m_ePageType;
 }
 
+/**
+  * @函数意义:设置参数类型，根据类型初始化各类参数
+  * @作者:ZM
+  * @date 2018-1
+  */
 void DataShowPara::setEPageType(const PAGETYPE &ePageType)
 {
     m_ePageType = ePageType;
+    switch(m_ePageType)
+    {
+    case DataShow:
+        initDataShowPara();
+        break;
+    case Route:
+        initRoutePara();
+        break;
+    case Control:
+        initControlPara();
+        break;
+    case Analysis:
+        initAnalysisPara();
+        break;
+    }
 }
 
 bool DataShowPara::getBAutoUpdate() const

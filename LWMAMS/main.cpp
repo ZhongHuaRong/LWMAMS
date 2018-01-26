@@ -9,6 +9,7 @@
 #include "ClientManagement.h"
 #include "TcpClient.h"
 #include "MsgBox.h"
+#include "RouteManage.h"
 
 int main(int argc, char *argv[])
 {
@@ -29,6 +30,7 @@ int main(int argc, char *argv[])
     qmlRegisterType<ClientManagement>("an.qt.ClientManagement", 1, 0, "ClientManagement");
     qmlRegisterType<TcpClient>("an.qt.TcpClient", 1, 0, "TcpClient");
     qmlRegisterType<MsgBox>("an.qt.MsgBox", 1, 0, "MsgBox");
+    qmlRegisterType<RouteManage>("an.qt.RouteManage", 1, 0, "RouteManage");
 
     QQmlApplicationEngine engine;
     engine.load(QUrl(QStringLiteral("../LWMAMS/Resources/qml/main.qml")));

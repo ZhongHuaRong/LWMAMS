@@ -80,7 +80,7 @@ public:
     Q_INVOKABLE void setNpageRowCount(int npageRowCount);
 
     int getNMaxCount() const;
-    void setNMaxCount(int nMaxCount);
+    Q_INVOKABLE void setNMaxCount(int nMaxCount);
 
     Q_INVOKABLE void checkButtonClick();
 
@@ -93,11 +93,32 @@ public:
     Q_INVOKABLE bool getBActivation() const;
     Q_INVOKABLE void setBActivation(bool bActivation);
 
+    Q_INVOKABLE QString getSLatitudeMin() const;
+    Q_INVOKABLE void setSLatitudeMin(const QString &sLatitudeMin);
+
+    Q_INVOKABLE QString getSLatitudeMax() const;
+    Q_INVOKABLE void setSLatitudeMax(const QString &sLatitudeMax);
+
+    Q_INVOKABLE QString getSLongitudeMin() const;
+    Q_INVOKABLE void setSLongitudeMin(const QString &sLongitudeMin);
+
+    Q_INVOKABLE QString getSLongitudeMax() const;
+    Q_INVOKABLE void setSLongitudeMax(const QString &sLongitudeMax);
+
 Q_SIGNALS:
     Q_INVOKABLE void pageNumChanged(int pageNum);
     Q_INVOKABLE void pageMaxNumChanged(int pageMaxNum);
 private:
-    void initAllPara();
+    void initDataShowPara();
+    void initRoutePara();
+    void initControlPara();
+    void initAnalysisPara();
+    void initPagePara();
+    void saveDataShowPara();
+    void saveRoutePara();
+    void saveControlPara();
+    void saveAnalysisPara();
+    void savePagePara();
 
     void sendPara(bool isCheck = false);
 
@@ -120,6 +141,10 @@ private:
     DATATYPE m_eDatafilterDatatype;
     DATACOMPARE m_eDatafilterCompare;
     QString m_sCompareValue;
+    QString m_sLatitudeMin;
+    QString m_sLatitudeMax;
+    QString m_sLongitudeMin;
+    QString m_sLongitudeMax;
 
     PAGETYPE m_ePageType;
 

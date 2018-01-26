@@ -28,6 +28,7 @@ signals:
     void sendCmd(TcpClient::CommandType, const QStringList &arg,const QVariantList &data);
     //void signupResult(bool result,QString error);
     void loginMessage(TcpClient::CommandType ct,bool result,const QString &message);
+    void chartData(TcpClient::CommandType ct,const QList<QStringList> &list,int maxCount);
 public slots:
     void resultAnalysis(TcpClient::CommandType ct,const QStringList& arg);
 private:

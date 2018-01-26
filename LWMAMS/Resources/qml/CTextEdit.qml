@@ -11,7 +11,7 @@ Rectangle {
     border.color:"#dfdfe7"
 
     property bool isPW: false
-    property string placeholderText: "placeholderText"
+    property string placeholderText: ""
     property int textMaxNum: 8
     property color enteredBorderColor: "#2248DD"
 

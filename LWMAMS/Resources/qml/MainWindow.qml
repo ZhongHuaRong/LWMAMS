@@ -24,6 +24,10 @@ Rectangle {
         mouseArea.doubleClicked.connect(title.setFullButtonImage);
     }
 
+    function setChartData(ct,list,maxCount){
+        page.analyzeDataType(ct,list,maxCount);
+    }
+
     TitleRectangle{
         id:title
         anchors.right: parent.right

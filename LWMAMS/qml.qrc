@@ -66,5 +66,6 @@
         <file>Resources/qml/ManualTextView.qml</file>
         <file>Resources/qml/MsgBox.qml</file>
         <file>Resources/qml/MsgBoxManagement.qml</file>
+        <file>Resources/route.jpg</file>
     </qresource>
 </RCC>

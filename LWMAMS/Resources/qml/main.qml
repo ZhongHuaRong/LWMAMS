@@ -26,6 +26,9 @@ Window {
         else {
             var n=loginDialog.returnValue;
             window.loginDialog.destroy();
+
+            //关联信号
+            client.chartData.connect(mainWindow.setChartData);
         }
     }
 

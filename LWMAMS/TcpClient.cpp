@@ -40,7 +40,7 @@ void TcpClient::receiverMessage()
 
     ba.resize(m_pSocket->bytesAvailable());
     m_pSocket->read(ba.data(),ba.size());
-    qDebug()<<"receiver:"<<ba;
+    //qDebug()<<"receiver:"<<ba;
 
     QList<QByteArray> list = ba.split('#');
     if(list.length()==0)
@@ -91,6 +91,9 @@ void TcpClient::connectError(QAbstractSocket::SocketError error)
     case QAbstractSocket::ConnectionRefusedError:
         connectionServer();
         break;
+//    case QAbstractSocket::RemoteHostClosedError:
+//        connectionServer();
+//        break;
     }
 }
 
