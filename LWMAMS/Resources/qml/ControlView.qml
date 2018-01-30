@@ -9,7 +9,6 @@ Item {
     onParaChanged: {
         if(para){
             pageFilter.para=para;
-            controlView.para.setEPageType(DataShowPara.Control)
             controlView.para.setNPageNum(0);
             controlView.para.setBAutoUpdate(true);
         }

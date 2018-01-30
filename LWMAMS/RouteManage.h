@@ -13,7 +13,12 @@ class RouteManage : public QQuickPaintedItem
 public:
     explicit RouteManage(QQuickPaintedItem *parent = nullptr);
 
-    Q_INVOKABLE void addNode(const QList<QStringList> &list);
+    Q_INVOKABLE void addNode(const QList<QStringList> &list,
+                             const float &tempMin,const float & tempMax,
+                             const float & phMin,const float & phMax,
+                             const float & turMin,const float & turMax,
+                             const QString &latMin,const QString &latMax,
+                             const QString &longMin,const QString &longMax);
 
 protected:
     void paint(QPainter *event);
@@ -22,7 +27,7 @@ signals:
 
 public slots:
 private:
-    void getLatestValue();
+    void drawLine(QPainter *paint);
 private:
     const QImage m_cqImage = QImage(":/Resources/route.jpg");
     QList<RouteNode*> nodeList;
@@ -33,10 +38,7 @@ private:
     float m_fPHMax;
     float m_fTurMin;
     float m_fTurMax;
-    float m_fLatMin;
-    float m_fLatMax;
-    float m_fLongMin;
-    float m_fLongMax;
+
 };
 
 #endif // ROUTEMANAGE_H

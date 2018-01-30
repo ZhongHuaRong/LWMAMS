@@ -30,7 +30,8 @@ public:
         DataShow =1,
         Route,
         Control,
-        Analysis
+        Analysis,
+        OtherType
     };
 
     Q_ENUM(DATATYPE)
@@ -90,9 +91,6 @@ public:
     Q_INVOKABLE PAGETYPE getEPageType() const;
     Q_INVOKABLE void setEPageType(const PAGETYPE &ePageType);
 
-    Q_INVOKABLE bool getBActivation() const;
-    Q_INVOKABLE void setBActivation(bool bActivation);
-
     Q_INVOKABLE QString getSLatitudeMin() const;
     Q_INVOKABLE void setSLatitudeMin(const QString &sLatitudeMin);
 
@@ -109,21 +107,13 @@ Q_SIGNALS:
     Q_INVOKABLE void pageNumChanged(int pageNum);
     Q_INVOKABLE void pageMaxNumChanged(int pageMaxNum);
 private:
-    void initDataShowPara();
-    void initRoutePara();
-    void initControlPara();
-    void initAnalysisPara();
-    void initPagePara();
-    void saveDataShowPara();
-    void saveRoutePara();
-    void saveControlPara();
-    void saveAnalysisPara();
-    void savePagePara();
+    void initALl();
+    void saveAll();
 
     void sendPara(bool isCheck = false);
 
 signals:
-    void paraData(int pageNum,int pageRow,bool isCheck,
+    void paraData(PAGETYPE pt,int pageNum,int pageRow,bool isCheck,
                   DATATYPE dataType,DATACOMPARE compare,QString value);
 
 public slots:
@@ -149,8 +139,6 @@ private:
     PAGETYPE m_ePageType;
 
     bool m_bAutoUpdate;
-    //页面没有激活则不处理所有事件
-    bool m_bActivation;
 
     int m_nPageNum;
     int m_nPageMaxNum;

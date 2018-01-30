@@ -9,56 +9,44 @@ Item {
     width:1280
     height:720
     property var client: 0
-    property int currentPage: 0
 
     function changePage(index){
-        switch(currentPage){
-        case 1:
-            page_one.setPageActivation(false);
-            break;
-        case 2:
-            page_two.setPageActivation(false);
-            break;
-        case 4:
-            page_four.setPageActivation(false);
-            break;
-        case 6:
-            page_six.setPageActivation(false);
-            break;
-        }
 
         switch(index){
         case 0:
             stack.replace(view);
+            para.setEPageType(DataShowPara.OtherType)
             break;
         case 1:
             stack.replace(page_one);
-            page_one.setPageActivation(true);
+            para.setEPageType(DataShowPara.DataShow)
             break;
         case 2:
             stack.replace(page_two);
-            page_two.setPageActivation(true);
+            para.setEPageType(DataShowPara.Route)
             break;
         case 3:
             stack.replace(page_three);
+            para.setEPageType(DataShowPara.OtherType)
             break;
         case 4:
             stack.replace(page_four);
-            page_four.setPageActivation(true);
+            para.setEPageType(DataShowPara.Control)
             break;
         case 5:
             stack.replace(page_five);
+            para.setEPageType(DataShowPara.OtherType)
             break;
         case 6:
             stack.replace(page_six);
-            page_six.setPageActivation(true);
+            para.setEPageType(DataShowPara.Analysis)
             break;
         case 7:
             stack.replace(page_seven);
+            para.setEPageType(DataShowPara.OtherType)
             break;
 
         }
-        currentPage = index;
     }
 
     function analyzeDataType(ct,list,maxCount){
@@ -67,7 +55,7 @@ Item {
             break;
         case TcpClient.CT_ROUTE:
             page_two.setData(list)
-            paraRoute.setNMaxCount(maxCount)
+            para.setNMaxCount(maxCount)
             break;
         case TcpClient.CT_CONTROL:
             break;
@@ -77,38 +65,29 @@ Item {
     }
 
     DataShowPara{
-        id:paraDataShow
+        id:para
         onParaData:{
-            if(client)
-                client.getServerData(TcpClient.CT_DATASHOW,
-                                     pageNum,pageRow,isCheck,dataType,compare,value);
-        }
-    }
-
-    DataShowPara{
-        id:paraRoute
-        onParaData:{
-            if(client)
-                client.getServerData(TcpClient.CT_ROUTE,
-                                     pageNum,pageRow,isCheck,dataType,compare,value);
-        }
-    }
-
-    DataShowPara{
-        id:paraControl
-        onParaData:{
-            if(client)
-                client.getServerData(TcpClient.CT_CONTROL,
-                                     pageNum,pageRow,isCheck,dataType,compare,value);
-        }
-    }
-
-    DataShowPara{
-        id:paraAnalysis
-        onParaData:{
-            if(client)
-                client.getServerData(TcpClient.CT_ANALYSIS,
-                                     pageNum,pageRow,isCheck,dataType,compare,value);
+            if(client){
+                switch(pt)
+                {
+                case DataShowPara.DataShow:
+                    client.getServerData(TcpClient.CT_DATASHOW,
+                                         pageNum,pageRow,isCheck,dataType,compare,value);
+                    break;
+                case DataShowPara.Route:
+                    client.getServerData(TcpClient.CT_ROUTE,
+                                         pageNum,pageRow,isCheck,dataType,compare,value);
+                    break;
+                case DataShowPara.Control:
+                    client.getServerData(TcpClient.CT_CONTROL,
+                                         pageNum,pageRow,isCheck,dataType,compare,value);
+                    break;
+                case DataShowPara.Analysis:
+                    client.getServerData(TcpClient.CT_ANALYSIS,
+                                         pageNum,pageRow,isCheck,dataType,compare,value);
+                    break;
+                }
+            }
         }
     }
 
@@ -139,12 +118,12 @@ Item {
 
         DataShowView{
             id:page_one
-            para:paraDataShow
+            para:para
         }
 
         RouteView{
             id:page_two
-            para:paraRoute
+            para:para
 
         }
 
@@ -155,7 +134,7 @@ Item {
 
         ControlView{
             id:page_four
-            para:paraControl
+            para:para
         }
 
         VideoView{
@@ -165,7 +144,7 @@ Item {
 
         AnalysisView{
             id:page_six
-            para:paraAnalysis
+            para:para
         }
 
         Component{

@@ -9,25 +9,12 @@ DataShowPara::DataShowPara(QObject *parent) :
     qRegisterMetaType<DataShowPara::DATATYPE>("DATATYPE");
     qRegisterMetaType<DataShowPara::DATACOMPARE>("DATACOMPARE");
     qRegisterMetaType<DataShowPara::PAGETYPE>("PAGETYPE");
+    initALl();
 }
 
 DataShowPara::~DataShowPara()
 {
-    switch(m_ePageType)
-    {
-    case DataShow:
-        saveDataShowPara();
-        break;
-    case Route:
-        saveRoutePara();
-        break;
-    case Control:
-        saveControlPara();
-        break;
-    case Analysis:
-        saveAnalysisPara();
-        break;
-    }
+    saveAll();
 }
 
 void DataShowPara::setDataType(DATATYPE type)
@@ -169,7 +156,7 @@ void DataShowPara::setNPageNum(int nPageNum)
     if(m_nPageMaxNum>1)
     {
         if(nPageNum<0)
-            m_nPageNum = m_nPageMaxNum-1;
+            m_nPageNum = m_nPageMaxNum;
         else if(nPageNum>m_nPageMaxNum)
             m_nPageNum = m_nPageMaxNum;
         else
@@ -227,24 +214,34 @@ void DataShowPara::checkButtonClick()
 }
 
 /**
-  * @函数意义:初始化数据显示页面所需的参数
+  * @函数意义:初始化页面所需的参数
   * @作者:ZM
   * @date 2018-1
   */
-void DataShowPara::initDataShowPara()
+void DataShowPara::initALl()
 {
-    initPagePara();
     QSettings settings;
     settings.beginGroup("DataShowPara");
 
+    //DataShow参数
     m_sTempMinValueText = settings.value("TempMinValue").toString();
     m_sTempMaxValueText = settings.value("TempMaxValue").toString();
     m_sPHMinValueText = settings.value("PHMinValue").toString();
     m_sPHMaxValueText = settings.value("PHMaxValue").toString();
     m_sTurMinValueText = settings.value("TurMinValue").toString();
     m_sTurMaxValueText = settings.value("TurMaxValue").toString();
+
+    //Route参数
+    m_sLatitudeMax = settings.value("LatitudeMax").toString();
+    m_sLatitudeMin = settings.value("LatitudeMin").toString();
+    m_sLongitudeMax = settings.value("LongitudeMax").toString();
+    m_sLongitudeMin = settings.value("LongitudeMin").toString();
+
+    //Page参数
+    m_npageRowCount = settings.value("PageRowCount").toInt();
     settings.endGroup();
 
+    //DataShow参数
     m_eDataType = DataShowPara::AllData;
     m_eChartType = DataShowPara::Table;
     if(m_sTempMinValueText.isEmpty())
@@ -263,24 +260,8 @@ void DataShowPara::initDataShowPara()
     m_eDatafilterDatatype = DataShowPara::AllData;
     m_eDatafilterCompare = DataShowPara::MoreThan;
     m_sCompareValue = QString::number(0);
-}
 
-/**
-  * @函数意义:初始化路线投料页面所需的参数
-  * @作者:ZM
-  * @date 2018-1
-  */
-void DataShowPara::initRoutePara()
-{
-    initPagePara();
-    QSettings settings;
-    settings.beginGroup("DataShowPara");
-    m_sLatitudeMax = settings.value("LatitudeMax").toString();
-    m_sLatitudeMin = settings.value("LatitudeMin").toString();
-    m_sLongitudeMax = settings.value("LongitudeMax").toString();
-    m_sLongitudeMin = settings.value("LongitudeMin").toString();
-    settings.endGroup();
-
+    //Route参数
     if(m_sLatitudeMax.isEmpty())
         m_sLatitudeMax = "113.48754";
     if(m_sLatitudeMin.isEmpty())
@@ -290,40 +271,7 @@ void DataShowPara::initRoutePara()
     if(m_sLongitudeMin.isEmpty())
         m_sLongitudeMin = "23.45268";
 
-}
-
-/**
-  * @函数意义:初始化控制页面所需的参数
-  * @作者:ZM
-  * @date 2018-1
-  */
-void DataShowPara::initControlPara()
-{
-    initPagePara();
-}
-
-/**
-  * @函数意义:初始化异常页面所需的参数
-  * @作者:ZM
-  * @date 2018-1
-  */
-void DataShowPara::initAnalysisPara()
-{
-    initPagePara();
-}
-
-/**
-  * @函数意义:初始化页面参数
-  * @作者:ZM
-  * @date 2018-1
-  */
-void DataShowPara::initPagePara()
-{
-    QSettings settings;
-    settings.beginGroup("DataShowPara");
-    m_npageRowCount = settings.value("PageRowCount").toInt();
-    settings.endGroup();
-
+    //页面参数
     m_nPageNum = -1;
     m_nPageMaxNum = 0;
     if(m_npageRowCount==0)
@@ -331,15 +279,14 @@ void DataShowPara::initPagePara()
         m_npageRowCount =10;
     }
     m_bAutoUpdate = true;
-    m_bActivation = false;
 }
 
 /**
-  * @函数意义:保存DataShow页面的参数
+  * @函数意义:保存页面的参数
   * @作者:ZM
   * @date 2018-1
   */
-void DataShowPara::saveDataShowPara()
+void DataShowPara::saveAll()
 {
     QSettings settings;
     settings.beginGroup("DataShowPara");
@@ -349,66 +296,21 @@ void DataShowPara::saveDataShowPara()
     settings.setValue("PHMaxValue",m_sPHMaxValueText);
     settings.setValue("TurMinValue",m_sTurMinValueText);
     settings.setValue("TurMaxValue",m_sTurMaxValueText);
-    settings.endGroup();
-    savePagePara();
 
-}
-
-/**
-  * @函数意义:保存Route页面的参数
-  * @作者:ZM
-  * @date 2018-1
-  */
-void DataShowPara::saveRoutePara()
-{
-    QSettings settings;
-    settings.beginGroup("DataShowPara");
     settings.setValue("LatitudeMin",m_sLatitudeMin);
     settings.setValue("LatitudeMax",m_sLatitudeMax);
     settings.setValue("LongitudeMin",m_sLongitudeMin);
     settings.setValue("LongitudeMax",m_sLongitudeMax);
-    settings.endGroup();
-    savePagePara();
-}
 
-/**
-  * @函数意义:保存控制页面所需的参数
-  * @作者:ZM
-  * @date 2018-1
-  */
-void DataShowPara::saveControlPara()
-{
-    savePagePara();
-}
-
-/**
-  * @函数意义:保存异常页面所需的参数
-  * @作者:ZM
-  * @date 2018-1
-  */
-void DataShowPara::saveAnalysisPara()
-{
-    savePagePara();
-}
-
-/**
-  * @函数意义:保存页面参数
-  * @作者:ZM
-  * @date 2018-1
-  */
-void DataShowPara::savePagePara()
-{
-    QSettings settings;
-    settings.beginGroup("DataShowPara");
     settings.setValue("PageRowCount",m_npageRowCount);
     settings.endGroup();
 }
 
 void DataShowPara::sendPara(bool isCheck)
 {
-    if(!m_bActivation)
+    if(m_ePageType == PAGETYPE::OtherType)
         return;
-    emit paraData(m_nPageNum,
+    emit paraData(m_ePageType,m_nPageNum,
                   m_npageRowCount,
                   isCheck,
                   m_eDatafilterDatatype,
@@ -461,16 +363,6 @@ void DataShowPara::setSLatitudeMin(const QString &sLatitudeMin)
     m_sLatitudeMin = sLatitudeMin;
 }
 
-bool DataShowPara::getBActivation() const
-{
-    return m_bActivation;
-}
-
-void DataShowPara::setBActivation(bool bActivation)
-{
-    m_bActivation = bActivation;
-}
-
 DataShowPara::PAGETYPE DataShowPara::getEPageType() const
 {
     return m_ePageType;
@@ -484,21 +376,6 @@ DataShowPara::PAGETYPE DataShowPara::getEPageType() const
 void DataShowPara::setEPageType(const PAGETYPE &ePageType)
 {
     m_ePageType = ePageType;
-    switch(m_ePageType)
-    {
-    case DataShow:
-        initDataShowPara();
-        break;
-    case Route:
-        initRoutePara();
-        break;
-    case Control:
-        initControlPara();
-        break;
-    case Analysis:
-        initAnalysisPara();
-        break;
-    }
 }
 
 bool DataShowPara::getBAutoUpdate() const

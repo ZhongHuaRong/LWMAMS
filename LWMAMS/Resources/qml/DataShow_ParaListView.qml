@@ -11,7 +11,6 @@ CScrollView{
 
     function setPara(para){
         view.para = para;
-        view.para.setEPageType(DataShowPara.DataShow)
         view.para.setNPageNum(0);
         view.para.setBAutoUpdate(true);
 
@@ -74,7 +73,7 @@ CScrollView{
     Rectangle {
         id:rect
         color:"#ffffff"
-        width:390
+        width:view.width
         height:1100
 
         TelescopicRectangle{
