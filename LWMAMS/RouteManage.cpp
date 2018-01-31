@@ -21,10 +21,12 @@ void RouteManage::addNode(const QList<QStringList> &list,
     QList<QStringList>::const_iterator i;
     RouteNode * node;
     int n=1;
-    double latMin_f = latMin.toDouble();
-    double longMax_f = longMax.toDouble();
-    double widthPercentage = latMax.toDouble() - latMin_f;
-    double heightPercentage = longMax_f - longMin.toDouble();
+    m_dLatMin = latMin.toDouble();
+    m_dLatMax =latMax.toDouble();
+    m_dLongMin = longMin.toDouble();
+    m_dLongMax = longMax.toDouble();
+    double widthPercentage = m_dLatMax - m_dLatMin;
+    double heightPercentage = m_dLongMax - m_dLongMin;
     //计算相对位置的时候遇到0不好算，默认不算
     if(widthPercentage==0||heightPercentage ==0)
         return;
@@ -44,8 +46,8 @@ void RouteManage::addNode(const QList<QStringList> &list,
                              (*i).at(4),(*i).at(5),(*i).at(6),
                              tempMin,tempMax,phMin,phMax,turMin,turMax,this);
         //相对位置
-        node->setDCenterX(widthPercentage*((*i).at(2).toDouble()-latMin_f));
-        node->setDCenterY(heightPercentage*(longMax_f -(*i).at(3).toDouble()));
+        node->setDCenterX(widthPercentage*((*i).at(2).toDouble()-m_dLatMin));
+        node->setDCenterY(heightPercentage*(m_dLongMax -(*i).at(3).toDouble()));
         nodeList.append(node);
 
     }
@@ -67,6 +69,12 @@ void RouteManage::paint(QPainter *event)
 void RouteManage::hoverMoveEvent(QHoverEvent *event)
 {
     //qDebug()<<"hoverMoveEvent:"<<event->pos();
+    showTip(event->pos().x(),event->pos().y());
+}
+
+void RouteManage::hoverLeaveEvent(QHoverEvent *event)
+{
+    TipMsgBox::DestroyTipMsgBox();
 }
 
 void RouteManage::drawLine(QPainter *paint)
@@ -93,4 +101,65 @@ void RouteManage::drawLine(QPainter *paint)
         previousX = currentX;
         previousY = currentY;
     }
+}
+
+void RouteManage::showTip(const double &x,const double &y)
+{
+    TipMsgBox::TipShowDirection dir;
+    double boxWidth,boxHeight;
+    boxWidth =  150;
+    boxHeight = 70;
+
+    if(x+boxWidth>width())
+    {
+        //右
+        if(y-boxHeight<0)
+        {
+            //上
+            dir = TipMsgBox::LeftBottom;
+        }
+        else //if(y()+boxHeight>m_pParentItem->height())
+        {
+            //下
+            dir = TipMsgBox::LeftTop;
+        }
+    }
+    else
+    {
+        //左
+        if(y-boxHeight<0)
+        {
+            //上
+            dir = TipMsgBox::RightBottom;
+        }
+        else
+        {
+            //默认情况，也就是正常情况
+            dir = TipMsgBox::RightTop;
+        }
+    }
+    double lon,lat;
+    lon = (x*(m_dLatMax-m_dLatMin))/width() + m_dLatMin;
+    lat = ((height()-y)*(m_dLongMax-m_dLongMin))/height() +m_dLongMin;
+    TipMsgBox::CreateTipMsgBox(x,y,lon,lat,boxWidth,boxHeight,dir,this);
+}
+
+double RouteManage::dLongMax() const
+{
+    return m_dLongMax;
+}
+
+double RouteManage::dLatMax() const
+{
+    return m_dLatMax;
+}
+
+double RouteManage::dLatMin() const
+{
+    return m_dLatMin;
+}
+
+double RouteManage::dLongMin() const
+{
+    return m_dLongMin;
 }

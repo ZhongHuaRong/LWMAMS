@@ -4,6 +4,7 @@
 #include <QObject>
 #include <QQuickPaintedItem>
 #include <QPainterPath>
+#include "TipMsgBox.h"
 
 class RouteNode : public QQuickPaintedItem
 {
@@ -52,6 +53,12 @@ public:
     qreal dCenterY() const;
     void setDCenterY(const qreal &dCenterY);
 
+    QQuickPaintedItem *pParentItem() const;
+    void setPParentItem(QQuickPaintedItem *pParentItem);
+
+    void showTip();
+    void destroyTip();
+
 protected:
     virtual void paint(QPainter *event);
     virtual void hoverEnterEvent(QHoverEvent *event);
@@ -95,6 +102,8 @@ private:
     QColor turColor;
     QColor phColor;
     QList<QString> roundcolorList;
+
+    QQuickPaintedItem *m_pParentItem;
 };
 
 #endif // ROUTENODE_H

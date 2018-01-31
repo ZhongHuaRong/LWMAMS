@@ -17,7 +17,7 @@ RouteNode::RouteNode(const QString & id,int nodeID,const QString &time,
                      QQuickPaintedItem *parent):
     QQuickPaintedItem(parent),
     m_nID(id),m_nNodeID(nodeID),m_sTime(time),m_dLatitude(latitude),m_dLongitude(longitude),
-    m_sTemp(temp),m_sPH(ph),m_sTur(tur),oldSize(Normal)
+    m_sTemp(temp),m_sPH(ph),m_sTur(tur),oldSize(Normal),m_pParentItem(parent)
 {
     this->setAcceptHoverEvents(true);
     setAcceptedMouseButtons(Qt::LeftButton);
@@ -69,9 +69,10 @@ void RouteNode::paint(QPainter *event)
   */
 void RouteNode::hoverEnterEvent(QHoverEvent *)
 {
-    qDebug()<<"hoverEnterEvent:"<<m_nNodeID;
+    //qDebug()<<"hoverEnterEvent:"<<m_nNodeID;
     m_qFontColor.setRgb(135,206,235);
     changedSize(Big);
+    showTip();
 }
 
 /**
@@ -81,9 +82,11 @@ void RouteNode::hoverEnterEvent(QHoverEvent *)
   */
 void RouteNode::hoverLeaveEvent(QHoverEvent *)
 {
-    qDebug()<<"hoverLeaveEvent:"<<m_nNodeID;
+    //qDebug()<<"hoverLeaveEvent:"<<m_nNodeID;
     m_qFontColor = Qt::black;
     changedSize(Normal);
+
+    //destroyTip();
 }
 
 /**
@@ -93,7 +96,7 @@ void RouteNode::hoverLeaveEvent(QHoverEvent *)
   */
 void RouteNode::mousePressEvent(QMouseEvent *)
 {
-    qDebug()<<"mousePressEvent:"<<m_nNodeID;
+    //qDebug()<<"mousePressEvent:"<<m_nNodeID;
     changedSize(Small);
 
 }
@@ -106,13 +109,13 @@ void RouteNode::mousePressEvent(QMouseEvent *)
 void RouteNode::mouseReleaseEvent(QMouseEvent *)
 {
 
-    qDebug()<<"mouseReleaseEvent:"<<m_nNodeID;
+    //qDebug()<<"mouseReleaseEvent:"<<m_nNodeID;
     changedSize(Big);
 }
 
 void RouteNode::initColorList()
 {
-    roundcolorList <<"#0000ff"<<"#00ccff"<<"#ffffcc"<<"#ff3399"<<"#ff0033";
+    roundcolorList <<"#0000ff"<<"#00ccff"<<"#FFA500"<<"#ff3399"<<"#ff0033";
 }
 
 void RouteNode::setColor(const float &tempMin, const float &tempMax, const float &phMin,
@@ -229,11 +232,82 @@ void RouteNode::changedSize(RouteNode::NodeSize size)
         this->setX(x()+xCValue);
         this->setY(y()+yCValue);
         m_nFontSize +=fontSize;
-        QEventLoop eventloop;
-        QTimer::singleShot(2, &eventloop, SLOT(quit()));
-        eventloop.exec();
+//        QEventLoop eventloop;
+//        QTimer::singleShot(2, &eventloop, SLOT(quit()));
+//        eventloop.exec();
     }
 
+}
+
+QQuickPaintedItem *RouteNode::pParentItem() const
+{
+    return m_pParentItem;
+}
+
+void RouteNode::setPParentItem(QQuickPaintedItem *pParentItem)
+{
+    m_pParentItem = pParentItem;
+}
+
+void RouteNode::showTip()
+{
+    //这个xy是指提示框尖点的坐标，不是起点（左上角）坐标
+    //尖点坐标指的是圆形区域周围的四个点
+    double tipX,tipY;
+    TipMsgBox::TipShowDirection dir;
+    double boxWidth,boxHeight;
+    boxWidth =  200;
+    boxHeight = 180;
+
+    if(x()+boxWidth>m_pParentItem->width()-55)
+    {
+        //右
+        if(y()-boxHeight<0)
+        {
+            //上
+            dir = TipMsgBox::LeftBottom;
+            tipX = x();
+            tipY = y() + this->height();
+        }
+        else //if(y()+boxHeight>m_pParentItem->height())
+        {
+            //下
+            dir = TipMsgBox::LeftTop;
+            tipX = x();
+            tipY = y();
+        }
+    }
+    else
+    {
+        //左
+        if(y()-boxHeight<0)
+        {
+            //上
+            dir = TipMsgBox::RightBottom;
+            tipX = x() + this->width();
+            tipY = y() + this->height();
+        }
+        else
+        {
+            //默认情况，也就是正常情况
+            dir = TipMsgBox::RightTop;
+            tipX = x() + this->width();
+            tipY = y();
+        }
+    }
+
+    TipMsgBox::CreateTipMsgBox(m_nID,m_nNodeID,m_sTime,
+                               m_dLatitude,m_dLongitude,
+                               m_sTemp,m_sPH,m_sTur,
+                               tempColor,phColor,turColor,
+                               tipX,tipY,boxWidth,boxHeight,
+                               dir,m_pParentItem);
+
+}
+
+void RouteNode::destroyTip()
+{
+    TipMsgBox::DestroyTipMsgBox();
 }
 
 qreal RouteNode::dCenterY() const

@@ -6,6 +6,7 @@
 #include <QPainterPath>
 #include <QImage>
 #include "RouteNode.h"
+#include "TipMsgBox.h"
 
 class RouteManage : public QQuickPaintedItem
 {
@@ -20,25 +21,32 @@ public:
                              const QString &latMin,const QString &latMax,
                              const QString &longMin,const QString &longMax);
 
+    double dLongMin() const;
+
+    double dLatMin() const;
+
+    double dLatMax() const;
+
+    double dLongMax() const;
+
 protected:
     void paint(QPainter *event);
     virtual void hoverMoveEvent(QHoverEvent *event);
+    virtual void hoverLeaveEvent(QHoverEvent *event);
 signals:
 
 public slots:
 private:
     void drawLine(QPainter *paint);
+    void showTip(const double &x,const double &y);
 private:
     const QImage m_cqImage = QImage(":/Resources/route.jpg");
     QList<RouteNode*> nodeList;
 
-    float m_fTempMin;
-    float m_fTempMax;
-    float m_fPHMin;
-    float m_fPHMax;
-    float m_fTurMin;
-    float m_fTurMax;
-
+    double m_dLatMin;
+    double m_dLatMax;
+    double m_dLongMin;
+    double m_dLongMax;
 };
 
 #endif // ROUTEMANAGE_H
