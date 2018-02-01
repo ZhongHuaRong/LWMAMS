@@ -36,17 +36,28 @@ protected:
 signals:
 
 public slots:
+    void onWindowChange();
 private:
     void drawLine(QPainter *paint);
+    void setNode();
     void showTip(const double &x,const double &y);
 private:
     const QImage m_cqImage = QImage(":/Resources/route.jpg");
     QList<RouteNode*> nodeList;
+    QList<QStringList> nodeMsgList;
+
+    double m_dTempMin;
+    double m_dTempMax;
+    double m_dPHMin;
+    double m_dPHMax;
+    double m_dTurMin;
+    double m_dTurMax;
 
     double m_dLatMin;
     double m_dLatMax;
     double m_dLongMin;
     double m_dLongMax;
+
 };
 
 #endif // ROUTEMANAGE_H

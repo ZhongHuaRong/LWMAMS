@@ -158,6 +158,14 @@ void ClientManagement::resultAnalysis(TcpClient::CommandType ct, const QStringLi
 
         QList<QString>::const_iterator it;
         it = arg.begin();
+
+        if(ct ==TcpClient::CT_CONTROL)
+        {
+            QStringList a;
+            a.append(*++it);
+            a.append(*++it);
+            list.append(a);
+        }
         for(it++;it!=arg.end();it++)
         {
             str = static_cast<QString>(*it);
@@ -165,7 +173,7 @@ void ClientManagement::resultAnalysis(TcpClient::CommandType ct, const QStringLi
             strList.removeLast();
             list.append(strList);
         }
-        emit chartData(ct,list,arg.at(0).toInt());
+        emit chartData(ct,list,arg.first().toInt());
         break;
     }
     }

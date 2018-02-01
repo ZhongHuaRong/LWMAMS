@@ -50,9 +50,9 @@ Item {
 
         RouteManage{
             id:manage
-            width:rightRect.width
-            height:rightRect.height
+            width:rightRect.width-1
+            height:rightRect.height-1
+
         }
     }
-
 }

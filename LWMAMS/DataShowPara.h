@@ -103,6 +103,9 @@ public:
     Q_INVOKABLE QString getSLongitudeMax() const;
     Q_INVOKABLE void setSLongitudeMax(const QString &sLongitudeMax);
 
+    Q_INVOKABLE QString getSControlIP() const;
+    Q_INVOKABLE void setSControlIP(const QString &sControlIP);
+
 Q_SIGNALS:
     Q_INVOKABLE void pageNumChanged(int pageNum);
     Q_INVOKABLE void pageMaxNumChanged(int pageMaxNum);
@@ -135,6 +138,7 @@ private:
     QString m_sLatitudeMax;
     QString m_sLongitudeMin;
     QString m_sLongitudeMax;
+    QString m_sControlIP;
 
     PAGETYPE m_ePageType;
 

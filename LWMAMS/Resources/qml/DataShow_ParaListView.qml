@@ -22,10 +22,6 @@ CScrollView{
         turbidityMaxTextEdit.setText(para.getTurMaxValue());
     }
 
-    function setPageMaxNum(index){
-        pageMaxNum.text =index;
-    }
-
     CheckGroup{
         id:dataTypeGroup
         onCurrentChanged:{

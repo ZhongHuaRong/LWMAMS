@@ -19,7 +19,8 @@ SOURCES += ./main.cpp \
     $$PWD/MsgBox.cpp \
     $$PWD/RouteNode.cpp \
     $$PWD/RouteManage.cpp \
-    $$PWD/TipMsgBox.cpp
+    $$PWD/TipMsgBox.cpp \
+    $$PWD/TableData.cpp
 RESOURCES += qml.qrc
 
 HEADERS += \
@@ -34,4 +35,5 @@ HEADERS += \
     $$PWD/MsgBox.h \
     $$PWD/RouteNode.h \
     $$PWD/RouteManage.h \
-    $$PWD/TipMsgBox.h
+    $$PWD/TipMsgBox.h \
+    $$PWD/TableData.h

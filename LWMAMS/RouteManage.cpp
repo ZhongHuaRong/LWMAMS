@@ -5,6 +5,7 @@
 RouteManage::RouteManage(QQuickPaintedItem *parent) : QQuickPaintedItem(parent)
 {
     setAcceptHoverEvents(true);
+    connect(this,SIGNAL(widthChanged()),this,SLOT(onWindowChange()));
 }
 
 void RouteManage::addNode(const QList<QStringList> &list,
@@ -15,42 +16,20 @@ void RouteManage::addNode(const QList<QStringList> &list,
                           const QString &longMin,const QString &longMax)
 {
     //qDebug()<<list;
-    qDeleteAll(nodeList.begin(),nodeList.end());
-    nodeList.clear();
+    nodeMsgList = list;
 
-    QList<QStringList>::const_iterator i;
-    RouteNode * node;
-    int n=1;
+    m_dTempMin = tempMin;
+    m_dTempMax = tempMax;
+    m_dPHMin = phMin;
+    m_dPHMax = phMax;
+    m_dTurMin = turMin;
+    m_dTurMax = turMax;
+
     m_dLatMin = latMin.toDouble();
     m_dLatMax =latMax.toDouble();
     m_dLongMin = longMin.toDouble();
     m_dLongMax = longMax.toDouble();
-    double widthPercentage = m_dLatMax - m_dLatMin;
-    double heightPercentage = m_dLongMax - m_dLongMin;
-    //计算相对位置的时候遇到0不好算，默认不算
-    if(widthPercentage==0||heightPercentage ==0)
-        return;
-
-    widthPercentage = this->width()/widthPercentage;
-    heightPercentage = this->height()/heightPercentage;
-    qDebug()<<"widthPercentage:"<<widthPercentage;
-    qDebug()<<"heightPercentage:"<<heightPercentage;
-    qDebug()<<"width:"<<width();
-    qDebug()<<"height:"<<height();
-    for(i = list.constBegin();i!=list.constEnd();i++,n++)
-    {
-        //qDebug()<<"n:"<<n;
-        if((*i).length()<6)
-            continue;
-        node = new RouteNode((*i).at(0),n,(*i).at(1),(*i).at(2).toDouble(),(*i).at(3).toDouble(),
-                             (*i).at(4),(*i).at(5),(*i).at(6),
-                             tempMin,tempMax,phMin,phMax,turMin,turMax,this);
-        //相对位置
-        node->setDCenterX(widthPercentage*((*i).at(2).toDouble()-m_dLatMin));
-        node->setDCenterY(heightPercentage*(m_dLongMax -(*i).at(3).toDouble()));
-        nodeList.append(node);
-
-    }
+    setNode();
     update();
 }
 
@@ -63,7 +42,6 @@ void RouteManage::paint(QPainter *event)
     event->drawImage(target, m_cqImage, source);
     //画线
     drawLine(event);
-
 }
 
 void RouteManage::hoverMoveEvent(QHoverEvent *event)
@@ -72,9 +50,15 @@ void RouteManage::hoverMoveEvent(QHoverEvent *event)
     showTip(event->pos().x(),event->pos().y());
 }
 
-void RouteManage::hoverLeaveEvent(QHoverEvent *event)
+void RouteManage::hoverLeaveEvent(QHoverEvent *)
 {
     TipMsgBox::DestroyTipMsgBox();
+}
+
+void RouteManage::onWindowChange()
+{
+    setNode();
+    update();
 }
 
 void RouteManage::drawLine(QPainter *paint)
@@ -100,6 +84,44 @@ void RouteManage::drawLine(QPainter *paint)
         }
         previousX = currentX;
         previousY = currentY;
+    }
+}
+
+void RouteManage::setNode()
+{
+    //qDebug()<<list;
+    qDeleteAll(nodeList.begin(),nodeList.end());
+    nodeList.clear();
+
+    QList<QStringList>::const_iterator i;
+    RouteNode * node;
+    int n=1;
+
+    double widthPercentage = m_dLatMax - m_dLatMin;
+    double heightPercentage = m_dLongMax - m_dLongMin;
+    //计算相对位置的时候遇到0不好算，默认不算
+    if(widthPercentage==0||heightPercentage ==0)
+        return;
+
+    widthPercentage = this->width()/widthPercentage;
+    heightPercentage = this->height()/heightPercentage;
+    qDebug()<<"widthPercentage:"<<widthPercentage;
+    qDebug()<<"heightPercentage:"<<heightPercentage;
+    qDebug()<<"width:"<<width();
+    qDebug()<<"height:"<<height();
+    for(i = nodeMsgList.constBegin();i!=nodeMsgList.constEnd();i++,n++)
+    {
+        //qDebug()<<"n:"<<n;
+        if((*i).length()<6)
+            continue;
+        node = new RouteNode((*i).at(0),n,(*i).at(1),(*i).at(2).toDouble(),(*i).at(3).toDouble(),
+                             (*i).at(4),(*i).at(5),(*i).at(6),
+                             m_dTempMin,m_dTempMax,m_dPHMin,m_dPHMax,m_dTurMin,m_dTurMax,this);
+        //相对位置
+        node->setDCenterX(widthPercentage*((*i).at(2).toDouble()-m_dLatMin));
+        node->setDCenterY(heightPercentage*(m_dLongMax -(*i).at(3).toDouble()));
+        nodeList.append(node);
+
     }
 }
 

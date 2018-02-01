@@ -68,5 +68,7 @@
         <file>Resources/qml/MsgBoxManagement.qml</file>
         <file>Resources/qml/RouteParaListView.qml</file>
         <file>Resources/route.jpg</file>
+        <file>Resources/qml/ControlTableView.qml</file>
+        <file>Resources/qml/ControlParaListView.qml</file>
     </qresource>
 </RCC>

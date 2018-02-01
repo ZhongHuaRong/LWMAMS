@@ -30,10 +30,6 @@ void DataShowPara::setChartType(CHARTTYPE type)
 void DataShowPara::setTempMinValue(const QVariant& var)
 {
     m_sTempMinValueText = var.toString();
-    QSettings settings;
-    settings.beginGroup("DataShowPara");
-    settings.setValue("TempMinValue",m_sTempMinValueText);
-    settings.endGroup();
 }
 
 QVariant DataShowPara::getTempMinValue() const
@@ -44,10 +40,6 @@ QVariant DataShowPara::getTempMinValue() const
 void DataShowPara::setTempMaxValue(const QVariant& var)
 {
     m_sTempMaxValueText = var.toString();
-    QSettings settings;
-    settings.beginGroup("DataShowPara");
-    settings.setValue("TempMaxValue",m_sTempMaxValueText);
-    settings.endGroup();
 }
 
 QVariant DataShowPara::getTempMaxValue() const
@@ -58,10 +50,6 @@ QVariant DataShowPara::getTempMaxValue() const
 void DataShowPara::setPHMinValue(const QVariant& var)
 {
     m_sPHMinValueText = var.toString();
-    QSettings settings;
-    settings.beginGroup("DataShowPara");
-    settings.setValue("PHMinValue",m_sPHMinValueText);
-    settings.endGroup();
 }
 
 QVariant DataShowPara::getPHMinValue() const
@@ -72,10 +60,6 @@ QVariant DataShowPara::getPHMinValue() const
 void DataShowPara::setPHMaxValue(const QVariant& var)
 {
     m_sPHMaxValueText = var.toString();
-    QSettings settings;
-    settings.beginGroup("DataShowPara");
-    settings.setValue("PHMaxValue",m_sPHMaxValueText);
-    settings.endGroup();
 }
 
 QVariant DataShowPara::getPHMaxValue() const
@@ -86,10 +70,6 @@ QVariant DataShowPara::getPHMaxValue() const
 void DataShowPara::setTurMinValue(const QVariant& var)
 {
     m_sTurMinValueText= var.toString();
-    QSettings settings;
-    settings.beginGroup("DataShowPara");
-    settings.setValue("TurMinValue",m_sTurMinValueText);
-    settings.endGroup();
 }
 
 QVariant DataShowPara::getTurMinValue() const
@@ -100,10 +80,6 @@ QVariant DataShowPara::getTurMinValue() const
 void DataShowPara::setTurMaxValue(const QVariant& var)
 {
     m_sTurMaxValueText= var.toString();
-    QSettings settings;
-    settings.beginGroup("DataShowPara");
-    settings.setValue("TurMaxValue",m_sTurMaxValueText);
-    settings.endGroup();
 }
 
 QVariant DataShowPara::getTurMaxValue() const
@@ -237,6 +213,9 @@ void DataShowPara::initALl()
     m_sLongitudeMax = settings.value("LongitudeMax").toString();
     m_sLongitudeMin = settings.value("LongitudeMin").toString();
 
+    //Control参数
+    m_sControlIP = settings.value("ControlIP").toString();
+
     //Page参数
     m_npageRowCount = settings.value("PageRowCount").toInt();
     settings.endGroup();
@@ -271,6 +250,10 @@ void DataShowPara::initALl()
     if(m_sLongitudeMin.isEmpty())
         m_sLongitudeMin = "23.45268";
 
+    //Control参数
+    if(m_sControlIP.isEmpty())
+        m_sControlIP = QStringLiteral("192.168.0.203");
+
     //页面参数
     m_nPageNum = -1;
     m_nPageMaxNum = 0;
@@ -302,6 +285,8 @@ void DataShowPara::saveAll()
     settings.setValue("LongitudeMin",m_sLongitudeMin);
     settings.setValue("LongitudeMax",m_sLongitudeMax);
 
+    settings.setValue("ControlIP",m_sControlIP);
+
     settings.setValue("PageRowCount",m_npageRowCount);
     settings.endGroup();
 }
@@ -321,6 +306,16 @@ void DataShowPara::sendPara(bool isCheck)
 void DataShowPara::timerTimeOut()
 {
     sendPara();
+}
+
+QString DataShowPara::getSControlIP() const
+{
+    return m_sControlIP;
+}
+
+void DataShowPara::setSControlIP(const QString &sControlIP)
+{
+    m_sControlIP = sControlIP;
 }
 
 QString DataShowPara::getSLongitudeMax() const

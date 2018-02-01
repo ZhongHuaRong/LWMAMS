@@ -54,14 +54,15 @@ Item {
         case TcpClient.CT_DATASHOW:
             break;
         case TcpClient.CT_ROUTE:
-            page_two.setData(list)
-            para.setNMaxCount(maxCount)
+            page_two.setData(list);
             break;
         case TcpClient.CT_CONTROL:
+            page_four.setData(list);
             break;
         case TcpClient.CT_ANALYSIS:
             break;
         }
+        para.setNMaxCount(maxCount);
     }
 
     DataShowPara{
