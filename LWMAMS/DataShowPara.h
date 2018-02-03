@@ -42,8 +42,10 @@ public:
     explicit DataShowPara(QObject *parent = nullptr);
     ~DataShowPara();
 
+    Q_INVOKABLE DATATYPE getEDataType() const;
     Q_INVOKABLE void setDataType(DATATYPE);
 
+    Q_INVOKABLE CHARTTYPE getEChartType() const;
     Q_INVOKABLE void setChartType(CHARTTYPE);
 
     Q_INVOKABLE void setTempMinValue(const QVariant&);
@@ -74,7 +76,7 @@ public:
     Q_INVOKABLE void setSCompareValue(const QString &);
 
     Q_INVOKABLE int getNPageNum() const;
-    Q_INVOKABLE void setNPageNum(int nPageNum);
+    Q_INVOKABLE void setNPageNum(int nPageNum,bool isSendPara = true);
     Q_INVOKABLE int getNPageMaxNum() const;
 
     Q_INVOKABLE int getNpageRowCount() const;
@@ -84,6 +86,7 @@ public:
     Q_INVOKABLE void setNMaxCount(int nMaxCount);
 
     Q_INVOKABLE void checkButtonClick();
+    Q_INVOKABLE void closeCheckButtonClick();
 
     Q_INVOKABLE bool getBAutoUpdate() const;
     Q_INVOKABLE void setBAutoUpdate(bool bAutoUpdate);
@@ -109,15 +112,17 @@ public:
 Q_SIGNALS:
     Q_INVOKABLE void pageNumChanged(int pageNum);
     Q_INVOKABLE void pageMaxNumChanged(int pageMaxNum);
+    Q_INVOKABLE void caveatValueChanged();
 private:
-    void initALl();
+    void initAll();
     void saveAll();
 
-    void sendPara(bool isCheck = false);
+    void sendPara();
 
 signals:
     void paraData(PAGETYPE pt,int pageNum,int pageRow,bool isCheck,
                   DATATYPE dataType,DATACOMPARE compare,QString value);
+    void testData(int num);
 
 public slots:
     void timerTimeOut();
@@ -142,12 +147,15 @@ private:
 
     PAGETYPE m_ePageType;
 
+    bool m_bCheckFlag;
     bool m_bAutoUpdate;
 
     int m_nPageNum;
     int m_nPageMaxNum;
     int m_npageRowCount;
     int m_nMaxCount;
+
+    int m_nTestNum;
 
     QTimer m_qTimer;
 };

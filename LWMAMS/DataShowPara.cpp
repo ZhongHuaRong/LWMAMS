@@ -9,7 +9,7 @@ DataShowPara::DataShowPara(QObject *parent) :
     qRegisterMetaType<DataShowPara::DATATYPE>("DATATYPE");
     qRegisterMetaType<DataShowPara::DATACOMPARE>("DATACOMPARE");
     qRegisterMetaType<DataShowPara::PAGETYPE>("PAGETYPE");
-    initALl();
+    initAll();
 }
 
 DataShowPara::~DataShowPara()
@@ -17,9 +17,20 @@ DataShowPara::~DataShowPara()
     saveAll();
 }
 
+DataShowPara::DATATYPE DataShowPara::getEDataType() const
+{
+    return m_eDataType;
+}
+
 void DataShowPara::setDataType(DATATYPE type)
 {
     m_eDataType = type;
+}
+
+
+DataShowPara::CHARTTYPE DataShowPara::getEChartType() const
+{
+    return m_eChartType;
 }
 
 void DataShowPara::setChartType(CHARTTYPE type)
@@ -30,6 +41,7 @@ void DataShowPara::setChartType(CHARTTYPE type)
 void DataShowPara::setTempMinValue(const QVariant& var)
 {
     m_sTempMinValueText = var.toString();
+    emit caveatValueChanged();
 }
 
 QVariant DataShowPara::getTempMinValue() const
@@ -40,6 +52,7 @@ QVariant DataShowPara::getTempMinValue() const
 void DataShowPara::setTempMaxValue(const QVariant& var)
 {
     m_sTempMaxValueText = var.toString();
+    emit caveatValueChanged();
 }
 
 QVariant DataShowPara::getTempMaxValue() const
@@ -50,6 +63,7 @@ QVariant DataShowPara::getTempMaxValue() const
 void DataShowPara::setPHMinValue(const QVariant& var)
 {
     m_sPHMinValueText = var.toString();
+    emit caveatValueChanged();
 }
 
 QVariant DataShowPara::getPHMinValue() const
@@ -60,6 +74,7 @@ QVariant DataShowPara::getPHMinValue() const
 void DataShowPara::setPHMaxValue(const QVariant& var)
 {
     m_sPHMaxValueText = var.toString();
+    emit caveatValueChanged();
 }
 
 QVariant DataShowPara::getPHMaxValue() const
@@ -70,6 +85,7 @@ QVariant DataShowPara::getPHMaxValue() const
 void DataShowPara::setTurMinValue(const QVariant& var)
 {
     m_sTurMinValueText= var.toString();
+    emit caveatValueChanged();
 }
 
 QVariant DataShowPara::getTurMinValue() const
@@ -80,6 +96,7 @@ QVariant DataShowPara::getTurMinValue() const
 void DataShowPara::setTurMaxValue(const QVariant& var)
 {
     m_sTurMaxValueText= var.toString();
+    emit caveatValueChanged();
 }
 
 QVariant DataShowPara::getTurMaxValue() const
@@ -127,7 +144,7 @@ int DataShowPara::getNPageNum() const
   * @作者:ZM
   * @date 2018-1
   */
-void DataShowPara::setNPageNum(int nPageNum)
+void DataShowPara::setNPageNum(int nPageNum,bool isSendPara)
 {
     if(m_nPageMaxNum>1)
     {
@@ -141,7 +158,8 @@ void DataShowPara::setNPageNum(int nPageNum)
     else
         m_nPageNum = 0;
     emit pageNumChanged(m_nPageNum);
-    sendPara();
+    if(isSendPara)
+        sendPara();
 }
 
 int DataShowPara::getNPageMaxNum() const
@@ -173,9 +191,10 @@ int DataShowPara::getNMaxCount() const
 void DataShowPara::setNMaxCount(int nMaxCount)
 {
     m_nMaxCount = nMaxCount;
-    m_nPageMaxNum = m_nMaxCount/m_npageRowCount -1;
+    m_nPageMaxNum = m_nMaxCount/m_npageRowCount;
+
     if(m_nPageNum>m_nPageMaxNum)
-        setNPageNum(m_nPageMaxNum);
+        setNPageNum(m_nPageMaxNum,false);
     emit pageMaxNumChanged(m_nPageMaxNum);
 }
 
@@ -186,7 +205,19 @@ void DataShowPara::setNMaxCount(int nMaxCount)
   */
 void DataShowPara::checkButtonClick()
 {
-    sendPara(true);
+    m_bCheckFlag = true;
+    sendPara();
+}
+
+/**
+  * @函数意义:取消查找
+  * @作者:ZM
+  * @date 2018-2
+  */
+void DataShowPara::closeCheckButtonClick()
+{
+    m_bCheckFlag = false;
+    sendPara();
 }
 
 /**
@@ -194,7 +225,7 @@ void DataShowPara::checkButtonClick()
   * @作者:ZM
   * @date 2018-1
   */
-void DataShowPara::initALl()
+void DataShowPara::initAll()
 {
     QSettings settings;
     settings.beginGroup("DataShowPara");
@@ -261,7 +292,11 @@ void DataShowPara::initALl()
     {
         m_npageRowCount =10;
     }
+    m_bCheckFlag = false;
     m_bAutoUpdate = true;
+
+    //测试用NUM
+    m_nTestNum = 10;
 }
 
 /**
@@ -291,16 +326,17 @@ void DataShowPara::saveAll()
     settings.endGroup();
 }
 
-void DataShowPara::sendPara(bool isCheck)
+void DataShowPara::sendPara()
 {
     if(m_ePageType == PAGETYPE::OtherType)
         return;
     emit paraData(m_ePageType,m_nPageNum,
                   m_npageRowCount,
-                  isCheck,
+                  m_bCheckFlag,
                   m_eDatafilterDatatype,
                   m_eDatafilterCompare,
                   m_sCompareValue);
+//    emit testData(m_nTestNum--);
 }
 
 void DataShowPara::timerTimeOut()
@@ -326,6 +362,7 @@ QString DataShowPara::getSLongitudeMax() const
 void DataShowPara::setSLongitudeMax(const QString &sLongitudeMax)
 {
     m_sLongitudeMax = sLongitudeMax;
+    emit caveatValueChanged();
 }
 
 QString DataShowPara::getSLongitudeMin() const
@@ -336,6 +373,7 @@ QString DataShowPara::getSLongitudeMin() const
 void DataShowPara::setSLongitudeMin(const QString &sLongitudeMin)
 {
     m_sLongitudeMin = sLongitudeMin;
+    emit caveatValueChanged();
 }
 
 QString DataShowPara::getSLatitudeMax() const
@@ -346,6 +384,7 @@ QString DataShowPara::getSLatitudeMax() const
 void DataShowPara::setSLatitudeMax(const QString &sLatitudeMax)
 {
     m_sLatitudeMax = sLatitudeMax;
+    emit caveatValueChanged();
 }
 
 QString DataShowPara::getSLatitudeMin() const
@@ -356,6 +395,7 @@ QString DataShowPara::getSLatitudeMin() const
 void DataShowPara::setSLatitudeMin(const QString &sLatitudeMin)
 {
     m_sLatitudeMin = sLatitudeMin;
+    emit caveatValueChanged();
 }
 
 DataShowPara::PAGETYPE DataShowPara::getEPageType() const

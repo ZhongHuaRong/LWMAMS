@@ -88,7 +88,7 @@ void ClientManagement::getServerData(TcpClient::CommandType ct,
                                     QString checkData)
 {
     QStringList list;
-    list<<QString::number(pageNum)<<QString::number(pageRow);
+    list<<QString::number(pageNum)<<QString::number(pageRow)<<QString::number(0);
     if(ct == TcpClient::CT_DATASHOW)
     {
         list<<QString(isCheck?"1":"0");
@@ -100,7 +100,21 @@ void ClientManagement::getServerData(TcpClient::CommandType ct,
             return;
         }
     }
+    else
+        list<<QString::number(0);
     emit sendCmd(ct,list);
+}
+
+/**
+  * @函数意义:测试用的
+  * @作者:ZM
+  * @date 2018-2
+  */
+void ClientManagement::getTestData(int num)
+{
+    QStringList list;
+    list<<QString::number(0)<<QString::number(14)<<QString::number(num)<<QString::number(0);
+    emit sendCmd(TcpClient::CT_DATASHOW,list);
 }
 
 /**

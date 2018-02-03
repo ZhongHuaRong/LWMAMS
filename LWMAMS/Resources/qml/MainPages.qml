@@ -52,6 +52,7 @@ Item {
     function analyzeDataType(ct,list,maxCount){
         switch(ct){
         case TcpClient.CT_DATASHOW:
+            page_one.setData(list);
             break;
         case TcpClient.CT_ROUTE:
             page_two.setData(list);
@@ -90,6 +91,7 @@ Item {
                 }
             }
         }
+        onTestData: client.getTestData(num);
     }
 
     StackView{

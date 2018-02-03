@@ -21,6 +21,7 @@ public:
                                   DataShowPara::DATACOMPARE compare,
                                   QString checkData
                                   );
+    Q_INVOKABLE void getTestData(int num);
 
 signals:
     void startConnectionServer();

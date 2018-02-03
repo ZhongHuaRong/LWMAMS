@@ -70,5 +70,6 @@
         <file>Resources/route.jpg</file>
         <file>Resources/qml/ControlTableView.qml</file>
         <file>Resources/qml/ControlParaListView.qml</file>
+        <file>Resources/qml/DataShowTableView.qml</file>
     </qresource>
 </RCC>

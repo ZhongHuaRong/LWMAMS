@@ -8,6 +8,7 @@ CScrollView{
     height:600
 
     property var para: 0
+    signal typeChanged(var type,var chartType)
 
     function setPara(para){
         view.para = para;
@@ -30,15 +31,19 @@ CScrollView{
             switch(current){
             case temperatureButton:
                 para.setDataType(DataShowPara.Temperature)
+                view.typeChanged(DataShowPara.Temperature,-1);
                 break;
             case phButton:
                 para.setDataType(DataShowPara.PH)
+                view.typeChanged(DataShowPara.PH,-1);
                 break;
             case turbidityButton:
                 para.setDataType(DataShowPara.Turbidity)
+                view.typeChanged(DataShowPara.Turbidity,-1);
                 break;
             case allDataButton:
                 para.setDataType(DataShowPara.AllData)
+                view.typeChanged(DataShowPara.AllData,-1);
                 break;
             }
         }
@@ -51,16 +56,20 @@ CScrollView{
                 return;
             switch(current){
             case tableButton:
-                para.setChartType(DataShowPara.Temperature);
+                para.setChartType(DataShowPara.Table);
+                view.typeChanged(-1,DataShowPara.Table);
                 break;
             case lineSeriesButton:
                 para.setChartType(DataShowPara.LineSeriesChart);
+                view.typeChanged(-1,DataShowPara.LineSeriesChart);
                 break;
             case barButton:
                 para.setChartType(DataShowPara.BarChart);
+                view.typeChanged(-1,DataShowPara.BarChart);
                 break;
             case pieButton:
                 para.setChartType(DataShowPara.PieChart);
+                view.typeChanged(-1,DataShowPara.PieChart);
                 break;
             }
         }
@@ -453,24 +462,39 @@ CScrollView{
                     }
                 }
 
-                PushButton{
-                    id:filterButton
-                    width: dataTypeComboBox.width
-                    text:"查找"
-                    pixelSize: 16
-                    onClicked: {
-                        if(view.para)
-                        {
-                            if(compareValueTextEdit.getText().length===0)
-                                return;
+                Row{
+                    spacing: 15
+
+                    PushButton{
+                        id:filterButton
+                        width: dataTypeComboBox.width
+                        text:"查找"
+                        pixelSize: 16
+                        onClicked: {
                             if(view.para)
-                                para.setSCompareValue(compareValueTextEdit.getText());
-                            para.checkButtonClick();
-                            pageFilter.closeAutoUpdate();
+                            {
+                                if(compareValueTextEdit.getText().length===0)
+                                    return;
+                                if(view.para)
+                                    para.setSCompareValue(compareValueTextEdit.getText());
+                                pageFilter.closeAutoUpdate();
+                                para.checkButtonClick();
+                            }
+                        }
+                    }
+
+                    PushButton{
+                        id:closeFilterButton
+                        width:filterButton.width
+                        text:"取消查找"
+                        pixelSize: 16
+                        onClicked: {
+                            if(view.para){
+                                para.closeCheckButtonClick();
+                            }
                         }
                     }
                 }
-
            }
         }
 

@@ -11,10 +11,11 @@
 #include "MsgBox.h"
 #include "RouteManage.h"
 #include "TableData.h"
+#include "ChartViewData.h"
 
 int main(int argc, char *argv[])
 {
-    QGuiApplication app(argc, argv);
+    QApplication app(argc, argv);
 
     qApp->setApplicationName("LWMAMS");
     qApp->setOrganizationName("ZM");
@@ -33,6 +34,7 @@ int main(int argc, char *argv[])
     qmlRegisterType<MsgBox>("an.qt.MsgBox", 1, 0, "MsgBox");
     qmlRegisterType<RouteManage>("an.qt.RouteManage", 1, 0, "RouteManage");
     qmlRegisterType<TableData>("an.qt.TableData", 1, 0, "TableData");
+    qmlRegisterType<ChartViewData>("an.qt.ChartViewData", 1, 0, "ChartViewData");
 
     QQmlApplicationEngine engine;
     engine.load(QUrl(QStringLiteral("../LWMAMS/Resources/qml/main.qml")));

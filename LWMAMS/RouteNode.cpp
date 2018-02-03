@@ -124,11 +124,11 @@ void RouteNode::setColor(const float &tempMin, const float &tempMax, const float
     float temp = m_sTemp.toFloat();
     if(temp<tempMin)
         tempColor = roundcolorList.at(0);
-    else if(temp<tempMin+2)
+    else if(temp<=tempMin + 2)
         tempColor = roundcolorList.at(1);
     else if(temp>tempMax)
         tempColor = roundcolorList.last();
-    else if(temp>tempMax - 2)
+    else if(temp>=tempMax - 2)
         tempColor = roundcolorList.at(3);
     else
         tempColor = roundcolorList.at(2);
@@ -136,11 +136,11 @@ void RouteNode::setColor(const float &tempMin, const float &tempMax, const float
     temp = m_sPH.toFloat();
     if(temp<phMin)
         phColor = roundcolorList.at(0);
-    else if(temp<phMin+2)
+    else if(temp<=phMin + 0.1)
         phColor = roundcolorList.at(1);
     else if(temp>phMax)
         phColor = roundcolorList.last();
-    else if(temp>phMax - 2)
+    else if(temp>=phMax - 0.1)
         phColor = roundcolorList.at(3);
     else
         phColor = roundcolorList.at(2);
@@ -148,11 +148,11 @@ void RouteNode::setColor(const float &tempMin, const float &tempMax, const float
     temp = m_sTur.toFloat();
     if(temp<turMin)
         turColor = roundcolorList.at(0);
-    else if(temp<turMin+2)
+    else if(temp<=turMin + 10)
         turColor = roundcolorList.at(1);
     else if(temp>turMax)
         turColor = roundcolorList.last();
-    else if(temp>turMax - 2)
+    else if(temp>=turMax - 10)
         turColor = roundcolorList.at(3);
     else
         turColor = roundcolorList.at(2);
