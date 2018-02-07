@@ -17,6 +17,10 @@ Item {
         para.setBActivation(flag)
     }
 
+    function changePageUpdate(){
+        manage.changePageUpdate();
+    }
+
     function setData(list){
         manage.addNode(list,
                        para.getTempMinValue(),para.getTempMaxValue(),

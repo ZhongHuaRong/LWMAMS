@@ -14,7 +14,31 @@ TableData::~TableData()
 
 void TableData::setData(const QList<QStringList> &datalist)
 {
-    m_qList = datalist;
+    if(m_qList.length()==0)
+    {
+        m_qList = datalist;
+        return;
+    }
+    if(datalist.length()==0)
+    {
+        m_qList.clear();
+        return;
+    }
+
+    if(m_qList.length() == datalist.length())
+    {
+        if(m_qList.first().first() == datalist.first().first()&&
+                m_qList.last().first() ==datalist.last().first())
+            return;
+
+        if(m_qList.first().first()==datalist.at(1).first()&&
+                m_qList.at(m_qList.length()-2).first() == datalist.last().first())
+        {
+            m_qList.insert(0,datalist.first());
+            m_qList.removeLast();
+            return;
+        }
+    }
 }
 
 int TableData::getDataRow()

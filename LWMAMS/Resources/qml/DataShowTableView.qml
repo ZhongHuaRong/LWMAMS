@@ -22,7 +22,29 @@ TableView {
         id:model
     }
 
-    function setData(data){
+    function setData(updataFlag,data){
+        if(updataFlag ==-1)
+            return;
+        else if(updataFlag ==1)
+            updateModel(data);
+        else
+            resetModel(data);
+    }
+
+    function updateModel(data){
+        model.remove(model.rowCount()-1)
+        model.insert(0,{
+                         "id": data.data(0,0),
+                         "time": data.data(0,1),
+                         "lat": data.data(0,2),
+                         "lon": data.data(0,3),
+                         "tem": data.data(0,4),
+                         "ph": data.data(0,5),
+                         "tur": data.data(0,6)
+                     })
+    }
+
+    function resetModel(data){
         model.clear();
         var i,j;
         var rowCount = data.rowCount();

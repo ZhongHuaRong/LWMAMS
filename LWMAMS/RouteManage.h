@@ -21,6 +21,8 @@ public:
                              const QString &latMin,const QString &latMax,
                              const QString &longMin,const QString &longMax);
 
+    Q_INVOKABLE void changePageUpdate();
+
     double dLongMin() const;
 
     double dLatMin() const;

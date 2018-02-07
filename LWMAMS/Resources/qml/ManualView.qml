@@ -8,6 +8,7 @@ Rectangle {
     property var firstTitleObject: []
 
     Component.onCompleted: {
+        return;
         manual = Qt.createQmlObject(
                     'import an.qt.Manual 1.0; Manual {}', manualView, "dynamicSnippet");
         manual.loadTextOnQML.connect(manualView.addText);

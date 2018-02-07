@@ -21,13 +21,13 @@ Item {
     }
 
     function setData(list){
-        var updataFlag=data.setData(list);
+        var updateFlag=data.setData(list);
         if(para.getEChartType() ==DataShowPara.Table){
             //添加表格数据
-            tableView.setData(data)
+            tableView.setData(updateFlag,data)
         }
         else//添加图表
-            chartView.setData(updataFlag,para.getEDataType(),para.getEChartType())
+            chartView.setData(updateFlag,para.getEDataType(),para.getEChartType())
     }
 
     function changeViewType(type,chartType){
@@ -39,7 +39,7 @@ Item {
         else if(chartType!=-1){
             chartView.visible = true;
             tableView.visible = false;
-            chartView.updateDataType(type,chartType)
+            chartView.setData(0,para.getEDataType(),para.getEChartType())
         }
 
         if(type==-1)
@@ -78,20 +78,6 @@ Item {
     DataShow_ChartView{
         id:chartView
         anchors.top: parent.top
-        anchors.topMargin: 5
-        anchors.bottom: parent.bottom
-        anchors.bottomMargin: 5
-        anchors.left: dataShow_ParaListView.right
-        anchors.leftMargin: 5
-        anchors.right: parent.right
-        anchors.rightMargin: 5
-        data:data
-        visible: false
-    }
-
-    DataShowTableView{
-        id:tableView
-        anchors.top: parent.top
         anchors.topMargin: 1
         anchors.bottom: parent.bottom
         anchors.bottomMargin: 1
@@ -99,6 +85,20 @@ Item {
         anchors.leftMargin: 1
         anchors.right: parent.right
         anchors.rightMargin: 1
+        data:data
+        visible: false
+    }
+
+    DataShowTableView{
+        id:tableView
+        anchors.top: parent.top
+        anchors.topMargin: 0
+        anchors.bottom: parent.bottom
+        anchors.bottomMargin: 0
+        anchors.left: dataShow_ParaListView.right
+        anchors.leftMargin: 0
+        anchors.right: parent.right
+        anchors.rightMargin: 0
         visible: true
     }
 }

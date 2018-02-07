@@ -71,5 +71,6 @@
         <file>Resources/qml/ControlTableView.qml</file>
         <file>Resources/qml/ControlParaListView.qml</file>
         <file>Resources/qml/DataShowTableView.qml</file>
+        <file>Resources/qml/DataShowChartSpline.qml</file>
     </qresource>
 </RCC>

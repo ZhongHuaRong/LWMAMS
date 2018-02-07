@@ -33,6 +33,17 @@ void RouteManage::addNode(const QList<QStringList> &list,
     update();
 }
 
+/**
+  * @函数意义:在页面换页的时候更新节点位置
+  * @作者:ZM
+  * @date 2018-2
+  */
+void RouteManage::changePageUpdate()
+{
+    setNode();
+    update();
+}
+
 void RouteManage::paint(QPainter *event)
 {
     event->setRenderHint(QPainter::Antialiasing, true);

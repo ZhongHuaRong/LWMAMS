@@ -11,6 +11,7 @@
 #include "MsgBox.h"
 #include "RouteManage.h"
 #include "TableData.h"
+#include "DateData.h"
 #include "ChartViewData.h"
 
 int main(int argc, char *argv[])
@@ -35,6 +36,7 @@ int main(int argc, char *argv[])
     qmlRegisterType<RouteManage>("an.qt.RouteManage", 1, 0, "RouteManage");
     qmlRegisterType<TableData>("an.qt.TableData", 1, 0, "TableData");
     qmlRegisterType<ChartViewData>("an.qt.ChartViewData", 1, 0, "ChartViewData");
+    qmlRegisterType<DateData>("an.qt.DateData", 1, 0, "DateData");
 
     QQmlApplicationEngine engine;
     engine.load(QUrl(QStringLiteral("../LWMAMS/Resources/qml/main.qml")));

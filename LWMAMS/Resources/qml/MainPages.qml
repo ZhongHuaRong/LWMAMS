@@ -24,6 +24,7 @@ Item {
         case 2:
             stack.replace(page_two);
             para.setEPageType(DataShowPara.Route)
+            page_two.changePageUpdate();
             break;
         case 3:
             stack.replace(page_three);

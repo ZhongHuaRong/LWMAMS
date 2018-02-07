@@ -6,13 +6,16 @@ ChartViewData::ChartViewData(QObject *parent) : QObject(parent)
 }
 
 /**
-  * @函数意义: 设置数据，如果是因为更新获取的数据，则返回1告诉chart只有一条新数据，否则返回0告诉chart全部更新
+  * @函数意义: 设置数据(全部更新会导致界面有一点卡顿)，
+  *           如果是因为更新获取的数据，则返回1告诉chart只有一条新数据，返回0告诉chart全部更新,
+  *           返回-1则不更新
   * @作者:ZM
   * @param [in] data
   *             数据库获取到的数据
   * @return int
   *         1:只更新一条数据
   *         0:全部更新
+  *         -1:不更新
   * @date 2018-2
   */
 int ChartViewData::setData(const QList<QStringList> &data)
@@ -22,9 +25,34 @@ int ChartViewData::setData(const QList<QStringList> &data)
         m_lData = data;
         return 0;
     }
+    if(data.length()==0)
+    {
+        m_lData.clear();
+        return 0;
+    }
+
+    if(m_lData.length() == data.length())
+    {
+        if(m_lData.first().first() == data.first().first()&&
+                m_lData.last().first() ==data.last().first())
+            return -1;
+
+        if(m_lData.first().first()==data.at(1).first()&&
+                m_lData.at(m_lData.length()-2).first() == data.last().first())
+        {
+            m_lData.insert(0,data.first());
+            m_lData.removeLast();
+            return 1;
+        }
+    }
     else
-        m_lData = data;
-    return 0;
+    {
+        //数据量不相等的时候只需判断有多少连续数据相同，其他情况一律全更新
+        //暂时不优化
+        return 0;
+    }
+
+    return -1;
 }
 
 int ChartViewData::rowCount()

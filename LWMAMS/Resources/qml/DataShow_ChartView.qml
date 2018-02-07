@@ -1,81 +1,55 @@
-import QtQuick 2.7
+import QtQuick 2.0
 import QtCharts 2.2
 import an.qt.ChartViewData 1.0
 import an.qt.DataShowPara 1.0
+import an.qt.DateData 1.0
 
-Item {
-    id:view
+ChartView {
+    id:chart
+    animationOptions:ChartView.AllAnimations
+    theme:ChartView.ChartThemeBlueCerulean
+    dropShadowEnabled:true
 
     property var tempSeries: 0
     property var phSeries: 0
     property var turSeries: 0
     property var data: 0
 
-    function setData(updataFlag,type,chartType){
+    function setData(updateFlag,type,chartType){
+        if(updateFlag==-1)
+            return;
 
-        if(!updataFlag){
-            chart.removeAllSeries();
-            tempSeries = 0;
-            phSeries = 0;
-            turSeries = 0;
-        }
-
-        switch(type){
-        case DataShowPara.Temperature:
-            tempSeries = chart.createSeries(
-                        getSeriesType(chartType),
-                        "温度",
-                        xAxis,
-                        yAxis);
-            break;
-        case DataShowPara.PH:
-            phSeries= chart.createSeries(
-                        getSeriesType(chartType),
-                        "温度",
-                        xAxis,
-                        yAxis);
-            break;
-        case DataShowPara.Turbidity:
-            turSeries= chart.createSeries(
-                        getSeriesType(chartType),
-                        "温度",
-                        xAxis,
-                        yAxis);
-            break;
-        case DataShowPara.AllData:
-        default:
-            tempSeries = chart.createSeries(
-                        getSeriesType(chartType),
-                        "温度",
-                        xAxis,
-                        yAxis);
-            phSeries= chart.createSeries(
-                        getSeriesType(chartType),
-                        "温度",
-                        xAxis,
-                        yAxis);
-            turSeries= chart.createSeries(
-                        getSeriesType(chartType),
-                        "温度",
-                        xAxis,
-                        yAxis);
-            break;
-        }
+//        if(!updateFlag){
+//            chart.removeAllSeries();
+//            tempSeries = 0;
+//            phSeries = 0;
+//            turSeries = 0;
+//            addSeries(type,chartType);
+//        }
 
         for(var n=0;n<data.rowCount();n++){
-            if(num){
+            if(updateFlag){
                 //
             }
             else{
-                if(tempSeries)
-                    tempSeries.append(getNewNode(n,4,chartType,tempSeries));
+                if(tempSeries){
+                    tempSeries.append(data.data(n,0),data.data(n,4));
+                }
                 if(phSeries)
-                    phSeries.append(getNewNode(n,5,chartType,phSeries));
+                    phSeries.append(data.data(n,0),data.data(n,5));
                 if(turSeries)
-                    turSeries.append(getNewNode(n,6,chartType,turSeries));
+                    turSeries.append(data.data(n,0),data.data(n,6));
             }
 
         }
+        chart.setAxisX(xAxis,tempSeries);
+        chart.setAxisY(yAxis,tempSeries);
+
+        chart.setAxisX(xAxis,phSeries);
+        chart.setAxisY(yAxis,phSeries);
+
+        chart.setAxisX(xAxis,turSeries);
+        chart.setAxisY(yAxis,turSeries);
 
     }
 
@@ -90,44 +64,62 @@ Item {
         }
     }
 
-    function getNewNode(row,column,seriesType,parent){
-        switch(seriesType){
-        case ChartView.SeriesTypeLine:
-            return Qt.createQmlObject(
-                        'import QtCharts 2.2;
-                         XYPoint { x: '+data.data(row,1)+'; '+
-                                  'y: '+data.data(row,column)+' }', parent, "dynamicSnippet");
-        case ChartView.SeriesTypeArea:
-            return ChartView.SeriesTypeArea;
-        }
-    }
-
-    function setTable(){
-
-    }
-
     function updateDataType(type,chartType){
         //
     }
 
-    Component.onCompleted: {
+    function addSeries(){
+        tempSeries = chart.createSeries(
+                    getSeriesType(ChartView.SeriesTypeLine),
+                    "温度",
+                    xAxis,
+                    yAxis);
+        phSeries= chart.createSeries(
+                    getSeriesType(ChartView.SeriesTypeLine),
+                    "酸碱度",
+                    xAxis,
+                    yAxis);
+        turSeries= chart.createSeries(
+                    getSeriesType(ChartView.SeriesTypeLine),
+                    "浑浊度",
+                    xAxis,
+                    yAxis);
+        setSeriesStyle(tempSeries,"#04DDFC")
+        setSeriesStyle(phSeries,"#B707FC")
+        setSeriesStyle(turSeries,"#FFB608")
     }
 
-    ChartView{
-        id:chart
-        anchors.fill:parent
-        animationOptions:ChartView.AllAnimations
-        theme:ChartView.ChartThemeBlueCerulean
-        dropShadowEnabled:true
+    function setSeriesStyle(series,color){
+        series.color=color
+        //series.hovered.connect(chart.hovered)
+        var font = series.pointLabelsFont
+        font.family ="微软雅黑"
+        series.pointLabelsFont = font
+        series.width = 4
+        series.pointLabelsColor = "#ffffff";
+        series.pointLabelsFormat = "@yPoint"
+        series.pointLabelsVisible = true
+        series.pointsVisible = true
+    }
+
+    Component.onCompleted: {
+        addSeries()
     }
 
     DateTimeAxis{
         id:xAxis
+        labelsVisible:true
+        lineVisible:true
     }
 
     ValueAxis{
         id:yAxis
+        labelsVisible:true
+        lineVisible:true
     }
 
+    DateData{
+        id:date
+    }
 
 }
