@@ -8,28 +8,25 @@ TipMsgBox::TipMsgBox(const QString &id, int nodeID, const QString &time,
                      const QString &temp, const QString &ph, const QString &tur,
                      const QColor &tempColor,const QColor &phColor,const QColor &turColor,
                      const double &x,const double &y,const double &width,const double &height,
-                     TipShowDirection dir,
                      QQuickPaintedItem *parent):
-    QQuickPaintedItem(parent),
+    TipMsgRect(x,y,width,height,parent),
     m_nID(id),m_nNodeID(nodeID),m_sTime(time),
     m_dLatitude(latitude),m_dLongitude(longitude),
     m_sTemp(temp),m_sPH(ph),m_sTur(tur),
     m_qTempColor(tempColor),m_qPHColor(phColor),m_qTurColor(turColor),
-    m_eDirection(dir),m_eTipTye(AllData)
+    m_eTipTye(AllData)
 {
-    initGeometry(x,y,width,height,dir);
 }
 
 TipMsgBox::TipMsgBox(const double &x,const double &y,
                      const double & latitude,const double & longitude,
                      const double &width,const double &height,
-                     TipShowDirection dir,
                      QQuickPaintedItem *parent):
-    QQuickPaintedItem(parent),
+    TipMsgRect(x,y,width,height,parent),
     m_dLatitude(latitude),m_dLongitude(longitude),
-    m_eDirection(dir),m_eTipTye(OnlyPos)
+    m_eTipTye(OnlyPos)
 {
-    initGeometry(x,y,width,height,dir);
+    initGeometry(x,y,width,height);
 
 }
 
@@ -41,7 +38,6 @@ TipMsgBox *TipMsgBox::CreateTipMsgBox(const QString &id, int nodeID,
                                       const QColor &turColor,
                                       const double &x, const double &y,
                                       const double &width, const double &height,
-                                      TipMsgBox::TipShowDirection dir,
                                       QQuickPaintedItem *parent)
 {
     DestroyTipMsgBox();
@@ -51,21 +47,20 @@ TipMsgBox *TipMsgBox::CreateTipMsgBox(const QString &id, int nodeID,
                                          tempColor,phColor,turColor,
                                          x,y,
                                          width,height,
-                                         dir,parent);
+                                         parent);
     return TipMsgBox::tipMsgBox;
 }
 
 TipMsgBox *TipMsgBox::CreateTipMsgBox(const double &x,const double &y,
                                       const double & latitude,const double & longitude,
                                       const double &width,const double &height,
-                                      TipShowDirection dir,
                                       QQuickPaintedItem *parent)
 {
     DestroyTipMsgBox();
     TipMsgBox::tipMsgBox = new TipMsgBox(x,y,
                                          latitude,longitude,
                                          width,height,
-                                         dir,parent);
+                                         parent);
     return TipMsgBox::tipMsgBox;
 }
 
@@ -81,7 +76,7 @@ void TipMsgBox::DestroyTipMsgBox()
 
 void TipMsgBox::paint(QPainter *event)
 {
-    drawBackground(event);
+    TipMsgRect::paint(event);
     QColor color(68,82,102);
     color.setAlpha(255);
     QFont font;
@@ -135,131 +130,5 @@ void TipMsgBox::paint(QPainter *event)
     }
     }
 
-
-}
-
-/**
-  * @函数意义:初始化线框
-  * @作者:ZM
-  * @date 2018-1
-  */
-void TipMsgBox::drawBackground(QPainter *event)
-{
-    QPointF points[7];
-    double turningPointHeight;
-    double turningPointLeft;
-    double turningPointRight;
-    switch(m_eDirection)
-    {
-    case RightTop:
-        m_dTextStartY = 0;
-        turningPointHeight = height()*7/9;
-        turningPointLeft = width()*2/9;
-        turningPointRight = width()*3/9;
-        points[0].setX(0);
-        points[0].setY(height());
-        points[1].setX(turningPointLeft);
-        points[1].setY(turningPointHeight);
-        points[2].setX(0);
-        points[2].setY(turningPointHeight);
-        points[3].setX(0);
-        points[3].setY(0);
-        points[4].setX(width()-1);
-        points[4].setY(0);
-        points[5].setX(width()-1);
-        points[5].setY(turningPointHeight);
-        points[6].setX(turningPointRight);
-        points[6].setY(turningPointHeight);
-        break;
-    case RightBottom:
-        turningPointHeight = height()*2/9;
-        turningPointLeft = width()*2/9;
-        turningPointRight = width()*3/9;
-        m_dTextStartY = turningPointHeight;
-        points[0].setX(0);
-        points[0].setY(0);
-        points[1].setX(turningPointLeft);
-        points[1].setY(turningPointHeight);
-        points[2].setX(0);
-        points[2].setY(turningPointHeight);
-        points[3].setX(0);
-        points[3].setY(height()-1);
-        points[4].setX(width()-2);
-        points[4].setY(height()-1);
-        points[5].setX(width()-2);
-        points[5].setY(turningPointHeight);
-        points[6].setX(turningPointRight);
-        points[6].setY(turningPointHeight);
-        break;
-    case LeftTop:
-        turningPointHeight = height()*7/9;
-        turningPointLeft = width()*7/9;
-        turningPointRight = width()*6/9;
-        m_dTextStartY = 0;
-        points[0].setX(width()-2);
-        points[0].setY(height()-1);
-        points[1].setX(turningPointLeft);
-        points[1].setY(turningPointHeight);
-        points[2].setX(width()-2);
-        points[2].setY(turningPointHeight);
-        points[3].setX(width()-2);
-        points[3].setY(0);
-        points[4].setX(0);
-        points[4].setY(0);
-        points[5].setX(0);
-        points[5].setY(turningPointHeight);
-        points[6].setX(turningPointRight);
-        points[6].setY(turningPointHeight);
-        break;
-    case LeftBottom:
-        turningPointHeight = height()*2/9;
-        turningPointLeft = width()*7/9;
-        turningPointRight = width()*6/9;
-        m_dTextStartY = turningPointHeight;
-        points[0].setX(width()-2);
-        points[0].setY(0);
-        points[1].setX(turningPointLeft);
-        points[1].setY(turningPointHeight);
-        points[2].setX(width()-2);
-        points[2].setY(turningPointHeight);
-        points[3].setX(width()-2);
-        points[3].setY(height()-2);
-        points[4].setX(0);
-        points[4].setY(height()-2);
-        points[5].setX(0);
-        points[5].setY(turningPointHeight);
-        points[6].setX(turningPointRight);
-        points[6].setY(turningPointHeight);
-        break;
-    }
-    QColor color(255,255,255);
-    color.setAlpha(200);
-    event->setBrush(color);
-    event->drawConvexPolygon(points,7);
-}
-
-void TipMsgBox::initGeometry(const double &x, const double &y, const double &width, const double &height, TipMsgBox::TipShowDirection dir)
-{
-    this->setHeight(height);
-    this->setWidth(width);
-    switch(dir)
-    {
-    case RightTop:
-        setX(x);
-        setY(y-height);
-        break;
-    case RightBottom:
-        setX(x);
-        setY(y);
-        break;
-    case LeftTop:
-        setX(x-width);
-        setY(y-height);
-        break;
-    case LeftBottom:
-        setX(x-width);
-        setY(y);
-        break;
-    }
 
 }

@@ -256,7 +256,6 @@ void CodeArea::drawNoisyPoint( QPainter *  painter)
   */
 void CodeArea::drawLine( QPainter *  painter)
 {
-    painter->setPen(Qt::black);
     painter->setBrush(Qt::NoBrush);
 
     QPointF startPoint;
@@ -264,7 +263,7 @@ void CodeArea::drawLine( QPainter *  painter)
     if(m_nYLength==0)
         m_nYLength = 10;
     for (int i = 0; i < m_nLineCount; i++){
-        painter->setPen(qrand()%7);
+        painter->setPen(m_lCodeColor[qrand() % m_lCodeColor.size()]);
 
         startPoint.setX(0);
         startPoint.setY(this->height()/2-qrand()%m_nYLength);

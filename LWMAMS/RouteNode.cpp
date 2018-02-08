@@ -251,57 +251,13 @@ void RouteNode::setPParentItem(QQuickPaintedItem *pParentItem)
 
 void RouteNode::showTip()
 {
-    //这个xy是指提示框尖点的坐标，不是起点（左上角）坐标
-    //尖点坐标指的是圆形区域周围的四个点
-    double tipX,tipY;
-    TipMsgBox::TipShowDirection dir;
-    double boxWidth,boxHeight;
-    boxWidth =  200;
-    boxHeight = 180;
-
-    if(x()+boxWidth>m_pParentItem->width()-55)
-    {
-        //右
-        if(y()-boxHeight<0)
-        {
-            //上
-            dir = TipMsgBox::LeftBottom;
-            tipX = x();
-            tipY = y() + this->height();
-        }
-        else //if(y()+boxHeight>m_pParentItem->height())
-        {
-            //下
-            dir = TipMsgBox::LeftTop;
-            tipX = x();
-            tipY = y();
-        }
-    }
-    else
-    {
-        //左
-        if(y()-boxHeight<0)
-        {
-            //上
-            dir = TipMsgBox::RightBottom;
-            tipX = x() + this->width();
-            tipY = y() + this->height();
-        }
-        else
-        {
-            //默认情况，也就是正常情况
-            dir = TipMsgBox::RightTop;
-            tipX = x() + this->width();
-            tipY = y();
-        }
-    }
 
     TipMsgBox::CreateTipMsgBox(m_nID,m_nNodeID,m_sTime,
                                m_dLatitude,m_dLongitude,
                                m_sTemp,m_sPH,m_sTur,
                                tempColor,phColor,turColor,
-                               tipX,tipY,boxWidth,boxHeight,
-                               dir,m_pParentItem);
+                               x()+width()/2,y()+height()/2,200,180,
+                               m_pParentItem);
 
 }
 

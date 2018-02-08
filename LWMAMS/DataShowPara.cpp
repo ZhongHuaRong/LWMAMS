@@ -296,7 +296,7 @@ void DataShowPara::initAll()
     m_bAutoUpdate = true;
 
     //测试用NUM
-    m_nTestNum = 10;
+    m_nTestNum = 20;
 }
 
 /**

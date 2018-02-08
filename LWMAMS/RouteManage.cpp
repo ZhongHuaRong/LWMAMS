@@ -138,43 +138,10 @@ void RouteManage::setNode()
 
 void RouteManage::showTip(const double &x,const double &y)
 {
-    TipMsgBox::TipShowDirection dir;
-    double boxWidth,boxHeight;
-    boxWidth =  150;
-    boxHeight = 70;
-
-    if(x+boxWidth>width())
-    {
-        //右
-        if(y-boxHeight<0)
-        {
-            //上
-            dir = TipMsgBox::LeftBottom;
-        }
-        else //if(y()+boxHeight>m_pParentItem->height())
-        {
-            //下
-            dir = TipMsgBox::LeftTop;
-        }
-    }
-    else
-    {
-        //左
-        if(y-boxHeight<0)
-        {
-            //上
-            dir = TipMsgBox::RightBottom;
-        }
-        else
-        {
-            //默认情况，也就是正常情况
-            dir = TipMsgBox::RightTop;
-        }
-    }
     double lon,lat;
     lon = (x*(m_dLatMax-m_dLatMin))/width() + m_dLatMin;
     lat = ((height()-y)*(m_dLongMax-m_dLongMin))/height() +m_dLongMin;
-    TipMsgBox::CreateTipMsgBox(x,y,lon,lat,boxWidth,boxHeight,dir,this);
+    TipMsgBox::CreateTipMsgBox(x,y,lon,lat,150,70,this);
 }
 
 double RouteManage::dLongMax() const

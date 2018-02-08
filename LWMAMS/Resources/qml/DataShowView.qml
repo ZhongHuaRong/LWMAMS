@@ -2,6 +2,7 @@ import QtQuick 2.0
 import QtQuick.Controls 1.4
 import an.qt.DataShowPara 1.0
 import an.qt.ChartViewData 1.0
+import an.qt.TipMsgChart 1.0
 
 Item {
     id: item
@@ -22,6 +23,7 @@ Item {
 
     function setData(list){
         var updateFlag=data.setData(list);
+        console.debug(updateFlag)
         if(para.getEChartType() ==DataShowPara.Table){
             //添加表格数据
             tableView.setData(updateFlag,data)
@@ -42,8 +44,9 @@ Item {
             chartView.setData(0,para.getEDataType(),para.getEChartType())
         }
 
-        if(type==-1)
-            return;
+        if(type!=-1){
+            chartView.setData(-1,para.getEDataType(),para.getEChartType())
+        }
     }
 
     function setTableCaveatValue(){
@@ -87,6 +90,15 @@ Item {
         anchors.rightMargin: 1
         data:data
         visible: false
+        onShowTip: tip.showMsg(x+chartView.x,y+chartView.y,width,height,xValue,yValue)
+        onHideTip: tip.hideMsg()
+    }
+
+    //这个放在ChartView同一层会无法显示(paint函数没有调用)
+    //所以放在ChartView的上一层，然后将point映射(xy各加chartView的xy)到chartView的位置
+    TipMsgChart{
+        id:tip
+        parent:item
     }
 
     DataShowTableView{

@@ -22,7 +22,9 @@ SOURCES += ./main.cpp \
     $$PWD/TipMsgBox.cpp \
     $$PWD/TableData.cpp \
     $$PWD/ChartViewData.cpp \
-    $$PWD/DateData.cpp
+    $$PWD/DateData.cpp \
+    $$PWD/TipMsgRect.cpp \
+    $$PWD/TipMsgChart.cpp
 RESOURCES += qml.qrc
 
 HEADERS += \
@@ -40,4 +42,6 @@ HEADERS += \
     $$PWD/TipMsgBox.h \
     $$PWD/TableData.h \
     $$PWD/ChartViewData.h \
-    $$PWD/DateData.h
+    $$PWD/DateData.h \
+    $$PWD/TipMsgRect.h \
+    $$PWD/TipMsgChart.h

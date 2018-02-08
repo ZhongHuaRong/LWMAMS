@@ -2,7 +2,7 @@
 #include <QDebug>
 
 //#define SERVERIP "119.29.243.183"
-#define SERVERIP "192.168.31.112"
+#define SERVERIP "192.168.31.113"
 #define SERVERPOST 48428
 
 TcpClient::TcpClient(QObject *parent) : QObject(parent)

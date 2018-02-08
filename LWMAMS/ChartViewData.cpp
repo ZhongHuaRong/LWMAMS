@@ -1,4 +1,6 @@
 #include "ChartViewData.h"
+#include <QDebug>
+#include <QDateTime>
 
 ChartViewData::ChartViewData(QObject *parent) : QObject(parent)
 {
@@ -35,7 +37,9 @@ int ChartViewData::setData(const QList<QStringList> &data)
     {
         if(m_lData.first().first() == data.first().first()&&
                 m_lData.last().first() ==data.last().first())
+        {
             return -1;
+        }
 
         if(m_lData.first().first()==data.at(1).first()&&
                 m_lData.at(m_lData.length()-2).first() == data.last().first())
@@ -44,6 +48,10 @@ int ChartViewData::setData(const QList<QStringList> &data)
             m_lData.removeLast();
             return 1;
         }
+
+        m_lData.clear();
+        m_lData = data;
+        return 0;
     }
     else
     {
@@ -72,5 +80,8 @@ QVariant ChartViewData::data(const int &row, const int &column)
     const QStringList &list = m_lData.at(row);
     if(list.length()<=column)
         return QVariant();
+
+    if(column==1)
+        return QDateTime::fromString(list.at(column),"yyyy-MM-dd hh:mm:ss");
     return QVariant(list.at(column));
 }

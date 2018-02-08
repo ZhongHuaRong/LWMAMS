@@ -13,6 +13,7 @@
 #include "TableData.h"
 #include "DateData.h"
 #include "ChartViewData.h"
+#include "TipMsgChart.h"
 
 int main(int argc, char *argv[])
 {
@@ -37,6 +38,8 @@ int main(int argc, char *argv[])
     qmlRegisterType<TableData>("an.qt.TableData", 1, 0, "TableData");
     qmlRegisterType<ChartViewData>("an.qt.ChartViewData", 1, 0, "ChartViewData");
     qmlRegisterType<DateData>("an.qt.DateData", 1, 0, "DateData");
+    qmlRegisterType<TipMsgChart>("an.qt.TipMsgChart", 1, 0, "TipMsgChart");
+
 
     QQmlApplicationEngine engine;
     engine.load(QUrl(QStringLiteral("../LWMAMS/Resources/qml/main.qml")));

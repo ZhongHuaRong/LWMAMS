@@ -63,14 +63,6 @@ CScrollView{
                 para.setChartType(DataShowPara.LineSeriesChart);
                 view.typeChanged(-1,DataShowPara.LineSeriesChart);
                 break;
-            case barButton:
-                para.setChartType(DataShowPara.BarChart);
-                view.typeChanged(-1,DataShowPara.BarChart);
-                break;
-            case pieButton:
-                para.setChartType(DataShowPara.PieChart);
-                view.typeChanged(-1,DataShowPara.PieChart);
-                break;
             }
         }
     }
@@ -82,8 +74,49 @@ CScrollView{
         height:1100
 
         TelescopicRectangle{
-            id:dataType
+            id:chartType
             anchors.top: parent.top
+            anchors.topMargin: 0
+            anchors.left: parent.left
+            anchors.leftMargin: 0
+            anchors.right: parent.right
+            anchors.rightMargin: 0
+            height:100
+            headerText: "图像类型"
+
+            Flow{
+                anchors.top: parent.top
+                anchors.topMargin: dataType.headerHeidht
+                anchors.bottom: parent.bottom
+                anchors.bottomMargin: 0
+                anchors.left: parent.left
+                anchors.leftMargin: 0
+                anchors.right: parent.right
+                anchors.rightMargin: 0
+                spacing:15
+                padding:10
+
+                PushButton {
+                    id: tableButton
+                    text:"表格"
+                    pixelSize: 16
+                    checkable:true
+                    group:chartTypeGroup
+
+                }
+                PushButton {
+                    id: lineSeriesButton
+                    text:"曲线图"
+                    pixelSize: 16
+                    checkable:true
+                    group:chartTypeGroup
+                }
+            }
+        }
+
+        TelescopicRectangle{
+            id:dataType
+            anchors.top: chartType.bottom
             anchors.topMargin: 0
             anchors.left: parent.left
             anchors.leftMargin: 0
@@ -142,67 +175,8 @@ CScrollView{
         }
 
         TelescopicRectangle{
-            id:chartType
-            anchors.top: dataType.bottom
-            anchors.topMargin: 0
-            anchors.left: parent.left
-            anchors.leftMargin: 0
-            anchors.right: parent.right
-            anchors.rightMargin: 0
-            height:150
-            headerText: "图像类型"
-
-            Flow{
-                anchors.top: parent.top
-                anchors.topMargin: dataType.headerHeidht
-                anchors.bottom: parent.bottom
-                anchors.bottomMargin: 0
-                anchors.left: parent.left
-                anchors.leftMargin: 0
-                anchors.right: parent.right
-                anchors.rightMargin: 0
-                spacing:15
-                padding:10
-
-                PushButton {
-                    id: tableButton
-                    text:"表格"
-                    pixelSize: 16
-                    checkable:true
-                    group:chartTypeGroup
-
-                }
-                PushButton {
-                    id: lineSeriesButton
-                    text:"曲线图"
-                    pixelSize: 16
-                    checkable:true
-                    group:chartTypeGroup
-                }
-
-                PushButton {
-                    id: barButton
-                    text:"条形图"
-                    pixelSize: 16
-                    checkable:true
-                    group:chartTypeGroup
-
-                }
-
-                PushButton {
-                    id: pieButton
-                    text:"圆饼图"
-                    pixelSize: 16
-                    checkable:true
-                    group:chartTypeGroup
-
-                }
-            }
-        }
-
-        TelescopicRectangle{
             id:warningRange
-            anchors.top: chartType.bottom
+            anchors.top: dataType.bottom
             anchors.topMargin: 0
             anchors.left: parent.left
             anchors.leftMargin: 0
