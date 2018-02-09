@@ -38,6 +38,18 @@ void TableData::setData(const QList<QStringList> &datalist)
             m_qList.removeLast();
             return;
         }
+
+        m_qList.clear();
+        m_qList = datalist;
+        return;
+    }
+    else
+    {
+        //数据量不相等的时候只需判断有多少连续数据相同，其他情况一律全更新
+        //暂时不优化
+        m_qList.clear();
+        m_qList = datalist;
+        return;
     }
 }
 

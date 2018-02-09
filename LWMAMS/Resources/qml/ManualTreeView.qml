@@ -1,14 +1,13 @@
 import QtQuick 2.0
 import QtQuick.Controls 1.4
 import an.qt.TreeModel 1.0
-import an.qt.TreeItem 1.0
 
 Item {
 
     signal itemDoubleClicked(var row,var parentRow);
 
     function addFirstTitle(data){
-        return model.appendChild(data);
+        return model.appendChild(data,-1);
     }
 
     function addSecondTitle(data,parent){
@@ -17,6 +16,10 @@ Item {
 
     function deleteAll(){
         model.deleteAll();
+    }
+
+    function update(){
+        model.resetModel()
     }
 
     TreeModel{
@@ -80,35 +83,7 @@ Item {
             }
         }
         onDoubleClicked: {
-            console.debug("index:",index)
-            console.debug("vaild",model.itemIsVaild(index))
             itemDoubleClicked(model.itemRow(index),model.itemRow(model.parent(index)));
         }
-
-//        property bool isCollapse: true
-//        onDoubleClicked: {
-//            console.log("onClicked:", index)
-//            console.log("isExpanded:",isExpanded(index))
-//            if (isCollapse)
-//            {
-//                console.log("expand")
-//                emit: view.expand(index);
-//                isCollapse = false;
-//            }
-//            else
-//            {
-//                console.log("collapse")
-//                emit: view.collapse(index);
-//                isCollapse = true;
-//            }
-//            /*if (isExpanded(index))
-//            {
-//                collapse(index);
-//            }
-//            else
-//            {
-//                expand(index);
-//            }*/
-//        }
     }
 }

@@ -23,7 +23,7 @@ ChartView {
     property color phColor: "#3EF540"
     property color turColor: "#FCD53F"
 
-    function setData(updateFlag,type,chartType){
+    function setData(updateFlag,type){
         if(updateFlag==-1||data.rowCount()<=0){
             showSeries(type)
             return;
@@ -66,10 +66,6 @@ ChartView {
             turSeries.remove(0)
 
         }
-
-
-        if(type==chart.dataType)
-            return;
     }
 
     function getSeriesType(chartType){
@@ -81,10 +77,6 @@ ChartView {
         case DataShowPara.PieChart:
             return 0;
         }
-    }
-
-    function updateDataType(type,chartType){
-        //
     }
 
     function addSeries(){
@@ -122,6 +114,8 @@ ChartView {
     }
 
     function showSeries(dataType){
+        if(chart.dataType==dataType)
+            return;
         hideSeries(chart.dataType)
 
         chart.dataType = dataType
@@ -139,22 +133,22 @@ ChartView {
         case DataShowPara.Temperature:
         {
             tempSeries.visible = true
-            yAxis.min = 0;
-            yAxis.max = 40;
+            yAxis.min = data.tempMin()-2.5;
+            yAxis.max = data.tempMax()+2.5;
             break;
         }
         case DataShowPara.PH:
         {
             phSeries.visible = true
-            yAxis.min = 0;
-            yAxis.max = 14;
+            yAxis.min = data.phMin()-0.5;
+            yAxis.max = data.phMax()+0.5;
             break;
         }
         case DataShowPara.Turbidity:
         {
             turSeries.visible = true
-            yAxis.min = 0;
-            yAxis.max = 180;
+            yAxis.min = data.turMin()-10;
+            yAxis.max = data.turMax()+10;
             break;
         }
         }

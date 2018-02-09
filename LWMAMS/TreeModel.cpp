@@ -5,14 +5,6 @@ TreeModel::TreeModel(QObject *parent)
     : QAbstractItemModel(parent),
       m_rootItem(new TreeItem)
 {
-//    TreeItem *item=new TreeItem({"1","yangyu","20"},m_rootItem);
-//    TreeItem *item2=new TreeItem({"12","2qwe","330"},item);
-//    item=new TreeItem({"2","qwe","30"},m_rootItem);
-//    item2=new TreeItem();
-//    item2->setData("12",0);
-//    item2->setData("453",1);
-//    item2->setData("789",2);
-//    item2->setParent(item);
 
 }
 
@@ -41,12 +33,6 @@ QVariant TreeModel::headerData(int section, Qt::Orientation orientation, int rol
 
 QModelIndex TreeModel::index(int row, int column, const QModelIndex &parent) const
 {
-//    qDebug()<<"index";
-//    qDebug()<<"row:"<<row<<",column:"<<column;
-//    if (!parent.isValid())
-//        qDebug()<<"m_rootItem";
-//    else
-//        qDebug()<<static_cast<TreeItem*>(parent.internalPointer())->data(column);
     // FIXME: Implement me!
     if (!hasIndex(row, column, parent))
     {
@@ -156,25 +142,6 @@ QVariant TreeModel::data(const QModelIndex &index, int role) const
 	return QVariant();
 }
 
-void TreeModel::appendChild(const QModelIndex &index,const QModelIndex &parent)
-{
-    TreeItem *parentItem;
-    if (!parent.isValid())
-    {
-        parentItem = m_rootItem;
-    }
-    else
-    {
-        parentItem = static_cast<TreeItem*>(parent.internalPointer());
-    }
-
-    TreeItem *childItem = static_cast<TreeItem*>(index.internalPointer());
-    if (childItem)
-    {
-        return parentItem->appendChild(childItem);
-    }
-}
-
 bool TreeModel::setData(const QModelIndex &index, const QVariant &value, int role)
 {
     if (!index.isValid())
@@ -213,14 +180,16 @@ TreeItem *TreeModel::rootItem() const
     return m_rootItem;
 }
 
-TreeItem * TreeModel::appendChild(const QList<QVariant> &data, TreeItem *parent)
+TreeItem * TreeModel::appendChild(const QVariantList &data, TreeItem *parent)
 {
-    beginResetModel();
-    if(parent ==nullptr)
+    if(!parent)
         parent = m_rootItem;
-    TreeItem *item =new TreeItem(data,parent);
-    endResetModel();
-    return item;
+    return new TreeItem(data,parent);
+}
+
+void TreeModel::appendChild(const QVariantList &data,int parentRow)
+{
+    appendChild(data,parentRow<0?m_rootItem:m_rootItem->child(parentRow));
 }
 
 void TreeModel::deleteAll()
@@ -228,9 +197,10 @@ void TreeModel::deleteAll()
     m_rootItem->deleteAllChild();
 }
 
-bool TreeModel::itemIsVaild(const QModelIndex &index)
+void TreeModel::resetModel()
 {
-    return index.isValid();
+    beginResetModel();
+    endResetModel();
 }
 
 int TreeModel::itemRow(const QModelIndex &index)

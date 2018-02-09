@@ -29,7 +29,7 @@ Item {
             tableView.setData(updateFlag,data)
         }
         else//添加图表
-            chartView.setData(updateFlag,para.getEDataType(),para.getEChartType())
+            chartView.setData(updateFlag,para.getEDataType())
     }
 
     function changeViewType(type,chartType){
@@ -41,11 +41,11 @@ Item {
         else if(chartType!=-1){
             chartView.visible = true;
             tableView.visible = false;
-            chartView.setData(0,para.getEDataType(),para.getEChartType())
+            chartView.setData(0,para.getEDataType())
         }
 
         if(type!=-1){
-            chartView.setData(-1,para.getEDataType(),para.getEChartType())
+            chartView.setData(-1,para.getEDataType())
         }
     }
 

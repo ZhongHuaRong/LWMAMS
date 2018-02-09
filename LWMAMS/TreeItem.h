@@ -7,30 +7,30 @@
 #include <QModelIndex>
 
 
-class TreeItem :public QObject
+class TreeItem
 {
-    Q_OBJECT
 public:
-    TreeItem::TreeItem();
-    TreeItem(const QList<QVariant> &data, TreeItem* parent);
-    //TreeItem(const QVariant &data, TreeItem* parent);
+    explicit TreeItem(TreeItem *parent = nullptr);
+    TreeItem(const QVariantList& data,TreeItem *parent = nullptr);
     ~TreeItem();
 
-
-    Q_INVOKABLE void appendChild(TreeItem *child);
-    Q_INVOKABLE void appendChild(const QList<QVariant> &data);
+    void appendChild(TreeItem *child);
     TreeItem * removeChild(TreeItem *item);
     void deleteAllChild();
 
-
     TreeItem *child(int row);
+    int index(TreeItem *child);
+
     int childCount() const;
     int columnCount() const;
-    Q_INVOKABLE QVariant data(int column) const;
-    bool setData(QVariant data,int column);
     int row() const;
+
+    QVariant data(int column) const;
+    bool setData(QVariant data,int column);
+
     TreeItem *parent();
     void setParent(TreeItem *parent);
+
 private:
     TreeItem *m_parentItem;
     QList<TreeItem*> m_childItems;

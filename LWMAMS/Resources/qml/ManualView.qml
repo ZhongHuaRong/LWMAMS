@@ -4,13 +4,8 @@ import an.qt.Manual 1.0
 Rectangle {
     id:manualView
     color:"#ffffff"
-    property var manual: 0
-    property var firstTitleObject: []
 
     Component.onCompleted: {
-        return;
-        manual = Qt.createQmlObject(
-                    'import an.qt.Manual 1.0; Manual {}', manualView, "dynamicSnippet");
         manual.loadTextOnQML.connect(manualView.addText);
         manual.loadAll.connect(textView.appendAll);
         manual.loadFirstTitle.connect(manualView.addFirstTitle);
@@ -21,7 +16,7 @@ Rectangle {
         pageFilter.changedOnePage.connect(manual.changedOnepage);
         pageFilter.changedAllPage.connect(manual.changedToLastPage);
 
-        deleteAllTitle();
+        treeView.deleteAll()
         manual.startFindDirectory("养鱼手册.txt");
     }
 
@@ -29,7 +24,6 @@ Rectangle {
         var object;
         for(var a=0;a<manual.titleSize(Manual.FirstTitle);a++){
             object=treeView.addFirstTitle(manual.firstTitleData(a));
-            firstTitleObject.push(object);
         }
     }
 
@@ -37,14 +31,10 @@ Rectangle {
 
         for(var a=0;a<manual.titleSize(Manual.FirstTitle);a++)
             for(var b=0;b<manual.titleSize(Manual.SecondTitle,a);b++){
-                treeView.addSecondTitle(manual.secondTitleData(b,a),firstTitleObject[a]);
+                treeView.addSecondTitle(manual.secondTitleData(b,a),a);
             }
-    }
 
-    function deleteAllTitle(){
-        treeView.deleteAll();
-        while(firstTitleObject.length>0)
-            firstTitleObject.pop();
+        treeView.update();
     }
 
     function addText(list,isFirst){
@@ -92,5 +82,9 @@ Rectangle {
         anchors.leftMargin: 0
         anchors.top: parent.top
         anchors.topMargin: 0
+    }
+
+    Manual{
+        id:manual
     }
 }

@@ -32,14 +32,15 @@ public:
 
     QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
 
-    void appendChild(const QModelIndex &index,const QModelIndex &parent = QModelIndex());
     bool setData(const QModelIndex &index, const QVariant &value, int role)override;
     QHash<int, QByteArray> roleNames() const;
 
-    Q_INVOKABLE TreeItem * rootItem() const;
-    Q_INVOKABLE TreeItem * appendChild(const QList<QVariant> &data,TreeItem *parent = nullptr);
+    TreeItem * rootItem() const;
+    TreeItem * appendChild(const QVariantList &data,TreeItem *parent);
+
+    Q_INVOKABLE void appendChild(const QVariantList &data,int parentRow);
     Q_INVOKABLE void deleteAll();
-    Q_INVOKABLE bool itemIsVaild(const QModelIndex& index);
+    Q_INVOKABLE void resetModel();
     Q_INVOKABLE int  itemRow(const QModelIndex& index);
 
 private:

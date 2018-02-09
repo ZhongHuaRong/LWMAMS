@@ -1,44 +1,32 @@
 #include "TreeItem.h"
 #include <QDebug>
 
-TreeItem::TreeItem() :m_parentItem(nullptr)
-{
-}
-
-TreeItem::TreeItem(const QList<QVariant> &data, TreeItem* parent) : m_parentItem(nullptr)
+TreeItem::TreeItem(TreeItem *parent):
+    m_parentItem(parent)
 {
     if(parent)
-    {
-        this->setParent(parent);
-    }
-
-    m_itemData = data;
+        parent->appendChild(this);
 }
 
-//TreeItem::TreeItem(const QVariant &data, TreeItem* parent)
-//{
-//    m_parentItem = parent;
-//    m_itemData.append(data);
-//}
+TreeItem::TreeItem(const QList<QVariant> &data, TreeItem* parent)
+    : m_parentItem(parent)
+{
+    if(parent)
+        parent->appendChild(this);
+    m_itemData = data;
+}
 
 TreeItem::~TreeItem()
 {
     qDeleteAll(m_childItems);
+    m_childItems.clear();
 }
 
 void TreeItem::appendChild(TreeItem *item)
 {
+    if(m_childItems.indexOf(item)==-1)
+        m_childItems.append(item);
     item->setParent(this);
-    m_childItems.append(item);
-}
-
-void TreeItem::appendChild(const QList<QVariant> &data)
-{
-    TreeItem *item =new TreeItem();
-    item->setParent(this);
-    m_childItems.append(item);
-    for(int a=0;a<data.length();a++)
-        item->setData(data.at(a),a);
 }
 
 TreeItem * TreeItem::removeChild(TreeItem *item)
@@ -63,31 +51,33 @@ void TreeItem::deleteAllChild()
 
 TreeItem *TreeItem::child(int row)
 {
-    return m_childItems.value(row);
+    return row<m_childItems.length()?m_childItems.at(row):nullptr;
 }
+
 int TreeItem::childCount() const
 {
     return m_childItems.count();
 }
+
 int TreeItem::columnCount() const
 {
     return m_itemData.count();
     //return 1;
 }
+
 QVariant TreeItem::data(int column) const
 {
-    if(column>m_itemData.length())
-        return 0;
-    else
-        return m_itemData .value(column);
+    return column<m_itemData.length()?m_itemData.at(column):QVariant();
 }
 
 bool TreeItem::setData(QVariant data,int column)
 {
-    if(m_itemData.length()-1<column)
-        m_itemData.insert(column,data);
-    else
-        m_itemData.replace(column,data);
+    while(m_itemData.length()>column)
+    {
+        m_itemData.append(QVariant());
+    }
+    m_itemData.replace(column,data);
+
     return true;
 }
 
@@ -98,22 +88,9 @@ TreeItem *TreeItem::parent()
 
 void TreeItem::setParent(TreeItem *parent)
 {
-    if(parent==nullptr)
-    {
-        return;
-    }
-    if(parent==m_parentItem)
-        return;
-    //先移除自己的父亲
-    if(m_parentItem!=nullptr)
-    {
-        m_parentItem->removeChild(this);
-    }
-    m_parentItem = parent;
-    m_parentItem->appendChild(this);
-
-
+    this->m_parentItem = parent;
 }
+
 int TreeItem::row() const
 {
     if (!m_parentItem) { return 0; }
