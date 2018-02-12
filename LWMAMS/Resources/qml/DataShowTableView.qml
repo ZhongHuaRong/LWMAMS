@@ -36,8 +36,8 @@ TableView {
         model.insert(0,{
                          "id": data.data(0,0),
                          "time": data.data(0,1),
-                         "lat": data.data(0,2),
-                         "lon": data.data(0,3),
+                         "lon": data.data(0,2),
+                         "lat": data.data(0,3),
                          "tem": data.data(0,4),
                          "ph": data.data(0,5),
                          "tur": data.data(0,6)
@@ -52,8 +52,8 @@ TableView {
             model.append({
                              "id": data.data(i,0),
                              "time": data.data(i,1),
-                             "lat": data.data(i,2),
-                             "lon": data.data(i,3),
+                             "lon": data.data(i,2),
+                             "lat": data.data(i,3),
                              "tem": data.data(i,4),
                              "ph": data.data(i,5),
                              "tur": data.data(i,6)
@@ -65,16 +65,16 @@ TableView {
     function getColor(column,value){
         switch(column){
         case 2:
-            if(value<latMin)
+            if(value<lonMin)
                 return colorList[0];
-            else if(value >latMax)
+            else if(value >lonMax)
                 return colorList[4];
             else
                 return colorList[2];
         case 3:
-            if(value<lonMin)
+            if(value<latMin)
                 return colorList[0];
-            else if(value >lonMax)
+            else if(value >latMax)
                 return colorList[4];
             else
                 return colorList[2];
@@ -127,11 +127,11 @@ TableView {
     }
     TableViewColumn {
         title: "经度"
-        role: "lat"
+        role: "lon"
     }
     TableViewColumn {
         title: "纬度"
-        role: "lon"
+        role: "lat"
     }
     TableViewColumn {
         title: "温度"

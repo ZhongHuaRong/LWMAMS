@@ -36,10 +36,8 @@
         <file>Resources/route.png</file>
         <file>Resources/video.png</file>
         <file>Resources/home.png</file>
-        <file>Resources/dataShow.png</file>
         <file>Resources/control.png</file>
         <file>Resources/manual.png</file>
-        <file>Resources/analysis.png</file>
         <file>Resources/qml/MainPages.qml</file>
         <file>Resources/homeBackground.jpg</file>
         <file>Resources/qml/DataShow_ParaListView.qml</file>
@@ -59,7 +57,6 @@
         <file>Resources/qml/RouteView.qml</file>
         <file>Resources/qml/PageFilter.qml</file>
         <file>Resources/qml/ControlView.qml</file>
-        <file>Resources/qml/AnalysisView.qml</file>
         <file>Resources/qml/ManualView.qml</file>
         <file>Resources/qml/VideoView.qml</file>
         <file>Resources/qml/ManualTreeView.qml</file>
@@ -71,5 +68,8 @@
         <file>Resources/qml/ControlTableView.qml</file>
         <file>Resources/qml/ControlParaListView.qml</file>
         <file>Resources/qml/DataShowTableView.qml</file>
+        <file>Resources/dataShow.png</file>
+        <file>Resources/statistics.png</file>
+        <file>Resources/qml/StatisticsView.qml</file>
     </qresource>
 </RCC>

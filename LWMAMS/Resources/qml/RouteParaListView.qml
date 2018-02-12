@@ -47,7 +47,7 @@ CScrollView{
 
                 Text{
                     id: latitudeText
-                    text: "经度范围"
+                    text: "纬度范围"
                     font.pixelSize: 16
                     color: "#445266"
                     font.family: "微软雅黑"
@@ -100,7 +100,7 @@ CScrollView{
 
                 Text{
                     id: longitudeText
-                    text: "纬度范围"
+                    text: "经度范围"
                     font.pixelSize: 16
                     color: "#445266"
                     font.family: "微软雅黑"

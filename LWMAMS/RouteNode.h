@@ -3,7 +3,6 @@
 
 #include <QObject>
 #include <QQuickPaintedItem>
-#include <QPainterPath>
 #include "TipMsgBox.h"
 
 class RouteNode : public QQuickPaintedItem

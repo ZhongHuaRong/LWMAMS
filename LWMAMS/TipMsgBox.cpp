@@ -100,10 +100,10 @@ void TipMsgBox::paint(QPainter *event)
                         QString::fromLocal8Bit("时间: %1").arg(m_sTime));
         m_dTextStartY+=textSpacint;
         event->drawText(QRect(0,m_dTextStartY,width(),textSpacint),Qt::AlignCenter,
-                        QString::fromLocal8Bit("经度: %1").arg(QString::number(m_dLatitude)));
+                        QString::fromLocal8Bit("纬度: %1").arg(QString::number(m_dLatitude,'g',10)));
         m_dTextStartY+=textSpacint;
         event->drawText(QRect(0,m_dTextStartY,width(),textSpacint),Qt::AlignCenter,
-                        QString::fromLocal8Bit("纬度: %1").arg(QString::number(m_dLongitude)));
+                        QString::fromLocal8Bit("经度: %1").arg(QString::number(m_dLongitude,'g',10)));
         m_dTextStartY+=textSpacint;
         event->setPen(m_qTempColor);
         event->drawText(QRect(0,m_dTextStartY,width(),textSpacint),Qt::AlignCenter,
@@ -122,10 +122,10 @@ void TipMsgBox::paint(QPainter *event)
     {
         m_dTextStartY+=10;
         event->drawText(QRect(0,m_dTextStartY,width(),textSpacint),Qt::AlignCenter,
-                        QString::fromLocal8Bit("经度: %1").arg(QString::number(m_dLatitude,'g',10)));
+                        QString::fromLocal8Bit("纬度: %1").arg(QString::number(m_dLatitude,'g',10)));
         m_dTextStartY+=textSpacint;
         event->drawText(QRect(0,m_dTextStartY,width(),textSpacint),Qt::AlignCenter,
-                        QString::fromLocal8Bit("纬度: %1").arg(QString::number(m_dLongitude,'g',10)));
+                        QString::fromLocal8Bit("经度: %1").arg(QString::number(m_dLongitude,'g',10)));
         break;
     }
     }

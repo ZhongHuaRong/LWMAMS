@@ -4,9 +4,9 @@
 #include <QRadialGradient>
 #include <QTimer>
 
-#define WIDTH qreal(35)
-#define HEIGHT qreal(35)
-#define FONTSIZE 20
+#define WIDTH qreal(25)
+#define HEIGHT qreal(25)
+#define FONTSIZE 16
 
 RouteNode::RouteNode(const QString & id,int nodeID,const QString &time,
                      double latitude, double longitude,

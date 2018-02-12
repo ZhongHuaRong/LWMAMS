@@ -143,10 +143,11 @@ Item {
 
         VideoView{
             id:page_five
+            para:para
 
         }
 
-        AnalysisView{
+        StatisticsView{
             id:page_six
             para:para
         }

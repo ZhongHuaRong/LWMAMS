@@ -27,7 +27,7 @@ Rectangle {
             case video:
                 rect.currentIndexChanged(5);
                 break;
-            case analysis:
+            case statistics:
                 rect.currentIndexChanged(6);
                 break;
             case feeding:
@@ -83,9 +83,9 @@ Rectangle {
             group:group
         }
         ToolButton{
-            id:analysis
-            text:"异常分析"
-            imageUrl:"qrc:/Resources/analysis.png"
+            id:statistics
+            text:"数据统计"
+            imageUrl:"qrc:/Resources/statistics.png"
             checkable:true
             group:group
         }

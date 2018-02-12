@@ -247,6 +247,9 @@ void DataShowPara::initAll()
     //Control参数
     m_sControlIP = settings.value("ControlIP").toString();
 
+    //Video参数
+    m_sVideoIP = settings.value("VideoIP").toString();
+
     //Page参数
     m_npageRowCount = settings.value("PageRowCount").toInt();
     settings.endGroup();
@@ -273,17 +276,21 @@ void DataShowPara::initAll()
 
     //Route参数
     if(m_sLatitudeMax.isEmpty())
-        m_sLatitudeMax = "113.48754";
+        m_sLatitudeMax = "23.45291";
     if(m_sLatitudeMin.isEmpty())
-        m_sLatitudeMin = "113.48732";
+        m_sLatitudeMin = "23.45268";
     if(m_sLongitudeMax.isEmpty())
-        m_sLongitudeMax = "23.45291";
+        m_sLongitudeMax = "113.48754";
     if(m_sLongitudeMin.isEmpty())
-        m_sLongitudeMin = "23.45268";
+        m_sLongitudeMin = "113.48732";
 
     //Control参数
     if(m_sControlIP.isEmpty())
         m_sControlIP = QStringLiteral("192.168.0.203");
+
+    //Video参数
+    if(m_sVideoIP.isEmpty())
+        m_sVideoIP = QStringLiteral("192.168.0.103");
 
     //页面参数
     m_nPageNum = -1;
@@ -322,6 +329,8 @@ void DataShowPara::saveAll()
 
     settings.setValue("ControlIP",m_sControlIP);
 
+    settings.setValue("VideoIP",m_sVideoIP);
+
     settings.setValue("PageRowCount",m_npageRowCount);
     settings.endGroup();
 }
@@ -342,6 +351,16 @@ void DataShowPara::sendPara()
 void DataShowPara::timerTimeOut()
 {
     sendPara();
+}
+
+QString DataShowPara::getSVideoIP() const
+{
+    return m_sVideoIP;
+}
+
+void DataShowPara::setSVideoIP(const QString &sVideoIP)
+{
+    m_sVideoIP = sVideoIP;
 }
 
 QString DataShowPara::getSControlIP() const

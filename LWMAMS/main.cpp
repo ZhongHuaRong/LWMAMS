@@ -1,6 +1,7 @@
 ﻿#include <QApplication>
 #include <QQmlApplicationEngine>
 #include <QSettings>
+#include <QtWebEngine>
 #include "CodeArea.h"
 #include "DataShowPara.h"
 #include "Manual.h"
@@ -21,6 +22,8 @@ int main(int argc, char *argv[])
     qApp->setApplicationName("LWMAMS");
     qApp->setOrganizationName("ZM");
     //qApp->setQuitOnLastWindowClosed(false);
+
+    QtWebEngine::initialize();
 
 	//注册，使C++类在qml中使用
     qRegisterMetaType<QList<QList<QVariant>>>("QList<QList<QVariant>>");

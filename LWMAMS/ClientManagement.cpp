@@ -157,7 +157,7 @@ void ClientManagement::resultAnalysis(TcpClient::CommandType ct, const QStringLi
     case TcpClient::CT_DATASHOW:
     case TcpClient::CT_ROUTE:
     case TcpClient::CT_CONTROL:
-    case TcpClient::CT_ANALYSIS:
+    case TcpClient::CT_STATISTICS:
     {
         QList<QStringList> list;
         QStringList strList;

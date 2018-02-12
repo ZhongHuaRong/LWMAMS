@@ -27,7 +27,7 @@ public:
         CT_DATASHOW,
         CT_ROUTE,
         CT_CONTROL,
-        CT_ANALYSIS
+        CT_STATISTICS
     };
     Q_ENUM(CommandType)
 

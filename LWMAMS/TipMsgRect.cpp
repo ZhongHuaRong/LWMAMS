@@ -125,7 +125,7 @@ void TipMsgRect::drawBackground(QPainter *event)
         break;
     }
     QColor color(255,255,255);
-    color.setAlpha(200);
+    color.setAlpha(180);
     event->setBrush(color);
     event->drawConvexPolygon(points,7);
 }

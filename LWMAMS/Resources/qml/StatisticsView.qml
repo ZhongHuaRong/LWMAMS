@@ -2,15 +2,15 @@ import QtQuick 2.0
 import an.qt.DataShowPara 1.0
 
 Item {
-    id:analysisView
+    id:statisticsView
 
     property var para: 0
 
     onParaChanged: {
         if(para){
             pageFilter.para=para;
-            analysisView.para.setNPageNum(0);
-            analysisView.para.setBAutoUpdate(true);
+            statisticsView.para.setNPageNum(0);
+            statisticsView.para.setBAutoUpdate(true);
         }
     }
 

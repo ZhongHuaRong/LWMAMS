@@ -109,6 +109,9 @@ public:
     Q_INVOKABLE QString getSControlIP() const;
     Q_INVOKABLE void setSControlIP(const QString &sControlIP);
 
+    Q_INVOKABLE QString getSVideoIP() const;
+    Q_INVOKABLE void setSVideoIP(const QString &sVideoIP);
+
 Q_SIGNALS:
     Q_INVOKABLE void pageNumChanged(int pageNum);
     Q_INVOKABLE void pageMaxNumChanged(int pageMaxNum);
@@ -144,6 +147,7 @@ private:
     QString m_sLongitudeMin;
     QString m_sLongitudeMax;
     QString m_sControlIP;
+    QString m_sVideoIP;
 
     PAGETYPE m_ePageType;
 

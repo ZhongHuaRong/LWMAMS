@@ -43,10 +43,16 @@ private:
     void drawLine(QPainter *paint);
     void setNode();
     void showTip(const double &x,const double &y);
+    double distance(const double &lat1,const double &lon1,
+                    const double &lat2,const double &lon2);
+    double degrees2Radians(const double &degrees);
+    double radians2Degress(const double &radians);
+    double haverSin(const double &radians);
 private:
     const QImage m_cqImage = QImage(":/Resources/route.jpg");
     QList<RouteNode*> nodeList;
     QList<QStringList> nodeMsgList;
+    QList<double> distanceList;
 
     double m_dTempMin;
     double m_dTempMax;

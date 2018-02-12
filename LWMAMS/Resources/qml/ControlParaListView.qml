@@ -167,8 +167,9 @@ CScrollView{
                     font.pixelSize: 20
                     color: "#445266"
                     font.family: "微软雅黑"
-                    height:30
-                    horizontalAlignment :Text.AlignVCenter |Text.AlignHCenter
+                    height:60
+                    width:parent.width-10
+                    wrapMode:Text.Wrap
                 }
 
                 CTextEdit{
