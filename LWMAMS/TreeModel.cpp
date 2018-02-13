@@ -5,7 +5,6 @@ TreeModel::TreeModel(QObject *parent)
     : QAbstractItemModel(parent),
       m_rootItem(new TreeItem)
 {
-
 }
 
 TreeModel::~TreeModel()
@@ -195,6 +194,7 @@ void TreeModel::appendChild(const QVariantList &data,int parentRow)
 void TreeModel::deleteAll()
 {
     m_rootItem->deleteAllChild();
+    resetModel();
 }
 
 void TreeModel::resetModel()

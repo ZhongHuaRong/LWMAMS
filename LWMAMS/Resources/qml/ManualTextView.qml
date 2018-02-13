@@ -4,6 +4,7 @@ import QtQuick.Controls 1.4
 Rectangle {
     id:textView
     color:"#ffffff"
+    border.width: 1
 
     property int currentPosition: 0
 

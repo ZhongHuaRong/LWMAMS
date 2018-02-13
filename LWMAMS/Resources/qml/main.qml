@@ -1,5 +1,6 @@
 import QtQuick 2.8
 import QtQuick.Window 2.2
+import QtQuick.Dialogs 1.2
 import QtGraphicalEffects 1.0
 import an.qt.ClientManagement 1.0
 
@@ -45,6 +46,15 @@ Window {
 
     MsgBoxManagement{
         id:msgBox
+    }
+
+    FileDialog{
+        id:fileDialog
+        title: "Please choose a Manual"
+        visible: false
+        nameFilters: [ "Text files (*.txt )" ]
+        //selectFolder:true
+        selectMultiple:true
     }
 
     Rectangle {

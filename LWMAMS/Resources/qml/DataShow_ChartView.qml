@@ -51,6 +51,7 @@ ChartView {
 
             xAxis.min = data.data(data.rowCount()-1,1)
             xAxis.max = data.data(0,1)
+            changedAxis();
         }
         else{
             //代码这样子排列动画会比较科学一点，先加点然后移动坐标轴再移除第一点
@@ -60,6 +61,7 @@ ChartView {
 
             xAxis.min = data.data(data.rowCount()-1,1)
             xAxis.max = data.data(0,1)
+            changedAxis();
 
             tempSeries.remove(0)
             phSeries.remove(0)
@@ -126,32 +128,25 @@ ChartView {
             tempSeries.visible = true
             phSeries.visible = true
             turSeries.visible = true
-            yAxis.min = 0;
-            yAxis.max = 180;
             break;
         }
         case DataShowPara.Temperature:
         {
             tempSeries.visible = true
-            yAxis.min = data.tempMin()-2.5;
-            yAxis.max = data.tempMax()+2.5;
             break;
         }
         case DataShowPara.PH:
         {
             phSeries.visible = true
-            yAxis.min = data.phMin()-0.5;
-            yAxis.max = data.phMax()+0.5;
             break;
         }
         case DataShowPara.Turbidity:
         {
             turSeries.visible = true
-            yAxis.min = data.turMin()-10;
-            yAxis.max = data.turMax()+10;
             break;
         }
         }
+        changedAxis();
     }
 
     function hideSeries(dataType){
@@ -176,6 +171,35 @@ ChartView {
         case DataShowPara.Turbidity:
         {
             turSeries.visible = false
+            break;
+        }
+        }
+    }
+
+    function changedAxis(){
+        switch(chart.dataType){
+        case DataShowPara.AllData:
+        {
+            yAxis.min = 0;
+            yAxis.max = 180;
+            break;
+        }
+        case DataShowPara.Temperature:
+        {
+            yAxis.min = data.tempMin()-2.5;
+            yAxis.max = data.tempMax()+2.5;
+            break;
+        }
+        case DataShowPara.PH:
+        {
+            yAxis.min = data.phMin()-0.5;
+            yAxis.max = data.phMax()+0.5;
+            break;
+        }
+        case DataShowPara.Turbidity:
+        {
+            yAxis.min = data.turMin()-10;
+            yAxis.max = data.turMax()+10;
             break;
         }
         }

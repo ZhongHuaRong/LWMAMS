@@ -1,6 +1,10 @@
 #include "Manual.h"
 #include <QApplication>
+#include <QDir>
+#include <QFile>
 #include <QDebug>
+#include <QJsonArray>
+#include <QJsonObject>
 
 Manual::Manual(QObject *parent) : QObject(parent)
 {
@@ -8,6 +12,7 @@ Manual::Manual(QObject *parent) : QObject(parent)
 
     QObject::connect(this,&Manual::startLoad,m_pThread,&FileOperatorThread::loadText);
     QObject::connect(this,&Manual::loadTextOnThread,m_pThread,&FileOperatorThread::loadLine);
+    QObject::connect(this,&Manual::removeFile,m_pThread,&FileOperatorThread::deleteFile);
     QObject::connect(m_pThread,&FileOperatorThread::returnLine,this,&Manual::getLine);
     //QObject::connect(m_pThread,&FileOperatorThread::returnAll,this,&Manual::getAll);
     QObject::connect(m_pThread,&FileOperatorThread::returnFirstTitle,this,&Manual::firstTitle);
@@ -289,6 +294,71 @@ void Manual::changedToLastPage(bool isLast)
 }
 
 /**
+  * @函数意义:刷新目录
+  * @作者:ZM
+  * @date 2018-2
+  */
+void Manual::refreshDir()
+{
+    m_lDir.clear();
+
+    QDir dir;
+    dir.cd("Manual");
+
+    foreach(QFileInfo info,dir.entryInfoList()){
+        qDebug()<<info.fileName();
+        if(info.completeSuffix().compare("txt",Qt::CaseInsensitive)==0)
+        {
+            m_lDir.append(info.baseName());
+        }
+    }
+    emit dirFinishRefresh(m_lDir);
+}
+
+/**
+  * @函数意义:自动生成的文件目录按钮被点击，将载入相应的文档
+  * @作者:ZM
+  * @param [in] name
+  *             目录名
+  * @date 2018-2
+  */
+void Manual::dirClicked(const QString &name)
+{
+    startFindDirectory(name+QStringLiteral(".txt"));
+}
+
+/**
+  * @函数意义:删除Manual目录下的一个文件（手册）
+  * @作者:ZM
+  * @param [in] name
+  *             文件名
+  * @date 2018-2
+  */
+void Manual::deleteFile(const QString &name)
+{
+    emit removeFile(name+QStringLiteral(".txt"));
+}
+
+/**
+  * @函数意义:已经选中外置Manual，即将copy到Manual
+  * @作者:ZM
+  * @param [in] var
+  *             FilePath
+  * @date 2018-2
+  */
+void Manual::selectManual(const QVariant &var)
+{
+    QString name = var.toString();
+    name = name.split("///").at(1);
+
+    QDir dir;
+    dir.setCurrent("Manual");
+
+    if(copyFile(name,dir.currentPath()))
+        refreshDir();
+}
+
+/**
   * @函数意义:这是一个私有函数，跳转到某页(章节),通过给出的节点所在行数判断出起始行数和终止行数
   * @作者:ZM
   * @param [in] row
@@ -325,7 +395,7 @@ void Manual::gotoPage(int row, int parentRow)
                 endPage=-1;
         }
     }
-    else if(parentRow>m_lFTitle.length())
+    else if(parentRow>=m_lFTitle.length())
     {
         qDebug()<<"invaild item:(row:"<<row<<",parentRow:"<<parentRow<<")";
         return;
@@ -350,6 +420,46 @@ void Manual::gotoPage(int row, int parentRow)
     }
 
     emit loadTextOnThread(item.at(2).toInt(),endPage);
+}
+
+/**
+  * @函数意义:将源文件移动或复制到目标目录
+  * @作者:ZM
+  * @param [in] sourceFile
+  *             需要操作的文件路径名
+  * @param [in] targetDir
+  *             目标路径
+  * @param [in] isCopy
+  *             是否复制，true复制，false移动，默认true
+  * @return bool
+  *         操作结果
+  * @date 2018-2
+  */
+bool Manual::copyFile(const QString &sourceFile, const QString &targetDir, bool isCopy)
+{
+    QString path = sourceFile.left(sourceFile.lastIndexOf('/'));
+    QString name = sourceFile.right(sourceFile.length() - path.length());
+
+    if(path.compare(targetDir)==0)
+    {
+        qDebug()<<QStringLiteral("Same directory");
+        return false;
+    }
+
+    QFile file(sourceFile);
+    if(!file.exists())
+        return false;
+
+    QDir dir(targetDir);
+    if(!dir.exists())
+        dir.mkdir(targetDir);
+
+    file.copy(dir.currentPath()+name);
+    if(!isCopy)
+    {
+        file.remove();
+    }
+    return true;
 }
 
 

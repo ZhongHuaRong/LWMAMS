@@ -41,10 +41,19 @@ signals:
     void loadAll(const QString & list);
     void loadFirstTitle();
     void loadSecondTitle();
+
+    void dirFinishRefresh(const QList<QString> & dirList);
+    void removeFile(const QString &name);
 public slots:
     void itemDoubleClicked(int row,int parentRow);
     void changedOnepage(bool isNext);
     void changedToLastPage(bool isLast);
+
+    void refreshDir();
+    void dirClicked(const QString &name);
+    void deleteFile(const QString &name);
+
+    void selectManual(const QVariant &var);
 protected slots:
     void getLine(const QStringList &text,bool isFirst);
     void getAll(const QString &text);
@@ -52,6 +61,8 @@ protected slots:
     void secondTitle(const QList<QList<QList<QVariant>>> &data);
 private:
     void gotoPage(int row,int parentRow);
+
+    bool copyFile(const QString &sourceFile,const QString &targetDir,bool isCopy = true);
 private:
     FileOperatorThread *m_pThread;
     QString m_sFileName;
@@ -59,6 +70,8 @@ private:
     QList<QList<QList<QVariant>>> m_lSTitle;
     int currentRow;
     int currentParent;
+
+    QList<QString> m_lDir;
 };
 
 #endif // MANUAL_H

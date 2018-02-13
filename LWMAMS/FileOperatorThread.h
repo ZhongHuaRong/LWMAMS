@@ -27,6 +27,8 @@ public slots:
     void loadText(QString name);
 
     void loadLine(int startRow,int endRow);
+
+    void deleteFile(const QString &fileName);
 private:
     void findFirstTitle();
     void findSecondTitle(int parentNum);

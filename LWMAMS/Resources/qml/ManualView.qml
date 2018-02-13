@@ -7,34 +7,13 @@ Rectangle {
 
     Component.onCompleted: {
         manual.loadTextOnQML.connect(manualView.addText);
-        manual.loadAll.connect(textView.appendAll);
-        manual.loadFirstTitle.connect(manualView.addFirstTitle);
-        manual.loadSecondTitle.connect(manualView.addSecondTitle);
+        //manual.loadAll.connect(paraView.appendAll);
+        manual.loadFirstTitle.connect(paraView.addFirstTitle);
+        manual.loadSecondTitle.connect(paraView.addSecondTitle);
+        manual.dirFinishRefresh.connect(paraView.refreshFinsh)
 
-        treeView.itemDoubleClicked.connect(manual.itemDoubleClicked)
-
-        pageFilter.changedOnePage.connect(manual.changedOnepage);
-        pageFilter.changedAllPage.connect(manual.changedToLastPage);
-
-        treeView.deleteAll()
-        manual.startFindDirectory("养鱼手册.txt");
-    }
-
-    function addFirstTitle(){
-        var object;
-        for(var a=0;a<manual.titleSize(Manual.FirstTitle);a++){
-            object=treeView.addFirstTitle(manual.firstTitleData(a));
-        }
-    }
-
-    function addSecondTitle(){
-
-        for(var a=0;a<manual.titleSize(Manual.FirstTitle);a++)
-            for(var b=0;b<manual.titleSize(Manual.SecondTitle,a);b++){
-                treeView.addSecondTitle(manual.secondTitleData(b,a),a);
-            }
-
-        treeView.update();
+        paraView.textDirDeleteAll()
+        manual.refreshDir();
     }
 
     function addText(list,isFirst){
@@ -50,20 +29,21 @@ Rectangle {
         manual.endLoadText();
     }
 
-    ManualTreeView{
-        id:treeView
+    ManualParaListView{
+        id:paraView
         width: 400
-        anchors.top: pageFilter.bottom
-        anchors.topMargin: 0
         anchors.left: parent.left
         anchors.leftMargin: 0
+        anchors.top: parent.top
+        anchors.topMargin: 0
         anchors.bottom: parent.bottom
         anchors.bottomMargin: 0
+        onRefreshManualDir: manual.refreshDir();
     }
 
     ManualTextView{
         id:textView
-        anchors.left: treeView.right
+        anchors.left: paraView.right
         anchors.leftMargin: 0
         anchors.top: parent.top
         anchors.topMargin: 0
@@ -71,17 +51,6 @@ Rectangle {
         anchors.bottomMargin: 0
         anchors.right: parent.right
         anchors.rightMargin: 0
-    }
-
-    PageFilter {
-        id: pageFilter
-        width: 400
-        height:100
-        isTextPage: true
-        anchors.left: parent.left
-        anchors.leftMargin: 0
-        anchors.top: parent.top
-        anchors.topMargin: 0
     }
 
     Manual{

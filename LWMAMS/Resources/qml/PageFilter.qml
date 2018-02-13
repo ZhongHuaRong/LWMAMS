@@ -53,9 +53,9 @@ TelescopicRectangle{
             spacing: 15
             Text{
                 id: pageText
-                text: "当前页码:"
+                text: "当前页码:";
                 font.pixelSize: 16
-                color: "#445266"
+                color: "#445266";
                 font.family: "微软雅黑"
             }
 
