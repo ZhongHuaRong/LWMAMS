@@ -13,6 +13,7 @@ public:
     ~TableData();
 
     Q_INVOKABLE void setData(const QList<QStringList>& datalist);
+    Q_INVOKABLE void resetData(const QList<QStringList>& datalist);
     Q_INVOKABLE int getDataRow();
     Q_INVOKABLE int getDataColumn();
     Q_INVOKABLE QVariant varData(const int& row,const int& column);

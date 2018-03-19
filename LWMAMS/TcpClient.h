@@ -20,16 +20,27 @@ public:
     enum CommandType{
         CT_SIGNUP = 0x10,
         CT_SIGNUPAUTO,
+        CT_AUTHORIZEDSIGNUP,
+        CT_AUTHORIZEDSIGNUPRESULT,
         CT_USERSLOGINELSEWHERE,
         CT_PARACHECKACCOUNTNUMBER,
-        CT_PARACHECKAPPID,
+        CT_EMAILCODE,
+        CT_CHANGEPASSWORD,
         CT_REGISTERED,
         CT_DATASHOW,
         CT_ROUTE,
         CT_CONTROL,
-        CT_STATISTICS
+        CT_STATISTICS,
+        CT_ANDROIDDATASHOW,
+        CT_SMSEMAILPUSH
     };
     Q_ENUM(CommandType)
+
+    enum Platform{
+        PC = 0x01,
+        Android,
+        NoSet
+    };
 
 public:
     explicit TcpClient(QObject *parent = nullptr);
@@ -47,6 +58,8 @@ public slots:
 private:
     QTcpSocket *m_pSocket;
     QThread *m_pThread;
+
+    QString SERVERIP;
 };
 
 #endif // TCPCLIENT_H

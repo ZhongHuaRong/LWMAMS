@@ -2,6 +2,7 @@
 #include <QQmlApplicationEngine>
 #include <QSettings>
 #include <QtWebEngine>
+#include <QDebug>
 #include "CodeArea.h"
 #include "DataShowPara.h"
 #include "Manual.h"
@@ -14,6 +15,9 @@
 #include "DateData.h"
 #include "ChartViewData.h"
 #include "TipMsgChart.h"
+
+#include <QNetworkAccessManager>
+#include <QtNetwork/QNetworkRequest>
 
 int main(int argc, char *argv[])
 {

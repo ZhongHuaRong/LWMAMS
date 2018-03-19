@@ -13,15 +13,18 @@ Item {
     property string textEdit_userName_text:         "请输入你的名字"
     property string textEdit_pw_text:               "请输入你的密码"
     property string textEdit_againPw_text:          "请确认你的密码"
-    property string textEdit_appID_text:            "请输入你的ID号(可不填)"
+    property string textEdit_MailBox_text:          back.type?"请输入你的邮箱(找回密码)":"请输入验证码"
     property string textEdit_Code_text:             "请输入验证码"
 
     signal closeButtonClicked();
     signal exit();
     signal registered();
+    signal findPW();
     signal checkAccountNumber(string accountNumber);
-    signal checkAppId(string appId);
-    signal checkAll(string account,string appId);
+    signal checkMailBox(string mailBox);
+    signal checkAll();
+    signal sendCodeEmail(string accountNumber);
+    signal checkEmailCode(string code);
 
     function changeCode(){
         codeArea.replaceCodePic();
@@ -40,8 +43,8 @@ Item {
         return textEdit_pw.getText();
     }
 
-    function getTextEdit_appID(){
-        return textEdit_appID.getText();
+    function getTextEdit_MailBox(){
+        return textEdit_MailBox.getText();
     }
 
     function checkCode(){
@@ -50,18 +53,19 @@ Item {
 
     function setAccountNumber(flag){
         textEdit_accountNumber.imageType=flag;
+
+        pushButton_sendEmail.setClickedFlag(flag==1?true:false)
     }
 
-    function setAppID(flag){
-        textEdit_appID.imageType=flag;
+    function setMailBox(flag){
+        textEdit_MailBox.imageType=flag;
     }
 
     function canRegistered(){
-        //
         if(textEdit_accountNumber.imageType==1&&
                 textEdit_Code.imageType==1&&
                 textEdit_againPw.imageType==1&&
-                textEdit_appID.imageType!=-1&&
+                textEdit_MailBox.imageType!=-1&&
                 textEdit_pw.imageType==1&&
                 textEdit_userName.imageType==1)
             return true;
@@ -69,7 +73,23 @@ Item {
             return false;
     }
 
+    function canFindPW(){
+        if(textEdit_accountNumber.imageType==1&&
+                textEdit_againPw.imageType==1&&
+                textEdit_MailBox.imageType==1&&
+                textEdit_pw.imageType==1)
+            return true;
+        else
+            return false;
+    }
+
     function registerError(){
+        msgBox.showWarning(type?"注册":"找回密码","失败");
+        pushButton_sign.resetButton();
+        back.isRegistered =false;
+    }
+
+    function findPWSuccess(){
         pushButton_sign.resetButton();
         back.isRegistered =false;
     }
@@ -145,6 +165,7 @@ Item {
             y: 78
             height:40
             width:282
+            visible: type
             imageUrl: "../username@3x.png"
             placeholderText:back.textEdit_userName_text
             isPW: false
@@ -166,7 +187,6 @@ Item {
             imageUrl: "../passport@3x.png"
             placeholderText:back.textEdit_pw_text
             isPW: true
-            visible: back.type
             textMaxNum:16
             imageType:{
                 if(textEdit_pw.getText().length==0)
@@ -185,7 +205,6 @@ Item {
             imageUrl: "../passport@3x.png"
             placeholderText:back.textEdit_againPw_text
             isPW: true
-            visible: back.type
             textMaxNum:16
             imageType:{
                  if(textEdit_againPw.getText().length>5)
@@ -196,15 +215,40 @@ Item {
         }
 
         TextEditWithShadow {
-            id: textEdit_appID
+            id: textEdit_MailBox
             x: 27
             y: 220
             height:40
-            width:657
-            placeholderText:back.textEdit_appID_text
+            width:317
+            placeholderText:back.textEdit_MailBox_text
             isPW: false
             textMaxNum:64
-            onEditingFinished: back.checkAppId(textEdit_appID.getText());
+            onEditingFinished: {
+                if(type){
+                    back.checkMailBox(textEdit_MailBox.getText());
+                }
+                else{
+                    back.checkEmailCode(textEdit_MailBox.getText());
+                }
+            }
+        }
+
+        CoolDownButton {
+            id: pushButton_sendEmail
+            x: 377
+            y: 220
+            width: 190
+            height: 40
+            border.width: 0
+            radius:4
+            visible: !type
+            pressedColor: "#00BFFF"
+            enteredColor: "#4169E1"
+            exitedColor: "#1E90FF"
+            text: qsTr("获取邮箱验证码")
+            onClicked: {
+                back.sendCodeEmail(textEdit_accountNumber.getText());
+            }
         }
 
         TextEditWithShadow {
@@ -226,16 +270,16 @@ Item {
             y: 397
             width: 196
             height: 40
-            text_save: qsTr("申       请")
+            text_save: qsTr(type?"申       请":"找       回")
             onRun: {
                 if(back.isRegistered){
                     back.isRegistered = false;
                 }
                 else {
                     back.isRegistered = true;
-                    back.checkCode();
-                    back.checkAll(textEdit_accountNumber.getText(),
-                                  back.checkAppId(textEdit_appID.getText()));
+                    if(type)
+                        back.checkCode();
+                    back.checkAll();
                 }
             }
         }

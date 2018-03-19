@@ -10,6 +10,15 @@ Item {
     height:720
     property var client: 0
 
+    onClientChanged: {
+        if(client)
+            client.setPara(para)
+    }
+
+    function setParaUserName(name){
+        para.setSUserName(name)
+    }
+
     function changePage(index){
 
         switch(index){
@@ -40,13 +49,13 @@ Item {
             break;
         case 6:
             stack.replace(page_six);
-            para.setEPageType(DataShowPara.Analysis)
+            page_six.getStatisticsData();
+            para.setEPageType(DataShowPara.Statistics)
             break;
         case 7:
             stack.replace(page_seven);
-            para.setEPageType(DataShowPara.OtherType)
+            para.setEPageType(DataShowPara.Settings)
             break;
-
         }
     }
 
@@ -61,8 +70,9 @@ Item {
         case TcpClient.CT_CONTROL:
             page_four.setData(list);
             break;
-        case TcpClient.CT_ANALYSIS:
-            break;
+        case TcpClient.CT_STATISTICS:
+            page_six.setData(list);
+            return;
         }
         para.setNMaxCount(maxCount);
     }
@@ -83,10 +93,6 @@ Item {
                     break;
                 case DataShowPara.Control:
                     client.getServerData(TcpClient.CT_CONTROL,
-                                         pageNum,pageRow,isCheck,dataType,compare,value);
-                    break;
-                case DataShowPara.Analysis:
-                    client.getServerData(TcpClient.CT_ANALYSIS,
                                          pageNum,pageRow,isCheck,dataType,compare,value);
                     break;
                 }
@@ -119,7 +125,6 @@ Item {
 
         }
 
-
         DataShowView{
             id:page_one
             para:para
@@ -149,19 +154,16 @@ Item {
 
         StatisticsView{
             id:page_six
+            client:page.client
             para:para
         }
 
-        Component{
+        SettingsView{
             id:page_seven
-            ShadowText{
-                text:"大型水域";
-                x:100
-                y:200
-                width:1000
-                verticalAlignment: Text.AlignVCenter
-                horizontalAlignment: Text.AlignHCenter
-                pixelSize: 80
+            para:para
+            onLogOut: {
+                if(client)
+                    client.logOut();
             }
         }
     }

@@ -30,7 +30,7 @@ Rectangle {
             case statistics:
                 rect.currentIndexChanged(6);
                 break;
-            case feeding:
+            case settings:
                 rect.currentIndexChanged(7);
                 break;
             }
@@ -90,8 +90,9 @@ Rectangle {
             group:group
         }
         ToolButton{
-            id:feeding
-            text:"显示"
+            id:settings
+            text:"设置"
+            imageUrl:"qrc:/Resources/statistics.png"
             checkable:true
             group:group
         }

@@ -18,6 +18,7 @@ Window {
     property var client: 0
     //返回值位0：直接退出 1：登陆退出 2:自动登录退出
     property int returnValue: 0
+    property string userName: "123"
 
     function getValue(){
         return dialog.returnValue;
@@ -30,6 +31,7 @@ Window {
         {
             if(result){
                 dialog.returnValue = 1;
+                dialog.userName = message;
                 dialog.close();
             }
             else{
@@ -42,7 +44,10 @@ Window {
 
         case TcpClient.CT_PARACHECKACCOUNTNUMBER:
         {
-            back.setAccountNumber(result?1:-1);
+            if(back.type)
+                back.setAccountNumber(result?1:-1);
+            else
+                back.setAccountNumber(result?-1:1);
             break;
         }
         case TcpClient.CT_REGISTERED:
@@ -51,10 +56,30 @@ Window {
                 client.signup(back.getAccountNumber(),back.getTextEdit_pw(),true);
             }
             else{
-                msgBox.showWarning("registered",message);
+                msgBox.showWarning("注册",message);
                 back.registerError();
             }
             break;
+        }
+        case TcpClient.CT_CHANGEPASSWORD:
+        {
+            if(!result){
+                msgBox.showWarning("找回密码",message);
+            }
+            else{
+                msgBox.showInformation("找回密码","成功修改密码")
+                back.findPWSuccess();
+                flipable.flipped=!flipable.flipped;
+            }
+
+            break;
+        }
+
+        default:
+        {
+            if(!result){
+                msgBox.showWarning("LWMAMS",message);
+            }
         }
         }
     }
@@ -98,15 +123,22 @@ Window {
                 onFindPW: {
                     back.type = 0;
                     back.changeCode();
+                    back.setMailBox(0);
+                    back.setAccountNumber(0);
                     flipable.flipped=!flipable.flipped;
                 }
                 onRegistered: {
                     back.type = 1;
                     back.changeCode();
+                    back.setMailBox(0);
+                    back.setAccountNumber(0);
                     flipable.flipped=!flipable.flipped;
                 }
                 onSignUp: {
                     client.signup(name,pw);
+                }
+                onAuthorized: {
+                    client.signup_authorized(account)
                 }
             }
 
@@ -118,7 +150,13 @@ Window {
                 onRegistered: {
                     client.registered(back.getAccountNumber(),
                                       back.getTextEdit_pw(),
-                                      back.getTextEdit_userName());
+                                      back.getTextEdit_userName(),
+                                      getTextEdit_MailBox());
+                }
+
+                onFindPW: {
+                    client.changePassword(back.getAccountNumber(),
+                                      back.getTextEdit_pw());
                 }
 
                 onCheckAccountNumber:{
@@ -128,25 +166,45 @@ Window {
                         client.checkAccountNumber(accountNumber)
                 }
 
-                onCheckAppId: {
+                onCheckMailBox: {
                     //
-                    back.setAppID(1);
+                    if(type)
+                        back.setMailBox(1);
                 }
 
                 onCheckAll: {
                     //以下代码其实是在tcp类回调函数里的，先写在这里
                     if(!back.isRegistered)
                         return;
-                    //back.setAccountNumber(1);
-                    //back.setAppID(1);
-                    if(back.canRegistered()){
-                        //
-                        back.registered();
+                    if(back.type){
+                        if(back.canRegistered()){
+                            //
+                            back.registered();
+                        }
+                        else{
+                            back.registerError();
+                            //
+                        }
                     }
                     else{
-                        back.registerError();
-                        //
+                        if(back.canFindPW()){
+                            //
+                            back.findPW();
+                        }
+                        else{
+                            back.registerError();
+                            //
+                        }
                     }
+
+                }
+
+                onSendCodeEmail: {
+                    client.sendCodeEmail(accountNumber)
+                }
+
+                onCheckEmailCode: {
+                    back.setMailBox(client.checkCode(code))
                 }
             }
 

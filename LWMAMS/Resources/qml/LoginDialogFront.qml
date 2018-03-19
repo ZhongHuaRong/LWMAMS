@@ -10,6 +10,7 @@ Item {
     signal registered();
     signal findPW();
     signal signUp(string name,string pw);
+    signal authorized(string account);
 
     function resetButton(){
         pushButton_sign.resetButton();
@@ -85,9 +86,25 @@ Item {
             isPW: true
         }
 
+        PushButton{
+            id:pushButton_authorized
+            y: 237
+            width: 282
+            height: 40
+            pressedColor: "#00BFFF"
+            enteredColor: "#4169E1"
+            exitedColor: "#1E90FF"
+            anchors.horizontalCenterOffset: 0
+            anchors.horizontalCenter: parent.horizontalCenter
+            text: qsTr("授权登陆")
+            onClicked: {
+                front.authorized(textEdit_userName.getText())
+            }
+        }
+
         DoubleStateButton {
             id: pushButton_sign
-            y: 264
+            y: 294
             width: 282
             height: 40
             anchors.horizontalCenterOffset: 0
@@ -102,7 +119,7 @@ Item {
         HighlightButton {
             id: pushButton_registered
             x: 214
-            y: 331
+            y: 357
             width:80
             height: 20
             text:qsTr("注册账号")
@@ -114,7 +131,7 @@ Item {
         HighlightButton {
             id: pushButton_findPW
             x: 416
-            y: 331
+            y: 357
             width:80
             height: 20
             text:qsTr("找回密码")

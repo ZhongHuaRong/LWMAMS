@@ -30,14 +30,21 @@ public:
         DataShow =1,
         Route,
         Control,
-        Analysis,
+        Statistics,
+        Settings,
         OtherType
+    };
+    enum DateType{
+        Day = 1,
+        Month,
+        Year
     };
 
     Q_ENUM(DATATYPE)
     Q_ENUM(CHARTTYPE)
     Q_ENUM(DATACOMPARE)
     Q_ENUM(PAGETYPE)
+    Q_ENUM(DateType)
 public:
     explicit DataShowPara(QObject *parent = nullptr);
     ~DataShowPara();
@@ -112,10 +119,32 @@ public:
     Q_INVOKABLE QString getSVideoIP() const;
     Q_INVOKABLE void setSVideoIP(const QString &sVideoIP);
 
+    Q_INVOKABLE bool getNSMSPush() const;
+    Q_INVOKABLE void setNSMSPush(bool nSMSPush);
+
+    Q_INVOKABLE bool getNEmailPush() const;
+    Q_INVOKABLE void setNEmailPush(bool nEmailPush);
+
+    Q_INVOKABLE QString getSPhone() const;
+    Q_INVOKABLE void setSPhone(const QString &sPhone);
+
+    Q_INVOKABLE QString getSEmail() const;
+    Q_INVOKABLE void setSEmail(const QString &sEmail);
+
+    Q_INVOKABLE QString getSUserName() const;
+    Q_INVOKABLE void setSUserName(const QString &sUserName);
+
+    Q_INVOKABLE int getNCooldown() const;
+    Q_INVOKABLE void setNCooldown(int nCooldown);
+
+    long long getPreTime() const;
+    void setPreTime(long long value);
+
 Q_SIGNALS:
     Q_INVOKABLE void pageNumChanged(int pageNum);
     Q_INVOKABLE void pageMaxNumChanged(int pageMaxNum);
     Q_INVOKABLE void caveatValueChanged();
+    Q_INVOKABLE void userNameChanged();
 private:
     void initAll();
     void saveAll();
@@ -133,32 +162,53 @@ private:
     DATATYPE m_eDataType;
     CHARTTYPE m_eChartType;
 
+    //数据参数,警告值范围
     QString m_sTempMinValueText;
     QString m_sTempMaxValueText;
     QString m_sPHMinValueText;
     QString m_sPHMaxValueText;
     QString m_sTurMinValueText;
     QString m_sTurMaxValueText;
+
+    //筛选
     DATATYPE m_eDatafilterDatatype;
     DATACOMPARE m_eDatafilterCompare;
     QString m_sCompareValue;
+
+    //经纬度范围
     QString m_sLatitudeMin;
     QString m_sLatitudeMax;
     QString m_sLongitudeMin;
     QString m_sLongitudeMax;
+
+    //IP参数
     QString m_sControlIP;
     QString m_sVideoIP;
 
+    //当前页面类型
     PAGETYPE m_ePageType;
 
     bool m_bCheckFlag;
     bool m_bAutoUpdate;
 
+    //页面参数
     int m_nPageNum;
     int m_nPageMaxNum;
     int m_npageRowCount;
     int m_nMaxCount;
 
+    //推送设置的参数
+    bool m_nSMSPush;
+    bool m_nEmailPush;
+    QString m_sPhone;
+    QString m_sEmail;
+    int m_nCooldown;
+    long long int preTime;
+
+    //账号用户信息
+    QString m_sUserName;
+
+    //测试用参数
     int m_nTestNum;
 
     QTimer m_qTimer;

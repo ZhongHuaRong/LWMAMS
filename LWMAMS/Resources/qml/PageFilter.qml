@@ -182,15 +182,13 @@ TelescopicRectangle{
             PushButton {
                 id: nextTwoButton
                 visible: pageFilter.isTextPage?false:true
-                text:pageFilter.isTextPage?"结尾":"下两页"
+                text:"下两页"
                 pixelSize: 12
                 width:55
                 height:35
                 onClicked:{
                     if(pageFilter.para)
                         pageFilter.para.setNPageNum(pageFilter.para.getNPageNum()+2);
-                    if(pageFilter.isTextPage)
-                        pageFilter.changedPage(true);
                 }
             }
             PushButton {

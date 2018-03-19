@@ -42,7 +42,6 @@
         <file>Resources/homeBackground.jpg</file>
         <file>Resources/qml/DataShow_ParaListView.qml</file>
         <file>Resources/qml/DataShow_ChartView.qml</file>
-        <file>Resources/qml/PageNumberView.qml</file>
         <file>Resources/qml/DataShowView.qml</file>
         <file>Resources/qml/CScrollView.qml</file>
         <file>Resources/qml/TelescopicRectangle.qml</file>
@@ -72,6 +71,11 @@
         <file>Resources/statistics.png</file>
         <file>Resources/qml/StatisticsView.qml</file>
         <file>Resources/qml/ManualParaListView.qml</file>
-        <file>Resources/qml/CFileDialog.qml</file>
+        <file>Resources/qml/StatisticsParaListView.qml</file>
+        <file>Resources/qml/SettingsView.qml</file>
+        <file>Resources/qml/CoolDownButton.qml</file>
+        <file>Resources/qml/Calendar.qml</file>
+        <file>Resources/qml/StatisticsChartView.qml</file>
+        <file>Resources/qml/CPieSlice.qml</file>
     </qresource>
 </RCC>

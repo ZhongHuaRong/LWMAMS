@@ -18,6 +18,7 @@ Window {
     property int previousX: 0
     property int previousY: 0
     property var loginDialog: 0
+    property var isQuit: false
 
     function loginDialogClose(autoFlag){
         var value = window.loginDialog.getValue();
@@ -26,6 +27,8 @@ Window {
         }
         else {
             var n=loginDialog.returnValue;
+            mainWindow.setUserName(loginDialog.userName);
+
             window.loginDialog.destroy();
 
             //关联信号
@@ -42,15 +45,41 @@ Window {
 
     ClientManagement{
         id:client
+        onAuthorizedSign:{
+            if(result!=0)
+                msgBox.showQuestion("授权登陆",message);
+            else
+                msgBox.showInformation("授权登陆",message)
+        }
+        onQuitApp: {
+            isQuit = true
+            msgBox.showInformation("登陆","账号于其他地方登陆，这里强制退出")
+        }
+        onAuthorizedResult:{
+            if(result){
+                window.loginDialog.destroy();
+
+                //关联信号
+                client.chartData.connect(mainWindow.setChartData);
+            }
+            else{
+                msgBox.showInformation("授权登陆",message)
+            }
+        }
     }
 
     MsgBoxManagement{
         id:msgBox
+        onGetReturnValue:{
+            if(isQuit)
+                Qt.quit();
+            client.signup_authorizedResult(returnValue==msgBox.msgBox.yes?true:false)
+        }
     }
 
     FileDialog{
         id:fileDialog
-        title: "Please choose a Manual"
+        title: "请选择一个文本"
         visible: false
         nameFilters: [ "Text files (*.txt )" ]
         //selectFolder:true

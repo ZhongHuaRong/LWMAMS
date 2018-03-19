@@ -12,10 +12,12 @@ Rectangle {
     property color enteredBorderColor: "#0078D7"
     property color exitedColor: "#E1E1E1"
     property color exitedBorderColor: "#ADADAD"
+    property color unClickedColor: "#DCDCDC"
     property int borderWidth: 1
     property bool isPressed: false
     property string text: "按钮"
     property int pixelSize: 20
+    property var canClicked: true
 
     //让子组件button暴露在接口
     property var buttonObject: button
@@ -43,6 +45,13 @@ Rectangle {
             return;
         rect.state="checked";
         rect.checked=true;
+    }
+
+    onCanClickedChanged: {
+        if(canClicked)
+            rect.state = "exited"
+        else
+            rect.state = "unClicked"
     }
 
     states :
@@ -108,6 +117,13 @@ Rectangle {
                 width:rect.width - rect.width*0.05;
                 height:rect.height - rect.height*0.05;
             }
+        },
+        State{
+            name:"unClicked";
+            PropertyChanges {
+                target: button;
+                color:rect.unClickedColor
+            }
         }
 
     ]
@@ -143,6 +159,10 @@ Rectangle {
         hoverEnabled: true
 
         onEntered: {
+            if(!rect.canClicked){
+                return;
+            }
+
             if(!rect.isPressed)
                 rect.state="entered";
             else
@@ -150,6 +170,9 @@ Rectangle {
         }
 
         onExited:{
+            if(!rect.canClicked){
+                return;
+            }
             if(rect.checkable){
                 if(rect.checked)
                     rect.state="checked";
@@ -161,11 +184,17 @@ Rectangle {
         }
 
         onPressed: {
+            if(!rect.canClicked){
+                return;
+            }
             rect.state="pressed";
             isPressed = true;
         }
 
         onReleased: {
+            if(!rect.canClicked){
+                return;
+            }
             //松开在点击之前，所以checked反着判断
             if(rect.checkable){
                 if(rect.checked){
@@ -189,6 +218,10 @@ Rectangle {
         }
 
         onClicked: {
+            if(!rect.canClicked){
+                rect.state="unClicked";
+                return;
+            }
             if(rect.checkable){
                 if(rect.group){
                     if(!rect.checked){

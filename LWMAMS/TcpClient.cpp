@@ -1,8 +1,8 @@
 #include "TcpClient.h"
 #include <QDebug>
+#include <QHostInfo>
 
 //#define SERVERIP "119.29.243.183"
-#define SERVERIP "192.168.171.129"
 #define SERVERPOST 48428
 
 TcpClient::TcpClient(QObject *parent) : QObject(parent)
@@ -13,6 +13,13 @@ TcpClient::TcpClient(QObject *parent) : QObject(parent)
     connect(m_pSocket,&QTcpSocket::connected,this,&TcpClient::connectSuccess);
     connect(m_pSocket,SIGNAL(error(QAbstractSocket::SocketError)),
             this,SLOT(connectError(QAbstractSocket::SocketError)));
+
+    QHostInfo info=QHostInfo::fromName("Boss");
+    foreach(QHostAddress address,info.addresses())
+    {
+      if(address.protocol()==QAbstractSocket::IPv4Protocol)
+        SERVERIP = address.toString(); //输出IPV4的地址
+    }
 
     m_pThread = new QThread();
     this->moveToThread(m_pThread);

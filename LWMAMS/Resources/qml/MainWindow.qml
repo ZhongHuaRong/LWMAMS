@@ -28,6 +28,10 @@ Rectangle {
         page.analyzeDataType(ct,list,maxCount);
     }
 
+    function setUserName(name){
+        page.setParaUserName(name)
+    }
+
     TitleRectangle{
         id:title
         anchors.right: parent.right

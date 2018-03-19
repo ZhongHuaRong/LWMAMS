@@ -252,6 +252,13 @@ void DataShowPara::initAll()
 
     //Page参数
     m_npageRowCount = settings.value("PageRowCount").toInt();
+
+    //短信+邮件推送设置
+    m_nSMSPush = settings.value("SMSPush").toBool();
+    m_nEmailPush = settings.value("EmailPush").toBool();
+    m_sPhone = settings.value("Phone").toString();
+    m_sEmail = settings.value("Email").toString();
+    m_nCooldown = settings.value("Cooldown").toInt();
     settings.endGroup();
 
     //DataShow参数
@@ -302,6 +309,11 @@ void DataShowPara::initAll()
     m_bCheckFlag = false;
     m_bAutoUpdate = true;
 
+    //短信+邮件推送设置
+    if(m_nCooldown == 0)
+        m_nCooldown = 5;
+    preTime = 0;
+
     //测试用NUM
     m_nTestNum = 20;
 }
@@ -332,12 +344,18 @@ void DataShowPara::saveAll()
     settings.setValue("VideoIP",m_sVideoIP);
 
     settings.setValue("PageRowCount",m_npageRowCount);
+
+    settings.setValue("SMSPush",m_nSMSPush);
+    settings.setValue("EmailPush",m_nEmailPush);
+    settings.setValue("Phone",m_sPhone);
+    settings.setValue("Email",m_sEmail);
+    settings.setValue("Cooldown",m_nCooldown);
     settings.endGroup();
 }
 
 void DataShowPara::sendPara()
 {
-    if(m_ePageType == PAGETYPE::OtherType)
+    if(m_ePageType == PAGETYPE::OtherType ||m_ePageType == PAGETYPE::Statistics)
         return;
     emit paraData(m_ePageType,m_nPageNum,
                   m_npageRowCount,
@@ -351,6 +369,77 @@ void DataShowPara::sendPara()
 void DataShowPara::timerTimeOut()
 {
     sendPara();
+}
+
+long long DataShowPara::getPreTime() const
+{
+    return preTime;
+}
+
+void DataShowPara::setPreTime(long long value)
+{
+    preTime = value;
+}
+
+int DataShowPara::getNCooldown() const
+{
+    return m_nCooldown;
+}
+
+void DataShowPara::setNCooldown(int nCooldown)
+{
+    m_nCooldown = nCooldown;
+}
+
+QString DataShowPara::getSUserName() const
+{
+    return m_sUserName;
+}
+
+void DataShowPara::setSUserName(const QString &sUserName)
+{
+    m_sUserName = sUserName;
+    emit userNameChanged();
+}
+
+QString DataShowPara::getSEmail() const
+{
+    return m_sEmail;
+}
+
+void DataShowPara::setSEmail(const QString &sEmail)
+{
+    m_sEmail = sEmail;
+}
+
+QString DataShowPara::getSPhone() const
+{
+    return m_sPhone;
+}
+
+void DataShowPara::setSPhone(const QString &sPhone)
+{
+    m_sPhone = sPhone;
+}
+
+bool DataShowPara::getNEmailPush() const
+{
+    return m_nEmailPush;
+}
+
+void DataShowPara::setNEmailPush(bool nEmailPush)
+{
+    m_nEmailPush = nEmailPush;
+}
+
+bool DataShowPara::getNSMSPush() const
+{
+    return m_nSMSPush;
+}
+
+void DataShowPara::setNSMSPush(bool nSMSPush)
+{
+    m_nSMSPush = nSMSPush;
 }
 
 QString DataShowPara::getSVideoIP() const

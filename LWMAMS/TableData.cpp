@@ -53,6 +53,18 @@ void TableData::setData(const QList<QStringList> &datalist)
     }
 }
 
+/**
+  * @函数意义:不判断原有数据，直接重置
+  * @作者:ZM
+  * @param [in] datalist
+  *             新数据
+  * @date 2018-3
+  */
+void TableData::resetData(const QList<QStringList> &datalist)
+{
+    m_qList = datalist;
+}
+
 int TableData::getDataRow()
 {
     return m_qList.length();

@@ -220,6 +220,8 @@ void Manual::itemDoubleClicked(int row, int parentRow)
   */
 void Manual::changedOnepage(bool isNext)
 {
+    if(m_lFTitle.isEmpty())
+        return;
     if(isNext)
     {
         //分三种情况
@@ -283,6 +285,8 @@ void Manual::changedOnepage(bool isNext)
   */
 void Manual::changedToLastPage(bool isLast)
 {
+    if(m_lFTitle.isEmpty())
+        return;
     if(isLast)
     {
         gotoPage(m_lSTitle.last().length()-1,m_lFTitle.length()-1);

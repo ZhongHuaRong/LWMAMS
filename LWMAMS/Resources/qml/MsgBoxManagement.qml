@@ -6,6 +6,7 @@ Item {
     property var msgBox: 0
     property int returnValue: 0
 
+    signal getReturnValue(int value)
 
     function showMsgBox(title,msg,msgType,button){
         msgBox=Qt.createComponent("MsgBox.qml").createObject(item,{
@@ -19,6 +20,7 @@ Item {
     function msgBoxClose(){
         returnValue = msgBox.value;
         msgBox.destroy();
+        getReturnValue(returnValue)
     }
 
     function showInformation(title,msg){
@@ -30,7 +32,7 @@ Item {
     }
 
     function showQuestion(title,msg){
-        showMsgBox(title,msg,MsgBox.MT_QUESTION,MsgBox.Cancel)
+        showMsgBox(title,msg,MsgBox.MT_QUESTION,MsgBox.Yes|MsgBox.No)
     }
 
 
