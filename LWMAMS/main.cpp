@@ -16,9 +16,20 @@
 #include "ChartViewData.h"
 #include "TipMsgChart.h"
 
-#include <QNetworkAccessManager>
-#include <QtNetwork/QNetworkRequest>
+#ifdef TEST
+#ifdef INTENET_TEST
+#include "IntenetTest.h"
 
+QTEST_MAIN(IntenetTest)
+#else
+#ifdef FILE_TEST
+#include "FileTest.h"
+
+QTEST_MAIN(FileTest)
+#endif
+#endif
+
+#else
 int main(int argc, char *argv[])
 {
     QApplication app(argc, argv);
@@ -29,7 +40,7 @@ int main(int argc, char *argv[])
 
     QtWebEngine::initialize();
 
-	//注册，使C++类在qml中使用
+    //注册，使C++类在qml中使用
     qRegisterMetaType<QList<QList<QVariant>>>("QList<QList<QVariant>>");
     qRegisterMetaType<QList<QList<QList<QVariant>>>>("QList<QList<QList<QVariant>>>");
     qmlRegisterType<CodeArea>("an.qt.CodeArea", 1, 0, "CodeArea");
@@ -53,3 +64,4 @@ int main(int argc, char *argv[])
 
     return app.exec();
 }
+#endif

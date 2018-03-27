@@ -6,7 +6,6 @@
 # Remove it when you are finished editing this file.
 message("You are running qmake on a generated .pro file. This may not work!")
 
-
 SOURCES += ./main.cpp \
     $$PWD/CodeArea.cpp \
     $$PWD/DataShowPara.cpp \
@@ -24,7 +23,9 @@ SOURCES += ./main.cpp \
     $$PWD/ChartViewData.cpp \
     $$PWD/DateData.cpp \
     $$PWD/TipMsgRect.cpp \
-    $$PWD/TipMsgChart.cpp
+    $$PWD/TipMsgChart.cpp \
+    $$PWD/IntenetTest.cpp \
+    $$PWD/FileTest.cpp
 RESOURCES += qml.qrc
 
 HEADERS += \
@@ -44,4 +45,6 @@ HEADERS += \
     $$PWD/ChartViewData.h \
     $$PWD/DateData.h \
     $$PWD/TipMsgRect.h \
-    $$PWD/TipMsgChart.h
+    $$PWD/TipMsgChart.h \
+    $$PWD/IntenetTest.h \
+    $$PWD/FileTest.h

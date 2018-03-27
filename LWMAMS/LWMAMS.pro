@@ -5,9 +5,11 @@
 TEMPLATE = app
 TARGET = LWMAMS
 DESTDIR = ../Debug
-QT += core network gui location qml quick webengine widgets
-CONFIG += debug
+QT += core network gui location qml quick webengine widgets testlib
+CONFIG += debug qmltestcase
 DEFINES += WIN64 QT_DLL QT_LOCATION_LIB QT_NETWORK_LIB QT_QML_LIB QT_QUICK_LIB QT_WIDGETS_LIB
+#DEFINES += TEST INTENET_TEST
+#DEFINES += TEST FILE_TEST
 INCLUDEPATH += ./GeneratedFiles \
     . \
     ./GeneratedFiles/Debug

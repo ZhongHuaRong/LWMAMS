@@ -24,6 +24,10 @@ Window {
         return dialog.returnValue;
     }
 
+    function signup(a,p){
+        client.signup(a,p);
+    }
+
     function onLoginMessage(ct,result,message){
         switch(ct){
         case TcpClient.CT_SIGNUP:
@@ -135,7 +139,7 @@ Window {
                     flipable.flipped=!flipable.flipped;
                 }
                 onSignUp: {
-                    client.signup(name,pw);
+                    signup(name,pw)
                 }
                 onAuthorized: {
                     client.signup_authorized(account)
@@ -237,7 +241,6 @@ Window {
         }
 
     }
-
 }
 
 

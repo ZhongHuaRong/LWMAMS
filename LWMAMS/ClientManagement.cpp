@@ -286,10 +286,15 @@ void ClientManagement::getStatisticsData(const QString &datatype,
                                          const QString &showType)
 {
     QStringList list;
+#ifdef TEST
+    list<<datatype<<dateType<<dateTime.split(' ').first().replace('/','-')<<showType<<
+          "28"<<"15"<<"8"<<"4"<<"150"<<"50";
+#else
     list<<datatype<<dateType<<dateTime.split(' ').first().replace('/','-')<<showType<<
           para->getTempMaxValue().toString()<<para->getTempMinValue().toString()<<
           para ->getPHMaxValue().toString()<<para->getPHMinValue().toString()<<
           para->getTurMaxValue().toString()<<para->getTurMinValue().toString();
+#endif
     emit sendCmd(TcpClient::CT_STATISTICS,list);
 }
 
@@ -359,9 +364,11 @@ void ClientManagement::resultAnalysis(TcpClient::CommandType ct, const QStringLi
         QList<QString>::const_iterator it;
         it = arg.begin();
 
+#ifndef TEST
         //第一行最新数据取出判断
         if(ct != TcpClient::CT_CONTROL)
             setNewData(static_cast<QString>(*it).split('^'));
+#endif
         count = static_cast<QString>(*++it).toInt();
 
         if(ct ==TcpClient::CT_CONTROL)
